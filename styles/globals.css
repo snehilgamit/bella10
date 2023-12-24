@@ -41,26 +41,22 @@ body{
   border-radius: 4px;
 }
 .closeLine {
-  width: 30px;
-  height: 4px;
+  width: 12px;
+  height: 1.5px;
   background-color: black;
   border-radius: 4px;
   position: absolute;
 }
 
 .closeLine:nth-child(1) {
-  transform: rotate(45deg);
-}
-
-.closeLine:nth-child(2) {
-  transform: rotate(-45deg);
+  transform: rotate(90deg);
 }
 .side_menu{
-  width: 50%;
+  width: 60%;
   min-height: 100vh;
   background-color: rgb(249 115 22);
   position: fixed;
-  right: -50%;
+  right: -60%;
   top: 0;
   z-index: 0; 
   transition: right 0.4s ease-in-out;

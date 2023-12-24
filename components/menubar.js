@@ -9,7 +9,7 @@ const menubar = () => {
     }
     const hideMenu = () => {
         const menu = document.getElementById('side_menu')
-        menu.style.right = '-50%'
+        menu.style.right = '-60%'
     }
     return (
         <div className='w-full overflow-hidden'>
@@ -30,15 +30,38 @@ const menubar = () => {
                 </div>
             </div>
             <div className='side_menu' id='side_menu' onClick={hideMenu}>
-                <div className='my-5 mx-7'>
-                    <div className='cursor-pointer right-[3.3rem] top-[1.8rem] absolute' onClick={showMenu}>
+                {/* <div className='cursor-pointer right-[3.3rem] top-[1.8rem] absolute' onClick={showMenu}>
                         <div className='closeLine'></div>
                         <div className='closeLine'></div>
+                    </div> */}
+                <div className='menuitme_sidebar font-semibold'>
+                    <div className='p-2.5 menu_item relative border-b-2 border-black'>
+                        <a className='ml-2'>Shop</a>
+                        <span className='absolute right-7 top-5'>
+                            <div className='closeLine'></div>
+                            <div className='closeLine'></div>
+                        </span>
                     </div>
-                    <div className='menuitme_sidebar mt-16 px-6'>
-                        <div className='py-2.5 menu_item'>Home</div>
-                        <div className='py-2.5 menu_item'>Shop</div>
-                        <div className='py-2.5 menu_item'>Referal</div>
+                    <div className='p-2.5 menu_item relative border-b-2 border-black'>
+                        <a className='ml-2'>Referral</a>
+                        <span className='absolute right-7 top-5'>
+                            <div className='closeLine'></div>
+                            <div className='closeLine'></div>
+                        </span>
+                    </div>
+                    <div className='p-2.5 menu_item relative border-b-2 border-black'>
+                        <a className='ml-2'>Location</a>
+                        <span className='absolute right-7 top-5'>
+                            <div className='closeLine'></div>
+                            <div className='closeLine'></div>
+                        </span>
+                    </div>
+                    <div className='p-2.5 menu_item relative border-b-2 border-black'>
+                        <a className='ml-2'>Contact us</a>
+                        <span className='absolute right-7 top-5'>
+                            <div className='closeLine'></div>
+                            <div className='closeLine'></div>
+                        </span>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
+import Link from 'next/link'
 const menubar = () => {
     const router = useRouter()
     const path = router.pathname
@@ -14,11 +16,17 @@ const menubar = () => {
     return (
         <div className='w-full overflow-hidden'>
             <div className='w-full flex justify-between text-[16px] shadow-md items-center min-h-[65px]'>
-                <div className='ml-12'>logo</div>
+                <div className='ml-12'>
+                    <Image
+                    src={'/logo.jpg'}
+                    height={50}
+                    width={50}
+                    />
+                </div>
                 <div className='flex gap-10 min-h-full menu'>
-                    <div className='py-4 menu_item'><div style={{ color: path == '/' ? 'rgb(249 115 22)' : 'inherit' }}>Home</div></div>
-                    <div className='py-4 menu_item'><div style={{ color: path == '/shop' ? 'rgb(249 115 22)' : 'inherit' }}>Shop</div></div>
-                    <div className='py-4 menu_item'><div style={{ color: path == '/referral' ? 'rgb(249 115 22)' : 'inherit' }}>Referral</div></div>
+                    <Link href={'/'} className='py-4 menu_item'><div style={{ color: path == '/' ? 'rgb(249 115 22)' : 'inherit' }}>Home</div></Link>
+                    <Link href={'/shop'} className='py-4 menu_item'><div style={{ color: path == '/shop' ? 'rgb(249 115 22)' : 'inherit' }}>Shop</div></Link>
+                    <Link href={'/referral'} className='py-4 menu_item'><div style={{ color: path == '/referral' ? 'rgb(249 115 22)' : 'inherit' }}>Referral</div></Link>
                 </div>
                 <div className='mr-6 flex justify-center items-center gap-5'>
                     <div>login</div>

@@ -53,7 +53,7 @@ body{
 }
 .closeLine-x {
   width: 28px;
-  height: 1.5px;
+  height: 3.7px;
   background-color: black;
   border-radius: 4px;
   position: absolute;
@@ -68,10 +68,31 @@ body{
 .side_menu{
   width: 100%;
   min-height: 100vh;
-  background-color: rgb(249 115 22);
+  background-color: rgb(255, 255, 255);
   position: fixed;
   right: -0%;
   top: 0;
   z-index: 0; 
   transition: right 0.4s ease-in-out;
+}
+.loginArea{
+  margin: 0 2px;
+  gap: 2px;
+}
+.loginArea div{
+  background-color: black;
+  color: white;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding: 12px 0px;
+  cursor: pointer;
+  border: 2px solid rgb(29, 29, 29);
+}
+.menuitmes_sidebar:hover{
+  opacity: 60%;
+}
+.menuitmes_sidebar:nth-child(6){
+  border: transparent;
 }

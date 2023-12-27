@@ -68,7 +68,7 @@ body{
 .side_menu{
   width: 100%;
   min-height: 100vh;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(254, 240, 230);
   position: fixed;
   right: -100%;
   top: 0;
@@ -93,6 +93,6 @@ body{
 .menuitmes_sidebar:hover{
   opacity: 60%;
 }
-.menuitmes_sidebar:nth-child(6){
+/* .menuitmes_sidebar:nth-child(6){
   border: transparent;
-}
+} */

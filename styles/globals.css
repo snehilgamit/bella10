@@ -98,7 +98,3 @@ body{
 /* .menuitmes_sidebar:nth-child(6){
   border: transparent;
 } */
-
-.shop_Submenu{
-  transition: opacity 1s ease;
-}

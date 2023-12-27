@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -18,6 +18,19 @@ const menubar = () => {
         const side_menu = document.getElementById('side_menu')
         side_menu.style.right = '-100%'
 
+    }
+    const shop_append = () => {
+        const cross = document.querySelector('.closeLine')
+        if (cross.style['rotate'] == '90deg') {
+            cross.style.rotate = `0deg`
+            document.querySelector('.shop_Submenu').style.display = 'none'
+            document.querySelector('.shop_Submenu').style.opacity = '0'
+        }
+        else {
+            cross.style.rotate = `90deg`
+            document.querySelector('.shop_Submenu').style.display = 'block'
+            document.querySelector('.shop_Submenu').style.opacity = '1'
+        }
     }
     return (
         <div className='w-full overflow-hidden py-4 shadow-md'>
@@ -67,31 +80,54 @@ const menubar = () => {
                     </div>
                     <Link href={'/'} onClick={hideMenu} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200'>
                         <div className='mx-1 text-black'>Home</div>
-                        <span className='mx-3.5 flex justify-center items-center'>
+                        {/* <span className='mx-3.5 flex justify-center items-center'>
                             <div className='closeLine'></div>
                             <div className='closeLine'></div>
-                        </span>
+                        </span> */}
                     </Link>
-                    <Link href={'/shop'} onClick={hideMenu} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200'>
-                        <div className='mx-1 text-black'>Shop</div>
-                        <span className='mx-3.5 flex justify-center items-center'>
-                            <div className='closeLine'></div>
-                            <div className='closeLine'></div>
-                        </span>
-                    </Link>
+                    <div className='py-3.5 mx-2 relative border-b  border-orange-200'>
+                        <div className='flex justify-between menu_item menuitmes_sidebar' onClick={shop_append}>
+                            <div className='mx-1 text-black'>Shop</div>
+                            <span className='mx-3.5 flex justify-center items-center'>
+                                <div className='closeLine'></div>
+                                <div className='closeLine'></div>
+                            </span>
+                        </div>
+                        <div className='opacity-0 hidden overflow-hidden shop_Submenu'>
+                            <div className='m-2 mt-4'>
+                                <div>
+                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 menu_item relative border flex justify-between border-orange-200' >
+                                        <div className='mx-5 text-black'>Cricket</div>
+                                    </Link>
+                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 menu_item relative border flex justify-between border-orange-200' >
+                                        <div className='mx-5 text-black'>Football</div>
+                                    </Link>
+                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 menu_item relative border flex justify-between border-orange-200' >
+                                        <div className='mx-5 text-black'>Tennis</div>
+                                    </Link>
+                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 menu_item relative border flex justify-between border-orange-200' >
+                                        <div className='mx-5 text-black'>Volleyball</div>
+                                    </Link>
+                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 menu_item relative border flex justify-between border-orange-200' >
+                                        <div className='mx-5 text-black'>Other</div>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200' >
                         <div className='mx-1 text-black'>Referral</div>
-                        <span className='mx-3.5 flex justify-center items-center'>
+                        {/* <span className='mx-3.5 flex justify-center items-center'>
                             <div className='closeLine'></div>
                             <div className='closeLine'></div>
-                        </span>
+                        </span> */}
                     </Link>
                     <Link href={'/location'} onClick={hideMenu} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200'>
                         <div className='mx-1 text-black'>Location</div>
-                        <span className='mx-3.5 flex justify-center items-center'>
+                        {/* <span className='mx-3.5 flex justify-center items-center'>
                             <div className='closeLine'></div>
                             <div className='closeLine'></div>
-                        </span>
+                        </span> */}
                     </Link>
                     <Link href={'/offers'} onClick={hideMenu} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200' >
                         <div className='mx-1 text-black'>Offers</div>

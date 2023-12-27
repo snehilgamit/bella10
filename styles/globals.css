@@ -42,7 +42,7 @@ body{
   border-radius: 4px;
 }
 .closeLine {
-  width: 12px;
+  width: 13px;
   height: 1.5px;
   background-color: black;
   border-radius: 4px;
@@ -50,6 +50,7 @@ body{
 }
 
 .closeLine:nth-child(1) {
+  transition: rotate 0.3s ease-in-out;
   transform: rotate(90deg);
 }
 .closeLine-x {
@@ -71,7 +72,7 @@ body{
   min-height: 100vh;
   background-color: rgb(255, 248, 243);
   position: fixed;
-  right: -100%;
+  right: -0%;
   top: 0;
   z-index: 0; 
   transition: right 0.4s ease-in-out;
@@ -97,3 +98,7 @@ body{
 /* .menuitmes_sidebar:nth-child(6){
   border: transparent;
 } */
+
+.shop_Submenu{
+  transition: opacity 1s ease;
+}

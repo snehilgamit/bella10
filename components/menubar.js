@@ -96,19 +96,19 @@ const menubar = () => {
                         <div className='opacity-0 hidden overflow-hidden shop_Submenu'>
                             <div className='m-2 mt-4'>
                                 <div>
-                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 menu_item relative border flex justify-between border-orange-200' >
+                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 relative border-t border-l border-r flex justify-between border-orange-200' >
                                         <div className='mx-5 text-black'>Cricket</div>
                                     </Link>
-                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 menu_item relative border flex justify-between border-orange-200' >
+                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 relative border-t border-l border-r flex justify-between border-orange-200' >
                                         <div className='mx-5 text-black'>Football</div>
                                     </Link>
-                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 menu_item relative border flex justify-between border-orange-200' >
+                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 relative border-t border-l border-r flex justify-between border-orange-200' >
                                         <div className='mx-5 text-black'>Tennis</div>
                                     </Link>
-                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 menu_item relative border flex justify-between border-orange-200' >
+                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 relative border-t border-l border-r flex justify-between border-orange-200' >
                                         <div className='mx-5 text-black'>Volleyball</div>
                                     </Link>
-                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 menu_item relative border flex justify-between border-orange-200' >
+                                    <Link href={'/referral'} onClick={hideMenu} className='menuitmes_sidebar text-sm py-2 mx-2 relative border flex justify-between border-orange-200' >
                                         <div className='mx-5 text-black'>Other</div>
                                     </Link>
                                 </div>

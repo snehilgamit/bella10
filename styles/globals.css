@@ -79,7 +79,7 @@ body{
   margin: 7px 7px;
   gap: 2px;
 }
-.loginArea div{
+.loginArea a{
   background-color: black;
   color: white;
   width: 100%;

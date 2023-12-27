@@ -8,8 +8,6 @@ const menubar = () => {
     const menuItmes = [{ "": "Home" }, { "shop": "Shop" }, { "referral": "Referral" }, { "location": "Location" }, { "contact-us": "Contact us" }]
     const SubmenuItmes = ['cricket', 'football', 'tennis', 'volleyball', 'all']
 
-
-
     const showMenu = (type) => {
         const side_menu = document.getElementById('side_menu')
         if (type === 'show') {
@@ -47,6 +45,9 @@ const menubar = () => {
             document.querySelector('.shop_Submenu').style.opacity = '1'
         }
     }
+    useEffect(()=>{
+        showMenu('hide')
+    },[router])
     return (
         <div className='w-full overflow-hidden py-4 shadow-md'>
             <div className='w-full flex justify-between text-[16px] items-center'>
@@ -99,7 +100,7 @@ const menubar = () => {
                 <div className='menuitme_sidebar font-semibold'>
                     <div className='flex justify-between items-center py-4 bg-white shadow-md'>
                         <Link
-                            href={'/'} onClick={() => { showMenu('hide') }}>
+                            href={'/'}>
                             <Image
                                 alt='logo'
                                 className='ml-12 cursor-pointer'
@@ -109,12 +110,12 @@ const menubar = () => {
                                 loading='eager'
                             />
                         </Link>
-                        <div className='cursor-pointer mr-5 w-10 h-10 flex justify-center items-center' onClick={() => { showMenu('hide') }}>
+                        <div className='cursor-pointer mr-5 w-10 h-10 flex justify-center items-center' onClick={()=>{showMenu('hide')}}>
                             <div className='closeLine-x'></div>
                             <div className='closeLine-x'></div>
                         </div>
                     </div>
-                    <Link href={'/'} onClick={() => { showMenu('hide') }} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200'>
+                    <Link href={'/'} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200'>
                         <div className='mx-1 text-black'>Home</div>
                     </Link>
                     <div className='py-3.5 mx-2 relative border-b  border-orange-200'>
@@ -129,7 +130,7 @@ const menubar = () => {
                             <div className='m-2 mt-4'>
                                 <div>
                                     {SubmenuItmes.map((el, index) => (
-                                        <Link key={index} href={`/shop${el == 'all' ? '' : '?category=' + el}`} onClick={() => { showMenu('hide') }} className='menuitmes_sidebar text-sm py-2 mx-2 relative border-t border-l border-r flex justify-between border-orange-200' style={{ 'border-bottom': el == 'all' ? '1px solid rgb(254 215 170)' : 'transparent' }}>
+                                        <Link key={index} href={`/shop${el == 'all' ? '' : '?category=' + el}`} className='menuitmes_sidebar text-sm py-2 mx-2 relative border-t border-l border-r flex justify-between border-orange-200' style={{ 'border-bottom': el == 'all' ? '1px solid rgb(254 215 170)' : 'transparent' }}>
                                             <div className='mx-5 text-black'>{el}</div>
                                         </Link>
                                     ))}
@@ -137,25 +138,26 @@ const menubar = () => {
                             </div>
                         </div>
                     </div>
-                    <Link href={'/referral'} onClick={() => { showMenu('hide') }} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200' >
+                    <Link href={'/referral'} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200' >
                         <div className='mx-1 text-black'>Referral</div>
                     </Link>
-                    <Link href={'/location'} onClick={() => { showMenu('hide') }} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200'>
+                    <Link href={'/location'} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200'>
                         <div className='mx-1 text-black'>Location</div>
                     </Link>
-                    <Link href={'/offers'} onClick={() => { showMenu('hide') }} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200' >
+                    <Link href={'/offers'} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200' >
                         <div className='mx-1 text-black'>Offers</div>
                     </Link>
-                    <Link href={'/contact-us'} onClick={() => { showMenu('hide') }} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200' >
+                    <Link href={'/contact-us'} className='menuitmes_sidebar py-3.5 mx-2 menu_item relative border-b flex justify-between border-orange-200' >
                         <div className='mx-1 text-black'>Contact us</div>
                     </Link>
+
                     <div className='flex justify-center items-center loginArea'>
-                        <div className='menuitmes_sidebar'>
+                        <Link href={'/signup'} className='menuitmes_sidebar'>
                             Signup
-                        </div>
-                        <div className='menuitmes_sidebar'>
+                        </Link>
+                        <Link href={'/login'} className='menuitmes_sidebar'>
                             Login
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -3,9 +3,9 @@ import React from 'react'
 
 const shop = () => {
   const router = useRouter();
-  const { category } = router.query
+  const { categories } = router.query
   return (
-    <div>{category!=undefined?category:'all'}</div>
+    <div>{categories!=undefined?categories:'all'}</div>
   )
 }
 

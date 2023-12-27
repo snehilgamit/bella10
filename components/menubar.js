@@ -6,7 +6,7 @@ const menubar = () => {
     const router = useRouter()
     const path = router.pathname
     const menuItmes = [{ "": "Home" }, { "shop": "Shop" }, { "referral": "Referral" }, { "location": "Location" }, { "contact-us": "Contact us" }]
-    const SubmenuItmes = ['cricket', 'football', 'tennis', 'volleyball', 'all']
+    const SubmenuItmes = [{ "cricket": "Cricket" }, { "football": "Football" }, { "tennis": "Tennis" }, { "volleyball": "Volleyball" }, { "": "All" }]
 
     const showMenu = (type) => {
         const side_menu = document.getElementById('side_menu')
@@ -21,9 +21,7 @@ const menubar = () => {
         router.push(val)
         const side_menu = document.getElementById('side_menu')
         side_menu.style.right = '-100%'
-
     }
-
     const shop_subMenu = (type) => {
         if (type === 'show') {
             document.querySelector('.menuitem_shop').style.display = 'block'
@@ -45,9 +43,9 @@ const menubar = () => {
             document.querySelector('.shop_Submenu').style.opacity = '1'
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         showMenu('hide')
-    },[router])
+    }, [router])
     return (
         <div className='w-full overflow-hidden py-4 shadow-md'>
             <div className='w-full flex justify-between text-[16px] items-center'>
@@ -69,13 +67,15 @@ const menubar = () => {
                     }
                     <div className='py-2 menu_item' onMouseOver={() => { shop_subMenu('show') }} onMouseLeave={() => { shop_subMenu('hide') }}>
                         <span className='cursor-pointer' style={{ color: path == '/shop' ? 'rgb(249 115 22)' : 'inherit' }}>Shop</span>
-                        <div className='w-[110px] mt-2 min-h-[150px] absolute z-[1] cursor-pointer bg-black hidden menuitem_shop'>
+                        <div className='w-[110px] mt-2 min-h-[150px] absolute z-[1] cursor-pointer bg-black hidden menuitem_shop shadow-md'>
                             <div>
-                                {SubmenuItmes.map((el, index) => (
-                                    <Link key={index} href={`/shop${el == 'all' ? '' : '?category=' + el}`} className='menuitmes_sidebar_main text-sm py-2.5 mx-2 relative flex justify-between' >
-                                        <div className='mx-5'>{el}</div>
-                                    </Link>
-                                ))}
+                                {SubmenuItmes.map((el, index) => {
+                                    for (let key in el) {
+                                        return <Link key={index} href={`/shop${key == 'all' ? '' : '?categories=' + key}`} className='menuitmes_sidebar_main text-sm py-2.5 relative flex justify-between' >
+                                            <div className='mx-5'>{el[key]}</div>
+                                        </Link>
+                                    }
+                                })}
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@ const menubar = () => {
                                 loading='eager'
                             />
                         </Link>
-                        <div className='cursor-pointer mr-5 w-10 h-10 flex justify-center items-center' onClick={()=>{showMenu('hide')}}>
+                        <div className='cursor-pointer mr-5 w-10 h-10 flex justify-center items-center' onClick={() => { showMenu('hide') }}>
                             <div className='closeLine-x'></div>
                             <div className='closeLine-x'></div>
                         </div>
@@ -129,11 +129,13 @@ const menubar = () => {
                         <div className='opacity-0 hidden overflow-hidden shop_Submenu'>
                             <div className='m-2 mt-4'>
                                 <div>
-                                    {SubmenuItmes.map((el, index) => (
-                                        <Link key={index} href={`/shop${el == 'all' ? '' : '?category=' + el}`} className='menuitmes_sidebar text-sm py-2 mx-2 relative border-t border-l border-r flex justify-between border-orange-200' style={{ 'border-bottom': el == 'all' ? '1px solid rgb(254 215 170)' : 'transparent' }}>
-                                            <div className='mx-5 text-black'>{el}</div>
+                                    {SubmenuItmes.map((el, index) => {
+                                        for(let keyvalue in el){
+                                        return <Link key={index} href={`/shop${keyvalue == 'all' ? '' : '?categories=' + keyvalue}`} className='menuitmes_sidebar text-sm py-2 mx-2 relative border-t border-l border-r flex justify-between border-orange-200' style={{ 'border-bottom': keyvalue == 'all' ? '1px solid rgb(254 215 170)' : 'transparent' }}>
+                                            <div className='mx-5 text-black'>{el[keyvalue]}</div>
                                         </Link>
-                                    ))}
+                                         }
+                                    })}
                                 </div>
                             </div>
                         </div>

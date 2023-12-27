@@ -51,12 +51,26 @@ body{
 .closeLine:nth-child(1) {
   transform: rotate(90deg);
 }
+.closeLine-x {
+  width: 28px;
+  height: 1.5px;
+  background-color: black;
+  border-radius: 4px;
+  position: absolute;
+}
+
+.closeLine-x:nth-child(1) {
+  transform: rotate(-45deg);
+}
+.closeLine-x:nth-child(2) {
+  transform: rotate(45deg);
+}
 .side_menu{
-  width: 60%;
+  width: 100%;
   min-height: 100vh;
   background-color: rgb(249 115 22);
   position: fixed;
-  right: -60%;
+  right: -0%;
   top: 0;
   z-index: 0; 
   transition: right 0.4s ease-in-out;

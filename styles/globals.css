@@ -76,7 +76,7 @@ body{
   transition: right 0.4s ease-in-out;
 }
 .loginArea{
-  margin: 0 2px;
+  margin: 4px 2px;
   gap: 2px;
 }
 .loginArea div{

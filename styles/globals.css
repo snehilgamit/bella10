@@ -68,7 +68,7 @@ body{
 .side_menu{
   width: 100%;
   min-height: 100vh;
-  background-color: rgb(254, 240, 230);
+  background-color: rgb(255, 248, 243);
   position: fixed;
   right: -100%;
   top: 0;

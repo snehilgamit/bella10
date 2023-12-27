@@ -27,6 +27,7 @@ body{
 @media (max-width:800px) {
   .menu{
     display:none;
+    opacity: 0;
   }
   .sidebar_icon{
     display: block;

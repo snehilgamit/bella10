@@ -13,13 +13,13 @@ const Home = () => {
           priority='eagar'
         />
       </div>
-      <div className='Home_shopmenu w-full h-full px-10 mt-8 font-semibold border rounded-3xl bg-orange-100'>
-        <div className='w-full text-5xl mt-6 max-sm:text-4xl max-sm:text-center'>
-          Shop
+      <div className='Home_shopmenu w-full h-full px-10 mt-8 font-semibold bg-orange-100'>
+        <div className='w-full text-5xl mt-6 max-sm:text-4xl pt-5 max-sm:text-center'>
+          SHOP
         </div>
         <div className='flex justify-start max-sm:justify-center items-center mt-6 flex-wrap pb-10 max-sm:gap-10 gap-14'>
           {homeMenu.map((el, index) => (
-            <Link href={el=="All"?"/shop":`/shop?categories=${el}`} key={index} className='p-4 cursor-pointer px-2 flex justify-center items-center flex-col rounded-full max-sm:scale-90 max-sm:p-2'>
+            <Link href={el=="All"?"/shop":`/shop?categories=${el}`} key={index} className='p-4 cursor-pointer px-3 flex justify-center items-center flex-col rounded-full max-sm:scale-90 max-sm:p-2'>
               <Image
                 src={`/${el}.png`}
                 height={50}

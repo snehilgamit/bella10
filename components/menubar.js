@@ -41,13 +41,11 @@ const menubar = () => {
             cross.style.rotate = `0deg`
             submenu.style.display = 'none'
             submenu.style.opacity = '0'
-            console.log("done 1")
         }
         else {
             cross.style.rotate = `90deg`
             submenu.style.display = 'block'
             submenu.style.opacity = '1'
-            console.log("done 2")
         }
     }
     useEffect(() => {

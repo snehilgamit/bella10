@@ -8,3 +8,16 @@ body{
   left: 0;
   /* overflow: hidden; */
 }
+.batList div div:not(:nth-child(1)){
+  margin-left: 10px;
+}
+.batList div div:nth-child(1){
+  margin-left: 10px;
+  margin-top: 5px;
+}
+.batList div div:nth-child(2){
+  color: rgb(249 115 22);
+}
+.batList:hover div div:nth-child(1){
+  color: rgb(249 115 22);
+}

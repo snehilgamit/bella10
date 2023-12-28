@@ -6,7 +6,7 @@ const Slug = () => {
   const { slug } = router.query
   const [value, setValue] = useState("loading")
   const exampleArr = {
-    product_id: "123D", name: "Grit Gear Poplar Willow Scooped Cricket Bat with German Vinyl Sticker - Alpha (Orange) Poplar Willow Cricket Bat  (0.85 kg)", price: 2000, price_after_discount: 1000, percentage: '50%', image_uri: "/exampleBat.webp"
+    product_id: "123D", name: "Grit Gear Poplar Willow Scooped Cricket Bat with German Vinyl Sticker - Alpha (Orange) Poplar Willow Cricket Bat  (0.85 kg)", price: 2000, price_after_discount: 1000, percentage: '50%', image_uri: "/exampleBat.webp",offer:["Buy 2 get 5% extra off","Buy 5 get 1 bat free"]
   }
   useEffect(() => {
     setValue(slug)
@@ -32,11 +32,16 @@ const Slug = () => {
             </div>
             <div className='mt-2'>
               <div className='text-lg'>Offers :</div>
+              {exampleArr.offer.map((el,index)=>(
+                <div key={index} className='text-sm text-orange-500'>
+                  * {el}
+                </div>
+              ))}
             </div>
           </div>
           <div className="order">
             <div className='buynow'>
-              s
+              buy
             </div>
           </div>
         </div>

@@ -7,7 +7,7 @@ const Home = () => {
     <div className='w-full overflow-hidden mb-10'>
       <div className='offer_banner w-full h-full text-white max-sm:my-5 flex justify-center'>
         <Image
-          src={'/5aa39a1c-e561-4055-9a39-0698075d2d99.webp'}
+          src={'/poster.webp'}
           height={1000}
           width={1600}
           priority='eagar'

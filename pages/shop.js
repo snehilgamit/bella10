@@ -24,14 +24,14 @@ const shop = () => {
       product_id:"125D",name:"bat bhai",price:8000,price_after_discount:4000,percentage:'50%',image_uri:"/exampleBat.webp"
     },
     {
-      product_id:"125D",name:"bat bhai",price:8000,price_after_discount:4000,percentage:'50%',image_uri:"/exampleBat.webp"
+      product_id:"125D",name:"bat bhai",price:0,price_after_discount:99999,percentage:'0%',image_uri:"/exampleBat.webp"
     }
   ]
   return (
     <div>
       {catagoryBool? 
       <div>
-        <div className='flex items-center text-center justify-start max-sm:justify-center flex-wrap w-[80%] gap-5  mb-10 mx-auto mt-10 h-full'>
+        <div className='flex items-center text-center justify-start max-sm:justify-center flex-wrap w-[80%] gap-5 max-sm:w-[95%] mb-10 mx-auto mt-10 h-full'>
           {exampleArr.map((el,index)=>(
               <Link href={`/${el.name}`} key={index} className='w-[300px] max-sm:border h-96 batList flex flex-col justify-center items-center hover:shadow-md transition-all duration-100'>
                 <Image

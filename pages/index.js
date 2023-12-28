@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-const Homemenu = ["Cricket", "Football", "Tennis", "Volleyball", "All"];
+const homeMenu = ["Cricket", "Football", "Tennis", "Volleyball", "All"];
 const Home = () => {
   return (
     <div className='w-full overflow-hidden mb-10'>
@@ -18,7 +18,7 @@ const Home = () => {
           Shop
         </div>
         <div className='flex justify-start max-sm:justify-center items-center mt-6 flex-wrap pb-10 max-sm:gap-10 gap-14'>
-          {Homemenu.map((el, index) => (
+          {homeMenu.map((el, index) => (
             <Link href={el=="All"?"/shop":`/shop?categories=${el}`} key={index} className='p-4 cursor-pointer px-2 flex justify-center items-center flex-col rounded-full max-sm:scale-90 max-sm:p-2'>
               <Image
                 src={`/${el}.png`}

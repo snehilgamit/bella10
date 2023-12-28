@@ -33,16 +33,16 @@ const shop = () => {
       <div>
         <div className='flex items-center text-center justify-start max-sm:justify-center flex-wrap w-[80%] gap-5  mb-10 mx-auto mt-10 h-full'>
           {exampleArr.map((el,index)=>(
-              <Link href={`/${el.name}`} key={index} className='w-[300px] max-sm:border  h-96 batList flex flex-col justify-center items-center hover:shadow-md transition-all duration-100'>
+              <Link href={`/${el.name}`} key={index} className='w-[300px] max-sm:border h-96 batList flex flex-col justify-center items-center hover:shadow-md transition-all duration-100'>
                 <Image
-                className='mt-1'
+                className='mt-2'
                 src={`${el.image_uri}`}
                 width={135}
                 height={100}
                 />
                 <div className='w-full h-full flex justify-start items-start flex-col'>
                     <div className='text-sm overflow-hidden h-10 text-start'>{el.name}...</div>
-                    <div className='flex items-center font-bold text-base mb-5'>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-700'>₹{el.price}</span></div>
+                    <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage} off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-700'>₹{el.price}</span></div>
                 </div>
               </Link>
           ))}

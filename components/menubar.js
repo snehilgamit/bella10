@@ -136,7 +136,7 @@ const menubar = () => {
                                 <div>
                                     {SubmenuItmes.map((el, index) => {
                                         for(let keyvalue in el){
-                                        return <Link key={index} href={`/shop${keyvalue == "" ? '' : '?categories=' + keyvalue}`} className={`${Style.menuitmes_sidebar} text-sm py-2 mx-2 relative border-t border-l border-r flex justify-between border-orange-200`} style={{ 'border-bottom': keyvalue == 'all' ? '1px solid rgb(254 215 170)' : 'transparent' }}>
+                                        return <Link key={index} href={`/shop${keyvalue == "" ? '' : '?categories=' + keyvalue}`} className={`${Style.menuitmes_sidebar} text-sm py-2 mx-2 relative border-t border-l border-r flex justify-between border-orange-200`} style={{ 'border-bottom': keyvalue == "" ? '1px solid rgb(254 215 170)' : 'transparent' }}>
                                             <div className='mx-5 text-black'>{el[keyvalue]}</div>
                                         </Link>
                                          }

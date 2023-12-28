@@ -7,8 +7,21 @@ const Slug = () => {
   const router = useRouter();
   const { slug } = router.query
   const [value, setValue] = useState("loading")
+  const [cartNum, setCartNum] = useState()
+
   const exampleArr = {
     product_id: "123D", name: "Grit Gear Poplar Willow Scooped Cricket Bat with German Vinyl Sticker - Alpha (Orange) Poplar Willow Cricket Bat  (0.85 kg)", price: 2000, price_after_discount: 1000, percentage: '50%', image_uri: "/exampleBat.webp", offer: ["Buy 2 get 5% extra off", "Buy 5 get 1 bat free"]
+  }
+  const addtocart = (getCart) => {
+    const cart = localStorage.getItem('cart')
+    const cartValues = exampleArr.product_id
+    if (cart) {
+      localStorage.setItem('cart', [cart, cartValues])
+      setCartNum(cart.split(',').length)
+    }
+    else {
+      localStorage.setItem('cart', [cartValues])
+    }
   }
   useEffect(() => {
     setValue(slug)
@@ -43,22 +56,22 @@ const Slug = () => {
             <div className='mt-2'>
               <div className='text-lg font-medium'>Highlights :</div>
               <div className='ml-3 text-sm'>
-                Age Group 12 - 14 Yrs<br/>
-                Blade Made of Poplar Willow<br/>
-                Beginner Playing Level<br/>
-                Bat Grade: Grade 1<br/>
-                Sport Type: Cricket<br/>
+                Age Group 12 - 14 Yrs<br />
+                Blade Made of Poplar Willow<br />
+                Beginner Playing Level<br />
+                Bat Grade: Grade 1<br />
+                Sport Type: Cricket<br />
                 Weight Range 0.85 kg
               </div>
             </div>
           </div>
           <div className={`flex justify-center items-center ${Style.loginArea}`}>
-            <Link href={'/signup'}>
+            <Link href={'/buy'}>
               Buy
             </Link>
-            <Link href={'/login'}>
+            <a onClick={addtocart}>
               Add to cart
-            </Link>
+            </a>
           </div>
         </div>
       </div>

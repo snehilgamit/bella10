@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
-import Style  from '..//styles/menubar.module.css'
+import Style from '..//styles/menubar.module.css'
 const menubar = () => {
+    const [cartNum, setCartNum] = useState()
     const router = useRouter();
     const path = router.pathname;
     const menuItmes = [{ "": "Home" }, { "shop": "Shop" }, { "referral": "Referral" }, { "location": "Location" }, { "contact-us": "Contact us" }]
@@ -51,6 +52,14 @@ const menubar = () => {
     useEffect(() => {
         showMenu('hide')
     }, [router])
+    useEffect(() => {
+        const cart = localStorage.getItem('cart');
+        if (cart) {
+          const len = cart.split(',').length;
+          setCartNum(len);
+          console.log(len);
+        }
+    })
     return (
         <div className='w-full py-4 shadow-md bg-white z-[1] relative'>
             <div className='w-full flex justify-between text-[16px] font-semibold items-center'>
@@ -70,7 +79,7 @@ const menubar = () => {
                         }
                     })
                     }
-                    <div className={`py-2 ${Style.menu_itemtop}`} onMouseOver={() => {shop_subMenu('show') }} onMouseLeave={() => { shop_subMenu('hide') }}>
+                    <div className={`py-2 ${Style.menu_itemtop}`} onMouseOver={() => { shop_subMenu('show') }} onMouseLeave={() => { shop_subMenu('hide') }}>
                         <span className='cursor-pointer' style={{ color: path == '/shop' ? 'rgb(249 115 22)' : 'inherit' }}>Shop</span>
                         <div className={`w-[110px] mt-2 min-h-[150px] absolute z-[1] cursor-pointer bg-black ${Style.menuitem_shop} shadow-md`}>
                             <div>
@@ -92,7 +101,9 @@ const menubar = () => {
                     }
                 </div>
                 <div className='mr-6 flex justify-center items-center gap-5'>
-                    <div className='cursor-pointer'><svg xmlns="http://www.w3.org/2000/svg" height="22" width="22" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" /></svg>
+                    <div className="cursor-pointer relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="22" width="22" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" /></svg>
+                        <div className='absolute -top-3 -right-3 text-orange-500'>{cartNum}</div>
                     </div>
                     <div className={`${Style.sidebar_icon} cursor-pointer`} onClick={() => { showMenu('show') }}>
                         <div className={`${Style.line}`}></div>
@@ -135,11 +146,11 @@ const menubar = () => {
                             <div className='m-2 mt-4'>
                                 <div>
                                     {SubmenuItmes.map((el, index) => {
-                                        for(let keyvalue in el){
-                                        return <Link key={index} href={`/shop${keyvalue == "" ? '' : '?categories=' + keyvalue}`} className={`${Style.menuitmes_sidebar} text-sm py-2 mx-2 relative border-t border-l border-r flex justify-between border-orange-200`} style={{ 'border-bottom': keyvalue == "" ? '1px solid rgb(254 215 170)' : 'transparent' }}>
-                                            <div className='mx-5 text-black'>{el[keyvalue]}</div>
-                                        </Link>
-                                         }
+                                        for (let keyvalue in el) {
+                                            return <Link key={index} href={`/shop${keyvalue == "" ? '' : '?categories=' + keyvalue}`} className={`${Style.menuitmes_sidebar} text-sm py-2 mx-2 relative border-t border-l border-r flex justify-between border-orange-200`} style={{ 'border-bottom': keyvalue == "" ? '1px solid rgb(254 215 170)' : 'transparent' }}>
+                                                <div className='mx-5 text-black'>{el[keyvalue]}</div>
+                                            </Link>
+                                        }
                                     })}
                                 </div>
                             </div>

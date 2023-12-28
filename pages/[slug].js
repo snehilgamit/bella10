@@ -14,7 +14,7 @@ const Slug = () => {
   return (
     <div>
       <div className='flex justify-center max-sm:flex-col w-full h-full p-5 mt-6'>
-        <div className='Image border ml-10 flex justify-center items-center'>
+        <div className='Image border ml-10 max-sm:ml-0 flex justify-center items-center'>
           <Image
             className='p-4'
             src={exampleArr.image_uri}
@@ -22,9 +22,9 @@ const Slug = () => {
             height={300}
           />
         </div>
-        <div className='order_details flex flex-col justify-start w-[50%] ml-20 max-sm:ml-10 max-sm:w-full'>
+        <div className='order_details flex flex-col justify-start max-sm:justify-center w-[50%] ml-20 max-sm:ml-0 max-sm:w-full'>
           <div className='w-full details h-full flex justify-start flex-col'>
-            <div className='text-xl overflow-hidden text-start my-5 text-pretty'>{exampleArr.name}</div>
+            <div className='text-xl w-full overflow-hidden text-start my-5 text-pretty'>{exampleArr.name}</div>
             <div className='flex items-center font-bold text-xl mb-2'><span className='text-3xl mr-2.5 text-orange-500'>{exampleArr.percentage} off</span></div>
             <div>
               <div className='text-blue-600'>Special price</div>

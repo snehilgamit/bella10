@@ -1,0 +1,19 @@
+.loginArea{
+    margin: 18px 7px;
+    gap: 20px;
+}
+.loginArea a{
+    background-color: black;
+    color: white;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-top: 10px;
+    padding: 12px 0px;
+    cursor: pointer;
+    border: 2px solid rgb(29, 29, 29);
+}
+.loginArea a:hover{
+    opacity: 70%;
+}

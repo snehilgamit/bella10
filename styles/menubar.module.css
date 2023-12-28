@@ -96,7 +96,7 @@
     cursor: pointer;
     border: 2px solid rgb(29, 29, 29);
 }
-  .menuitmes_sidebar:hover{
+.menuitmes_sidebar:hover{
     opacity: 60%;
 }
 .menuitmes_sidebar_main:hover{

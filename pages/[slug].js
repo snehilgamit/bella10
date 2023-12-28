@@ -24,7 +24,7 @@ const Slug = () => {
         </div>
         <div className='order_details flex flex-col justify-start max-sm:justify-center w-[50%] ml-20 max-sm:ml-0 max-sm:w-full'>
           <div className='w-full details h-full flex justify-start flex-col'>
-            <div className='text-xl w-full overflow-hidden text-start my-5 text-pretty'>{exampleArr.name}</div>
+            <div className='text-xl w-full overflow-hidden text-start my-5 text-pretty'>{value}</div>
             <div className='flex items-center font-bold text-xl mb-2'><span className='text-3xl mr-2.5 text-orange-500'>{exampleArr.percentage} off</span></div>
             <div>
               <div className='text-blue-600'>Special price</div>

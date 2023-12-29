@@ -9,6 +9,7 @@ const Slug = () => {
   const { slug } = router.query
   const [value, setValue] = useState("loading")
   const [cartNum, setCartNum] = useState(0)
+  const [add_to_cartText, setadd_to_cartText] = useState("Add to cart")
 
   const exampleArr = {
     product_id: "123D", name: slug, price: 2000, price_after_discount: 1000, percentage: '50%', image_uri: "/exampleBat.webp", offer: ["Buy 2 get 5% extra off", "Buy 5 get 1 bat free"]
@@ -21,6 +22,7 @@ const Slug = () => {
     }
   }
   const addtocart = (getCart) => {
+    setadd_to_cartText("Added!")
     const cart = localStorage.getItem('cart')
     if (cart) {
       const tempCart = JSON.parse(cart);
@@ -30,6 +32,9 @@ const Slug = () => {
     else {
       localStorage.setItem('cart', JSON.stringify([getCart]))
     }
+    setTimeout(()=>{
+      setadd_to_cartText("Add to cart")
+    },800)
     setCart_to_menu();
   }
   useEffect(() => {
@@ -82,7 +87,7 @@ const Slug = () => {
               Buy
             </Link>
             <a onClick={()=>{addtocart(exampleArr)}}>
-              Add to cart
+              {add_to_cartText}
             </a>
           </div>
         </div>

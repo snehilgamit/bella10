@@ -87,7 +87,7 @@ const cart = () => {
                         </div>
                         <div className=' flex justify-between m-1'>
                             <span>Discount</span>
-                            <span className='text-orange-500'>-₹{without_discount_Amount}</span>
+                            <span className='text-orange-500'>-₹{without_discount_Amount-billAmount}</span>
                         </div>
                     </div>
                 </div>

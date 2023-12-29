@@ -11,11 +11,11 @@ const Slug = () => {
   const [cartNum, setCartNum] = useState(0)
 
   const exampleArr = {
-    product_id: "123D", name: "Grit Gear Poplar Willow Scooped Cricket Bat with German Vinyl Sticker - Alpha (Orange) Poplar Willow Cricket Bat  (0.85 kg)", price: 2000, price_after_discount: 1000, percentage: '50%', image_uri: "/exampleBat.webp", offer: ["Buy 2 get 5% extra off", "Buy 5 get 1 bat free"]
+    product_id: "123D", name: slug, price: 2000, price_after_discount: 1000, percentage: '50%', image_uri: "/exampleBat.webp", offer: ["Buy 2 get 5% extra off", "Buy 5 get 1 bat free"]
   }
   const setCart_to_menu = () =>{
     const cart = localStorage.getItem('cart')
-    if (cart) {
+    if (cart && cart!='[]') {
       const len = cart.split('},{').length;
       setCartNum(len)
     }

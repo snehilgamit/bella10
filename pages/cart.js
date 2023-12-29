@@ -3,37 +3,82 @@ import Link from 'next/link'
 import Image from 'next/image'
 const cart = () => {
     const [carts, setCarts] = useState([]);
-    const setCart_to_menu = () => {
+    const [cartNo, setCartNo] = useState(0);
+    const [billAmount, setBillAmount] = useState(0);
+    const [without_discount_Amount, setwithout_discount_Amount] = useState(0);
+    const setCart = () => {
         const cart = JSON.parse(localStorage.getItem('cart'))
         if (cart) {
             setCarts(cart)
-            console.log(cart)
+        }
+    }
+    const removeItem = (number) => {
+        const tempCart = carts
+        tempCart.splice(number, 1);
+        localStorage.setItem('cart', JSON.stringify(tempCart))
+        setCarts(tempCart)
+        setCart()
+        getCartValue()
+    }
+    const getCartValue = () => {
+        const cart = JSON.parse(localStorage.getItem('cart'))
+        let total_bill = 0
+        let without_discount_bill = 0
+        cart.forEach(element => total_bill += element.price_after_discount);
+        cart.forEach(element => without_discount_bill += element.price);
+        setBillAmount(total_bill)
+        setwithout_discount_Amount(without_discount_bill)
+    }
+    const setCart_to_menu = () => {
+        const cart = localStorage.getItem('cart')
+        if (cart && cart!='[]') {
+            const len = cart.split('},{').length;
+            if(len==0){
+                setCartNo(0)
+            }else{
+                setCartNo(len)
+            }
         }
     }
     useEffect(() => {
+        setCart()
         setCart_to_menu()
+        getCartValue()
     }, [])
     return (
         <>
-            <div className='w-full flex justify-center pt-5'>
+            <div className='w-full flex justify-center items-center pt-5 mb-20'>
                 <div className='w-[85%] border p-5'>
-                    <div className='font-semibold text-3xl'>Cart</div>
+                    <div className='text-2xl flex items-center mb-2'>Cart <span className='ml-1'>({cartNo} items)</span></div>
                     <div className='flex flex-col justify-start'>
-                        {carts.map((el,index) => (
-                            <Link href={`/shop/${el.name}`} key={index} className='w-[300px] max-sm:border h-96 batList flex flex-col justify-center items-center hover:shadow-md transition-all duration-100'>
-                            <Image
-                            className='mt-2'
-                            src={`${el.image_uri}`}
-                            width={135}
-                            height={100}
-                            priority='eagar'
-                            />
-                            <div className='w-full h-full flex justify-start items-start flex-col'>
-                                <div className='text-sm overflow-hidden h-10 text-start'>{el.name}...</div>
-                                <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage} off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
+                        {carts.length == 0 ? <div className='ml-5 mt-5'>Empty cart</div> : ""}
+                        {carts.map((el, index) => (
+                            <div key={index} className='relative'>
+                                <Link href={`/shop/${el.name}`} className='w-full batList flex justify-center border max-sm:flex-col items-center transition-all duration-100 z-[1]'>
+                                    <Image
+                                        className='m-5'
+                                        src={`${el.image_uri}`}
+                                        width={80}
+                                        height={80}
+                                        priority='eagar'
+                                    />
+                                    <div className='w-full flex justify-start items-start flex-col'>
+                                        <div className='text-sm overflow-hidden h-10 text-start'>{el.name}</div>
+                                        <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage} off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
+                                    </div>
+                                </Link>
+                                <div className='absolute right-3 top-3 text-sm bg-black text-white px-2.5 py-1 z-[2] hover:opacity-60 rounded-md cursor-pointer' onClick={() => { removeItem(index) }}>
+                                    Remove
+                                </div>
                             </div>
-                          </Link>
                         ))}
+                    </div>
+                </div>
+                <div className='w-[85%] border p-5'>
+                    <div className='text-2xl flex items-center mb-2'>Bill</div>
+                    <div className='w-[80%] bg-orange-100 text-xl ml-4 mt-4 p-4 rounded-2xl'>
+                        <div className='font-bold'>Total : {billAmount}</div>
+                        <div className='font-bold'>Without discount : <span className='line-through font-normal'>{without_discount_Amount}</span></div>
                     </div>
                 </div>
             </div>

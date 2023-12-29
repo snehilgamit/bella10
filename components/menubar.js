@@ -35,17 +35,19 @@ const menubar = ({ cartNum }) => {
     }
     const shop_append = () => {
         const cross = document.querySelector(`.${Style.closeLine}`)
-        const submenu = document.querySelector('.shop_Submenu')
+        const submenu = document.querySelector(`.${Style.shop_Submenu}`)
 
         if (cross.style['rotate'] == '90deg') {
             cross.style.rotate = `0deg`
             submenu.style.display = 'none'
-            submenu.style.opacity = '0'
+            submenu.style.overflow = 'hidden'
+            submenu.style.height = '0'
         }
         else {
             cross.style.rotate = `90deg`
             submenu.style.display = 'block'
-            submenu.style.opacity = '1'
+            submenu.style.overflow = 'visible'
+            submenu.style.height = 'auto'
         }
     }
     const setCart_to_menu = () => {
@@ -137,7 +139,7 @@ const menubar = ({ cartNum }) => {
                     <Link href={'/'} className={`${Style.menuitmes_sidebar} py-3.5 mx-2 ${Style.menu_item} relative border-b flex justify-between border-orange-200`}>
                         <div className='mx-1 text-black'>Home</div>
                     </Link>
-                    <div className='py-3.5 mx-2 relative border-b border-orange-200'>
+                    <div className='py-3.5 mx-2 relative border-b border-orange-200 h-fit smooth_drop'>
                         <div className={`flex justify-between cursor-pointer ${Style.menu_item} ${Style.menuitmes_sidebar}`} onClick={shop_append}>
                             <div className='mx-1 text-black'>Shop</div>
                             <span className='mx-3.5 flex justify-center items-center'>
@@ -145,7 +147,7 @@ const menubar = ({ cartNum }) => {
                                 <div className={`${Style.closeLine}`}></div>
                             </span>
                         </div>
-                        <div className={`opacity-0 hidden overflow-hidden shop_Submenu`}>
+                        <div className={`hidden overflow-hidden ${Style.shop_Submenu}`}>
                             <div className='m-2 mt-4'>
                                 <div>
                                     {SubmenuItmes.map((el, index) => {

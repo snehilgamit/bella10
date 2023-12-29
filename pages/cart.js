@@ -15,6 +15,7 @@ const cart = () => {
     }
     const removeItem = (number) => {
         const tempCart = carts
+        setCartNo(prev=>prev-1)
         tempCart.splice(number, 1);
         localStorage.setItem('cart', JSON.stringify(tempCart))
         setCarts(tempCart)
@@ -78,17 +79,25 @@ const cart = () => {
                         ))}
                     </div>
                 </div>
-                <div className='w-[85%] h-full border p-5'>
+                <div className='w-[85%] h-full p-5'>
                     <div className='text-2xl flex items-center mb-2'>Bill</div>
-                    <div className='w-[80%] border-2 text-sm ml-4 mt-4 p-4 font-medium'>
+                    <div className='w-full border-2 text-sm mt-4 p-9 font-medium'>
                         <div className='flex justify-between m-1'>
                             <span>Item total</span>
                             <span><span className='text-xs line-through mr-1 text-slate-400'>₹{without_discount_Amount}</span>₹{billAmount}</span>
                         </div>
-                        <div className=' flex justify-between m-1'>
+                        <div className=' flex justify-between m-1 border-b-2 pb-6 border-dashed'>
                             <span>Discount</span>
                             <span className='text-orange-500'>-₹{without_discount_Amount-billAmount}</span>
                         </div>
+                        <div className='flex justify-between m-1 mt-2 text-2xl'>
+                            <span>Grand total</span>
+                            <span className=''>₹{billAmount}</span>
+                        </div>
+                        <div className='text-sm text-gray-400 m-1  border-b-2 pb-6 border-dashed'>Inclusive of all taxes</div>
+                    </div>
+                    <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
+                        {cartNo==0?<div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div>:<div className='cursor-pointer px-10 py-4 bg-black text-white'>Purchased</div>}
                     </div>
                 </div>
             </div>

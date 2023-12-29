@@ -7,9 +7,10 @@ const cart = () => {
     const [billAmount, setBillAmount] = useState(0);
     const [without_discount_Amount, setwithout_discount_Amount] = useState(0);
     const setCart = () => {
-        const cart = JSON.parse(localStorage.getItem('cart'))
-        if (cart) {
-            setCarts(cart)
+        const cart = localStorage.getItem('cart')
+        if (cart && cart != '') {
+            const cartTemp = JSON.parse(cart)
+            setCarts(cartTemp)
         }
     }
     const removeItem = (number) => {
@@ -21,28 +22,31 @@ const cart = () => {
         getCartValue()
     }
     const getCartValue = () => {
-        const cart = JSON.parse(localStorage.getItem('cart'))
-        let total_bill = 0
-        let without_discount_bill = 0
-        cart.forEach(element => total_bill += element.price_after_discount);
-        cart.forEach(element => without_discount_bill += element.price);
-        setBillAmount(total_bill)
-        setwithout_discount_Amount(without_discount_bill)
+        const cart = localStorage.getItem('cart')
+        if (cart) {
+            const cartTemp = JSON.parse(cart)
+            let total_bill = 0
+            let without_discount_bill = 0
+            cartTemp.forEach(element => total_bill += element.price_after_discount);
+            cartTemp.forEach(element => without_discount_bill += element.price);
+            setBillAmount(total_bill)
+            setwithout_discount_Amount(without_discount_bill)
+        }
     }
     const setCart_to_menu = () => {
         const cart = localStorage.getItem('cart')
-        if (cart && cart!='[]') {
+        if (cart && cart != '[]' && cart != '') {
             const len = cart.split('},{').length;
-            if(len==0){
+            if (len == 0) {
                 setCartNo(0)
-            }else{
+            } else {
                 setCartNo(len)
             }
         }
     }
     useEffect(() => {
-        setCart()
         setCart_to_menu()
+        setCart()
         getCartValue()
     }, [])
     return (
@@ -76,9 +80,15 @@ const cart = () => {
                 </div>
                 <div className='w-[85%] h-full border p-5'>
                     <div className='text-2xl flex items-center mb-2'>Bill</div>
-                    <div className='w-[80%] bg-orange-100 text-xl ml-4 mt-4 p-4 rounded-2xl'>
-                        <div className='font-bold'>Total : {billAmount}</div>
-                        <div className='font-bold'>Without discount : <span className='line-through font-normal'>{without_discount_Amount}</span></div>
+                    <div className='w-[80%] border-2 text-sm ml-4 mt-4 p-4 font-medium'>
+                        <div className='flex justify-between m-1'>
+                            <span>Item total</span>
+                            <span><span className='text-xs line-through mr-1 text-slate-400'>₹{without_discount_Amount}</span>₹{billAmount}</span>
+                        </div>
+                        <div className=' flex justify-between m-1'>
+                            <span>Discount</span>
+                            <span className='text-orange-500'>-₹{without_discount_Amount}</span>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -3,30 +3,41 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Style from '@/styles/slug.module.css'
 import Link from 'next/link'
+import Menubar from '@/components/menubar'
 const Slug = () => {
   const router = useRouter();
   const { slug } = router.query
   const [value, setValue] = useState("loading")
-  const [cartNum, setCartNum] = useState()
+  const [cartNum, setCartNum] = useState(0)
 
   const exampleArr = {
     product_id: "123D", name: "Grit Gear Poplar Willow Scooped Cricket Bat with German Vinyl Sticker - Alpha (Orange) Poplar Willow Cricket Bat  (0.85 kg)", price: 2000, price_after_discount: 1000, percentage: '50%', image_uri: "/exampleBat.webp", offer: ["Buy 2 get 5% extra off", "Buy 5 get 1 bat free"]
+  }
+  const setCart_to_menu =()=>{
+    const cart = localStorage.getItem('cart')
+    if (cart) {
+      const len = cart.split(',').length;
+      setCartNum(len)
+    }
   }
   const addtocart = (getCart) => {
     const cart = localStorage.getItem('cart')
     const cartValues = exampleArr.product_id
     if (cart) {
-      localStorage.setItem('cart', [cart, cartValues])
-      setCartNum(cart.split(',').length)
+      localStorage.setItem('cart', [cart,cartValues])
     }
     else {
       localStorage.setItem('cart', [cartValues])
     }
+    setCart_to_menu();
   }
   useEffect(() => {
+    setCart_to_menu()
     setValue(slug)
   }, [slug])
   return (
+    <>
+    <Menubar cartNum={cartNum}/>
     <div className='bg-slate-100 min-h-screen'>
       <div className='flex justify-center max-sm:flex-col w-full h-full p-5'>
         <div className='Image border max-sm:ml-0 bg-white flex justify-center items-center'>
@@ -76,6 +87,7 @@ const Slug = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

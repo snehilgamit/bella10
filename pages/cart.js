@@ -97,7 +97,7 @@ const cart = () => {
                         <div className='text-sm text-gray-400 m-1  border-b-2 pb-6 border-dashed'>Inclusive of all taxes</div>
                     </div>
                     <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
-                        {cartNo==0?<div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div>:<div className='cursor-pointer px-10 py-4 bg-black text-white'>Purchased</div>}
+                        {cartNo==0?<div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div>:<div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white'>Purchase</div>}
                     </div>
                 </div>
             </div>

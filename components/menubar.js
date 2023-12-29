@@ -64,14 +64,15 @@ const menubar = ({ cartNum }) => {
     return (
         <div className='w-full py-4 shadow-md bg-white z-[999] relative'>
             <div className='w-full flex justify-between text-[16px] font-semibold items-center'>
-                <Link href={'/'} className='ml-12 cursor-pointer'>
-                    <Image
+                <Link href={'/'} className='ml-12 cursor-pointer text-lg'>
+                    Bella10
+                    {/* <Image
                         alt='logo'
-                        src={'/logo.jpg'}
-                        height={50}
-                        width={50}
+                        src={'/logo.png'}
+                        height={60}
+                        width={60}
                         loading='eager'
-                    />
+                    /> */}
                 </Link>
                 <div className={`flex gap-10 min-h-full ${Style.menu}`}>
                     {menuItmes.slice(0, 1).map((el, index) => {
@@ -114,20 +115,20 @@ const menubar = ({ cartNum }) => {
                 </div>
             </div>
             <div className={`${Style.side_menu}`} id='side_menu'>
-                <div className={`${Style.menuitme_sidebar} font-semibold`}>
+                <div className={`font-semibold`}>
                     <div className='flex justify-between items-center py-4 bg-white shadow-md'>
-                        <Link
-                            href={'/'}>
-                            <Image
+                        <Link href={'/'} className='ml-12 cursor-pointer text-lg'>
+                                Bella10
+                            {/* <Image
                                 alt='logo'
                                 className='ml-12 cursor-pointer'
                                 src={'/logo.jpg'}
                                 height={50}
                                 width={50}
                                 loading='eager'
-                            />
+                            /> */}
                         </Link>
-                        <div className='cursor-pointer mr-5 w-10 h-10 flex justify-center items-center' onClick={() => { showMenu('hide') }}>
+                        <div className='cursor-pointer mr-5 w-8 h-8 flex justify-center items-center' onClick={() => { showMenu('hide') }}>
                             <div className={`${Style['closeLine-x']}`}></div>
                             <div className={`${Style['closeLine-x']}`}></div>
                         </div>

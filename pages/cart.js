@@ -47,7 +47,7 @@ const cart = () => {
     }, [])
     return (
         <>
-            <div className='w-full flex justify-center items-center pt-5 mb-20'>
+            <div className='w-full flex justify-center max-sm:flex-col max-sm:items-center pt-5 mb-20'>
                 <div className='w-[85%] border p-5'>
                     <div className='text-2xl flex items-center mb-2'>Cart <span className='ml-1'>({cartNo} items)</span></div>
                     <div className='flex flex-col justify-start'>
@@ -74,7 +74,7 @@ const cart = () => {
                         ))}
                     </div>
                 </div>
-                <div className='w-[85%] border p-5'>
+                <div className='w-[85%] h-full border p-5'>
                     <div className='text-2xl flex items-center mb-2'>Bill</div>
                     <div className='w-[80%] bg-orange-100 text-xl ml-4 mt-4 p-4 rounded-2xl'>
                         <div className='font-bold'>Total : {billAmount}</div>

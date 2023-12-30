@@ -66,7 +66,7 @@ const signup = () => {
                 <div className='w-full flex justify-center min-h-[60vh] mt-[10rem] max-sm:mt-4 max-sm:px-3'>
                     <div className='overflow-hidden w-[700px] min-h-[50vh] max-sm:flex-col border-2 rounded-3xl flex justify-center items-start'>
                         <div className="w-[50%] max-sm:w-full h-full bg-orange-500 flex flex-col justify-center items-start p-7">
-                            <span className='text-4xl font-bold ml-1 max-sm:text-3xl'>Start cricket journey with bella10</span>
+                            <span className='text-4xl font-bold ml-1 max-sm:text-3xl'>Championships are won at practice</span>
                             <span className='text-start text-white text-sm mt-1 ml-1'>Have an account?</span>
                             <Link href={'/login'} className='mt-3 text-2xl bg-white w-[50%] min-w-[100px] mb-8 text-center py-1 rounded-lg cursor-pointer'>
                                 Login

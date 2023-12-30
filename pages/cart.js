@@ -107,8 +107,8 @@ const cart = () => {
                     <div className='text-2xl flex items-center mb-2'>Bill</div>
                     <div className='w-full border-2 text-sm mt-4 p-9 font-medium'>
                         <div className='flex justify-center m-1 mb-4 relative'>
-                            <input className='h-10 border w-full px-2' onChange={(e) => { setCouponCode(e.target.value) }} placeholder='Enter coupon code' type="text" name="coupon code" id="coupon code" />
-                            <div onClick={couponApply} className='absolute hover:bg-slate-700 bg-black text-white right-0 h-full w-20 cursor-pointer flex justify-center items-center'>Apply</div>
+                            <input className='h-10 border w-full px-2 rounded-md' onChange={(e) => { setCouponCode(e.target.value) }} placeholder='Enter coupon code' type="text" name="coupon code" id="coupon code" />
+                            <div onClick={couponApply} className='absolute rounded-r-md hover:bg-slate-700 bg-black text-white right-0 h-full w-20 cursor-pointer flex justify-center items-center'>Apply</div>
                         </div>
                         <div className='flex justify-between m-1'>
                             <span>Item total</span>

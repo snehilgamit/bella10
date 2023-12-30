@@ -7,7 +7,7 @@ const menubar = ({ cartNum }) => {
     const router = useRouter();
     const path = router.pathname;
     const [cartNo, setCartNo] = useState();
-    const menuItmes = [{ "": "Home" }, { "shop": "Shop" }, { "referral": "Referral" }, { "location": "Location" }, { "contact-us": "Contact us" }]
+    const menuItmes = [{ "": "Home" }, { "shop": "Shop" }, { "referral": "Referral" }, { "location": "Location" }, { "contact-us": "Contact us"},{"account":"Account"}]
     const SubmenuItmes = [{ "cricket": "Cricket" }, { "football": "Football" }, { "tennis": "Tennis" }, { "volleyball": "Volleyball" }, { "": "All" }]
 
     const showMenu = (type) => {
@@ -172,10 +172,10 @@ const menubar = ({ cartNum }) => {
                     </Link>
 
                     <div className={`flex justify-center items-center ${Style.loginArea}`}>
-                        <Link href={'/signup'} className={`${Style.menuitmes_sidebar}`}>
+                        <Link href={'/account'} className={`${Style.menuitmes_sidebar}`}>
                             Signup
                         </Link>
-                        <Link href={'/login'} className={`${Style.menuitmes_sidebar}`}>
+                        <Link href={'/account'} className={`${Style.menuitmes_sidebar}`}>
                             Login
                         </Link>
                     </div>

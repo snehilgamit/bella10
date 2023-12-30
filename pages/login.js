@@ -1,12 +1,45 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Style from '@/styles/account.module.css'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 const login = () => {
-    useEffect(() => {
-        localStorage.getItem('bella10_state')
-        if (localStorage.getItem) {
+    const router = useRouter();
+    const [password,setPassword]=useState('');
+    const [email,setEmail]=useState('');
 
+    const login = async ()=>{
+        if(password == "" || email == ""){
+            alert("Something missing");
         }
+        else{
+            const req = await axios.post('/api/v1/login',{email,password});
+            if(req.data.status){
+                localStorage.setItem('bella10_state',JSON.stringify({email:req.data.email,token:req.data.token}))
+                router.push('/account')
+            }
+            else{
+                alert(req.data.message);
+                localStorage.setItem('bella10_state',{})
+            }
+        }
+    }
+    const session = async ()=>{
+        const getSession = localStorage.getItem('bella10_state')
+        if (getSession) {
+            const { token } = JSON.parse(getSession);
+            const req = await axios.post('/api/v1/session',{token})
+            if(req.data.status){
+                localStorage.setItem('bella10_state',JSON.stringify({email:req.data.email,token:req.data.token}))
+                router.push('/account')
+            }
+            else{
+                localStorage.setItem('bella10_state',{})
+            }
+        }
+    }
+    useEffect(() => {
+        session()
     }, [])
     return (
         <>
@@ -20,17 +53,17 @@ const login = () => {
                             </Link>
                         </div>
                         <div className="w-[50%] max-sm:w-full h-full flex flex-col justify-start items-center p-7 relative">
-                            <span className="text-3xl font-medium ml-1 mb-4 max-sm:mb-4 max-sm:text-2xl ">Create new account</span>
-                            <div className='mb-10 max-sm:mb-0'>
+                            <span className="text-3xl font-medium ml-1 mb-4 max-sm:mb-4 max-sm:text-2xl ">Login</span>
+                            <form onSubmit={(e)=>{e.preventDefault()}} className='mb-10 max-sm:mb-0'>
 
-                            <input className='h-10 my-2 text-sm   bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' onChange={(e) => { }} placeholder='Enter email' type="text" name="email" id="email" />
+                            <input className='h-10 my-2 text-sm   bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' value={email} onChange={(e) => {setEmail(e.target.value)}} placeholder='Enter email' type="text" name="email" id="email" />
 
-                            <input className='h-10 my-2 text-sm bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' onChange={(e) => { }} placeholder='Enter password' type="text" name="password" id="password" />
+                            <input className='h-10 my-2 text-sm bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' value={password} onChange={(e) => {setPassword(e.target.value)}} placeholder='Enter password' type="text" name="password" id="password" />
 
-                            <div className='mt-3 text-2xl bg-black text-white cursor-pointer min-w-[100px] mb-10 text-center py-1 rounded-lg max-sm:mb-4'>
+                            <div className='mt-3 text-2xl bg-black text-white cursor-pointer min-w-[100px] mb-10 text-center py-1 rounded-lg max-sm:mb-4' onClick={login}>
                                 Login
                             </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

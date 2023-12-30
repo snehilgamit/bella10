@@ -175,7 +175,7 @@ const menubar = ({ cartNum }) => {
                         <Link href={'/signup'} className={`${Style.menuitmes_sidebar}`}>
                             Signup
                         </Link>
-                        <Link href={'/account'} className={`${Style.menuitmes_sidebar}`}>
+                        <Link href={'/login'} className={`${Style.menuitmes_sidebar}`}>
                             Login
                         </Link>
                     </div>

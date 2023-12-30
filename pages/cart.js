@@ -86,6 +86,7 @@ const cart = () => {
                                     <Image
                                         className='m-5'
                                         src={`${el.image_uri}`}
+                                        alt={el.name}
                                         width={80}
                                         height={80}
                                         priority='eagar'

@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 const cart = () => {
     const [carts, setCarts] = useState([]);
     const [cartNo, setCartNo] = useState(0);
+    const [couponCode, setCouponCode] = useState('');
+    const [isCouponApplied, setisCouponApplied] = useState(false);
+    const isApplied = useRef(false)
+    const [coupon_amount, setCoupon_amount] = useState(100);
     const [billAmount, setBillAmount] = useState(0);
+    const [finalPrice, setfinalPrice] = useState(0);
     const [without_discount_Amount, setwithout_discount_Amount] = useState(0);
+    const exampleCoupon = { bella10: { discount: -200 } }
     const setCart = () => {
         const cart = localStorage.getItem('cart')
         if (cart && cart != '') {
@@ -15,7 +21,7 @@ const cart = () => {
     }
     const removeItem = (number) => {
         const tempCart = carts
-        setCartNo(prev=>prev-1)
+        setCartNo(prev => prev - 1)
         tempCart.splice(number, 1);
         localStorage.setItem('cart', JSON.stringify(tempCart))
         setCarts(tempCart)
@@ -30,6 +36,16 @@ const cart = () => {
             let without_discount_bill = 0
             cartTemp.forEach(element => total_bill += element.price_after_discount);
             cartTemp.forEach(element => without_discount_bill += element.price);
+            if (exampleCoupon[couponCode] && !isCouponApplied) {
+                setisCouponApplied(true)
+                isApplied.current=true
+                setfinalPrice(total_bill - coupon_amount)
+            }
+            else {
+                setisCouponApplied(false)
+                isApplied.current=false
+                setfinalPrice(total_bill)
+            }
             setBillAmount(total_bill)
             setwithout_discount_Amount(without_discount_bill)
         }
@@ -43,6 +59,12 @@ const cart = () => {
             } else {
                 setCartNo(len)
             }
+        }
+    }
+    const couponApply = () => {
+        getCartValue()
+        if (!isApplied.current) {
+            alert("Invalid code")
         }
     }
     useEffect(() => {
@@ -82,22 +104,31 @@ const cart = () => {
                 <div className='w-[85%] h-full p-5'>
                     <div className='text-2xl flex items-center mb-2'>Bill</div>
                     <div className='w-full border-2 text-sm mt-4 p-9 font-medium'>
+                        <div className='flex justify-center m-1 mb-4 relative'>
+                            <input className='h-10 border w-full px-2' onChange={(e) => { setCouponCode(e.target.value) }} placeholder='Enter coupon code' type="text" name="coupon code" id="coupon code" />
+                            <div onClick={couponApply} className='absolute hover:bg-slate-700 bg-black text-white right-0 h-full w-20 cursor-pointer flex justify-center items-center'>Apply</div>
+                        </div>
                         <div className='flex justify-between m-1'>
                             <span>Item total</span>
                             <span><span className='text-xs line-through mr-1 text-slate-400'>₹{without_discount_Amount}</span>₹{billAmount}</span>
                         </div>
-                        <div className=' flex justify-between m-1 border-b-2 pb-6 border-dashed'>
+                        <div className='flex justify-between m-1 border-b-2 pb-6 border-dashed'>
                             <span>Discount</span>
-                            <span className='text-orange-500'>-₹{without_discount_Amount-billAmount}</span>
+                            <span className='text-orange-500'>-₹{without_discount_Amount - billAmount}</span>
                         </div>
+                        {isCouponApplied ?
+                            <div className=' flex justify-between m-1 border-b-2 pb-4 mt-4 border-dashed'>
+                                <span>Coupon discount</span>
+                                <span className='text-orange-500'>-₹{coupon_amount}</span>
+                            </div> : ""}
                         <div className='flex justify-between m-1 mt-2 text-2xl'>
                             <span>Grand total</span>
-                            <span className=''>₹{billAmount}</span>
+                            <span className=''>₹{finalPrice}</span>
                         </div>
                         <div className='text-sm text-gray-400 m-1  border-b-2 pb-6 border-dashed'>Inclusive of all taxes</div>
                     </div>
                     <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
-                        {cartNo==0?<div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div>:<div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white'>Purchase</div>}
+                        {cartNo == 0 ? <div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div> : <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white'>Purchase</div>}
                     </div>
                 </div>
             </div>

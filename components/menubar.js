@@ -172,7 +172,7 @@ const menubar = ({ cartNum }) => {
                     </Link>
 
                     <div className={`flex justify-center items-center ${Style.loginArea}`}>
-                        <Link href={'/account'} className={`${Style.menuitmes_sidebar}`}>
+                        <Link href={'/signup'} className={`${Style.menuitmes_sidebar}`}>
                             Signup
                         </Link>
                         <Link href={'/account'} className={`${Style.menuitmes_sidebar}`}>

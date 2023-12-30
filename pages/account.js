@@ -22,7 +22,7 @@ const account = () => {
                             </div>
                         </div>
                         <div className="w-[50%] max-sm:w-full h-full flex flex-col justify-start items-center p-7 relative">
-                            <span className="text-4xl font-medium ml-1 mb-4 max-sm:mb-2 max-sm:text-2xl ">Signup</span>
+                            <span className="text-4xl font-medium ml-1 mb-4 max-sm:mb-4 max-sm:text-2xl ">Signup</span>
                             <div className='mb-10 max-sm:mb-0'>
 
                             <input className='h-10 my-2 text-sm   bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' onChange={(e) => { }} placeholder='Enter email' type="text" name="email" id="email" />
@@ -32,7 +32,7 @@ const account = () => {
 
                             <input className='h-10 my-2 text-sm   bg-gray-300 placeholder:text-gray-500 py-1 w-full px-2 rounded-md' onChange={(e) => { }} placeholder='Enter referral code' type="text" name="referral code" id="referral code" />
 
-                            <div className='mt-3 text-2xl bg-black text-white cursor-pointer min-w-[100px] mb-10 text-center py-1 rounded-lg max-sm:mb-0'>
+                            <div className='mt-3 text-2xl bg-black text-white cursor-pointer min-w-[100px] mb-10 text-center py-1 rounded-lg max-sm:mb-4'>
                                 Signup
                             </div>
                             </div>

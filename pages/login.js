@@ -20,7 +20,7 @@ const login = () => {
             }
             else{
                 alert(req.data.message);
-                localStorage.setItem('bella10_state',{})
+                localStorage.setItem('bella10_state','{}')
             }
         }
     }
@@ -34,7 +34,7 @@ const login = () => {
                 router.push('/account')
             }
             else{
-                localStorage.setItem('bella10_state',{})
+                localStorage.setItem('bella10_state','{}')
             }
         }
     }

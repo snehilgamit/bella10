@@ -48,7 +48,7 @@ const signup = () => {
                 router.push('/account')
             }
             else{
-                localStorage.setItem('bella10_state',{})
+                localStorage.setItem('bella10_state','{}')
             }
         }
     }

@@ -8,14 +8,15 @@ export default async function handler(req, res) {
         if (email != '' || password != '') {
             const findUser = await User.findOne({ email });
             if (findUser) {
-                if (findUser.email === email && password === password) {
+                if (findUser.email === email && findUser.password === password) {
                     const token = jwt.sign({ email: findUser.email }, process.env.SECRET);
                     return res.json({ status: true, message: "Authorised", email, token })
                 }
+                return res.json({ status: false, message: "Invalid details" })
             }
-            return res.json({ status: false, message: "User not found" })
+            return res.json({ status: false, message: "Invalid details" })
         }
-        res.json({ status: false, message: "Something missing" })
+        return res.json({ status: false, message: "Something missing" })
     }
     return res.json({ status: false, message: "Invalid method" })
 }

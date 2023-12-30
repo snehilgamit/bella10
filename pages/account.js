@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import Link from 'next/link'
 import Style from '@/styles/account.module.css'
 import axios from 'axios'
 import Login from './login'
+import { useRouter } from 'next/router'
 const account = () => {
+    const router = useRouter();
     const [isLogined, setisLogined] = useState(true)
 
     const session = async ()=>{
@@ -16,8 +18,11 @@ const account = () => {
                 setisLogined(false)
             }
             else{
-                localStorage.setItem('bella10_state',{})
+                localStorage.setItem('bella10_state','{}')
             }
+        }
+        else{
+            router.push('/login')
         }
     }
     const logout = ()=>{
@@ -29,13 +34,9 @@ const account = () => {
     }, [])
     return (
         <>
-            {isLogined ?
-                <Login/>
-                :
                 <div>Account
                     <div onClick={logout}>Logout</div>
                 </div>
-            }
         </>
     )
 }

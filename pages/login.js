@@ -15,12 +15,12 @@ const login = () => {
         else{
             const req = await axios.post('/api/v1/login',{email,password});
             if(req.data.status){
-                localStorage.setItem('bella10_state',JSON.stringify({email:req.data.email,token:req.data.token}))
-                router.push('/account')
+                localStorage.setItem('bella10_state',JSON.stringify({email:req.data.email,token:req.data.token}));
+                router.push('/account');
             }
             else{
                 alert(req.data.message);
-                localStorage.setItem('bella10_state','{}')
+                localStorage.setItem('bella10_state','{}');
             }
         }
     }
@@ -71,4 +71,4 @@ const login = () => {
     )
 }
 
-export default login
+export default login;

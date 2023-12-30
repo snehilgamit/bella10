@@ -23,7 +23,7 @@ export default function App({ Component, pageProps }) {
 }
   useEffect(()=>{
     session()
-  },[])
+  },[router])
   return <>
     {path=='/shop/[slug]'?null:<Menubar isLogined={isLogined}/>}
     <Component {...pageProps} />

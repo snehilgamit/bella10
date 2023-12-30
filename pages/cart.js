@@ -7,11 +7,11 @@ const cart = () => {
     const [couponCode, setCouponCode] = useState('');
     const [isCouponApplied, setisCouponApplied] = useState(false);
     const isApplied = useRef(false)
-    const [coupon_amount, setCoupon_amount] = useState(100);
+    const [coupon_amount, setCoupon_amount] = useState(0);
     const [billAmount, setBillAmount] = useState(0);
     const [finalPrice, setfinalPrice] = useState(0);
     const [without_discount_Amount, setwithout_discount_Amount] = useState(0);
-    const exampleCoupon = { bella10: { discount: -200 } }
+    const exampleCoupon = { bella10: { discount: 200 },OFF50:{discount:1000} }
     const setCart = () => {
         const cart = localStorage.getItem('cart')
         if (cart && cart != '') {
@@ -36,10 +36,11 @@ const cart = () => {
             let without_discount_bill = 0
             cartTemp.forEach(element => total_bill += element.price_after_discount);
             cartTemp.forEach(element => without_discount_bill += element.price);
-            if (exampleCoupon[couponCode] && !isCouponApplied) {
+            if (exampleCoupon[couponCode]) {
                 setisCouponApplied(true)
+                setCoupon_amount(exampleCoupon[couponCode].discount)
                 isApplied.current=true
-                setfinalPrice(total_bill - coupon_amount)
+                setfinalPrice(total_bill - exampleCoupon[couponCode].discount)
             }
             else {
                 setisCouponApplied(false)

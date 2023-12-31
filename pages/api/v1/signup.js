@@ -2,7 +2,7 @@ import connectDB from "@/util/mongoDB";
 import User from '@/models/User';
 import jwt from 'jsonwebtoken';
 export default async function main(req,res){
-    if(req.method =='POST'){
+    if(req.method ==='POST'){
         const { email , password , repassword ,referralcode } = req.body;
         try{
             if(email.length ==0 || password.length ==0 || repassword.length == 0 || referralcode.length==0){

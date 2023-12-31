@@ -2,7 +2,7 @@ import connectDB from "@/util/mongoDB"
 import User from '@/models/User'
 import jwt from 'jsonwebtoken'
 export default async function handler(req, res) {
-    if (req.method == 'POST') {
+    if (req.method === 'POST') {
         await connectDB()
         const { email, password } = req.body
         if (email != '' || password != '') {

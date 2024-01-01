@@ -68,7 +68,7 @@ const signup = () => {
                         <div className="w-[50%] max-sm:w-full h-full bg-orange-500 flex flex-col justify-center items-start p-7">
                             <span className='text-4xl font-bold ml-1 max-sm:text-3xl'>Championships are won at practice</span>
                             <span className='text-start text-white text-sm mt-1 ml-1'>Have an account?</span>
-                            <Link href={'/login'} className='mt-3 text-2xl bg-white w-[50%] min-w-[100px] mb-8 text-center py-1 rounded-lg cursor-pointer'>
+                            <Link href={'/login'} className='mt-3 text-2xl bg-white w-[50%] min-w-[100px] mb-8 text-center py-1 rounded-lg cursor-pointer hover:bg-gray-200'>
                                 Login
                             </Link>
                         </div>
@@ -83,7 +83,7 @@ const signup = () => {
 
                             <input className='h-10 my-2 text-sm   bg-gray-300 placeholder:text-gray-500 py-1 w-full px-2 rounded-md' value={referralcode} onChange={(e) => {setreferralcode(e.target.value)}} placeholder='Enter referral code' type="text" name="referral code" id="referral code" />
 
-                            <div className='mt-3 text-2xl bg-black text-white cursor-pointer min-w-[100px] mb-10 text-center py-1 rounded-lg max-sm:mb-4' onClick={signup}>
+                            <div className='mt-3 text-2xl bg-black text-white cursor-pointer min-w-[100px] mb-10 text-center py-1 rounded-lg max-sm:mb-4 hover:opacity-60' onClick={signup}>
                                 {signupTxt}
                             </div>
                             </div>

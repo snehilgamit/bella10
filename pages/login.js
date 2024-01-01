@@ -48,7 +48,7 @@ const login = () => {
                         <div className="w-[50%] max-sm:w-full h-full bg-orange-500 flex flex-col justify-center items-start p-7">
                             <span className='text-4xl font-bold ml-1 max-sm:text-3xl'>Championships are won at practice</span>
                             <span className='text-start text-white text-sm mt-1 ml-1'>Create new account?</span>
-                            <Link href={'/signup'} className='mt-3 text-2xl bg-white w-[50%] min-w-[100px] mb-8 text-center py-1 rounded-lg cursor-pointer'>
+                            <Link href={'/signup'} className='mt-3 text-2xl bg-white w-[50%] min-w-[100px] mb-8 text-center py-1 rounded-lg cursor-pointer hover:bg-gray-300'>
                               Signup
                             </Link>
                         </div>
@@ -60,7 +60,7 @@ const login = () => {
 
                             <input className='h-10 my-2 text-sm bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' value={password} onChange={(e) => {setPassword(e.target.value)}} placeholder='Enter password' type="text" name="password" id="password" />
 
-                            <div className='mt-3 text-2xl bg-black text-white cursor-pointer min-w-[100px] mb-10 text-center py-1 rounded-lg max-sm:mb-4' onClick={login}>
+                            <div className='mt-3 text-2xl bg-black text-white cursor-pointer min-w-[100px] mb-10 text-center py-1 rounded-lg max-sm:mb-4 hover:opacity-60' onClick={login}>
                                 Login
                             </div>
                             </form>

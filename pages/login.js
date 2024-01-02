@@ -13,6 +13,7 @@ const login = () => {
             alert("Something missing");
         }
         else{
+            
             const req = await axios.post('/api/v1/login',{email,password});
             if(req.data.status){
                 localStorage.setItem('bella10_state',JSON.stringify({email:req.data.email,token:req.data.token}));

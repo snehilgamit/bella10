@@ -5,27 +5,19 @@ const couponSchema = new Schema({
         type: String,
         required:true
     },
-    name: {
-        type: String,
-        required:true
+    unique:{
+        type:String,
+        default:uuidv4
     },
-    price: {
+    off: {
         type: Number,
         required:true
     },
-    price_after_discount: {
-        type: Number,
-        required:true
-    },
-    percentage: {
-        type: String,
-        required:true
-    },
-    image_uri: {
-        type: String,
+    minimumCart:{
+        type:Number,
         required:true
     },
 });
 
-const coupons = model.coupons || models('coupons',couponSchema);
+const coupons = models.coupons || model('coupons',couponSchema);
 export default coupons

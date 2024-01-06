@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import purchase from '@/utils/purchase'
+import axios from 'axios'
 const cart = () => {
     const [carts, setCarts] = useState([]);
     const [cartNo, setCartNo] = useState(0);
@@ -36,17 +38,7 @@ const cart = () => {
             let without_discount_bill = 0
             cartTemp.forEach(element => total_bill += element.price_after_discount);
             cartTemp.forEach(element => without_discount_bill += element.price);
-            if (exampleCoupon[couponCode]) {
-                    setisCouponApplied(true)
-                    setCoupon_amount(exampleCoupon[couponCode].discount)
-                    isApplied.current = true
-                    setfinalPrice(total_bill - exampleCoupon[couponCode].discount)
-            }
-            else {
-                setisCouponApplied(false)
-                isApplied.current = false
-                setfinalPrice(total_bill)
-            }
+            setfinalPrice(total_bill)
             setBillAmount(total_bill)
             setwithout_discount_Amount(without_discount_bill)
         }
@@ -62,14 +54,25 @@ const cart = () => {
             }
         }
     }
-    const couponApply = () => {
-        if (cartNo > 0) {
-            getCartValue()
-            if (!isApplied.current) {
-                alert("Invalid code")
+    const couponApply = async () => {
+        const getProducts = await axios.post("/api/v1/coupon/checkCoupon", { couponCode })
+        if (getProducts.data.status) {
+            if (getProducts.data.minimumCart <= finalPrice) {
+                setisCouponApplied(true)
+                isApplied.current = true
+                setCoupon_amount(getProducts.data.off)
+                setfinalPrice(prev => prev - getProducts.data.off)
+            }
+            else {
+                alert(`Minimum cart balance is ${getProducts.data.minimumCart}`)
             }
         }
-        else{
+        else {
+            setisCouponApplied(false)
+            isApplied.current = false
+            getCartValue();
+        }
+        if (cartNo == 0) {
             alert("Empty cart")
         }
     }
@@ -98,7 +101,7 @@ const cart = () => {
                                     />
                                     <div className='w-full flex justify-start items-start flex-col'>
                                         <div className='text-sm overflow-hidden h-10 text-start'>{el.name}</div>
-                                        <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage} off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
+                                        <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage}% off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
                                     </div>
                                 </Link>
                                 <div className='absolute right-3 top-3 text-sm bg-black text-white px-2.5 py-1 z-[2] hover:opacity-60 rounded-md cursor-pointer' onClick={() => { removeItem(index) }}>
@@ -135,7 +138,7 @@ const cart = () => {
                         <div className='text-sm text-gray-400 m-1  border-b-2 pb-6 border-dashed'>Inclusive of all taxes</div>
                     </div>
                     <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
-                        {cartNo == 0 ? <div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div> : <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white'>Purchase</div>}
+                        {cartNo == 0 ? <div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div> : <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { purchase(carts, couponCode) }}> Purchase</div>}
                     </div>
                 </div>
             </div>

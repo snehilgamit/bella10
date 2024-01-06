@@ -5,22 +5,22 @@ const homeMenu = ["Cricket", "Football", "Tennis", "Volleyball", "All"];
 const Home = () => {
   const exampleArr = [
     {
-      product_id: "123D", name: "dipsy Popular WillowBat for All Tennis Balls", price: 2000, price_after_discount: 1000, percentage: '50%', image_uri: "/exampleBat.webp"
+      product_id: "1SJI002", name: "dipsy Popular WillowBat for All Tennis Balls", price: 2000, price_after_discount: 1000, percentage: '50%', image_uri: "/exampleBat.webp"
     },
     {
-      product_id: "124D", name: "dipsy Popular WillowBat for All Tennis Balls, Wood(.8 kg)", price: 4000, price_after_discount: 2000, percentage: '50%', image_uri: "/exampleBat.webp"
+      product_id: "1SJI003", name: "dipsy Popular WillowBat for All Tennis Balls, Wood(.8 kg)", price: 4000, price_after_discount: 2000, percentage: '50%', image_uri: "/exampleBat.webp"
     },
     {
-      product_id: "125D", name: "Grit Gear Poplar Willow Scooped Cricket Bat with German Vinyl Sticker - Alpha (Orange) Poplar Willow Cricket Bat  (0.85 kg)", price: 8000, price_after_discount: 4000, percentage: '50%', image_uri: "/exampleBat.webp"
+      product_id: "1SJI004", name: "Grit Gear Poplar Willow Scooped Cricket Bat with German Vinyl Sticker - Alpha (Orange) Poplar Willow Cricket Bat  (0.85 kg)", price: 8000, price_after_discount: 4000, percentage: '50%', image_uri: "/exampleBat.webp"
     },
     {
-      product_id: "125D", name: "bat bhai", price: 8000, price_after_discount: 4000, percentage: '50%', image_uri: "/exampleBat.webp"
+      product_id: "1SJI005", name: "bat bhai", price: 8000, price_after_discount: 4000, percentage: '50%', image_uri: "/exampleBat.webp"
     },
     {
-      product_id: "125D", name: "bat bhai", price: 8000, price_after_discount: 4000, percentage: '50%', image_uri: "/exampleBat.webp"
+      product_id: "1SJI006", name: "bat bhai", price: 8000, price_after_discount: 4000, percentage: '50%', image_uri: "/exampleBat.webp"
     },
     {
-      product_id: "125D", name: "bat bhai", price: 0, price_after_discount: 99999, percentage: '0%', image_uri: "/exampleBat.webp"
+      product_id: "1SJI007", name: "bat bhai", price: 0, price_after_discount: 99999, percentage: '0%', image_uri: "/exampleBat.webp"
     }
   ]
   return (

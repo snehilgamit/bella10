@@ -7,12 +7,12 @@ const shop = () => {
   const router = useRouter();
   const { categories } = router.query
   const category = [ "cricket", "all","Cricket","All",undefined];
-  const catagoryBool = category.includes(categories)
+  const categoryBool = category.includes(categories)
   const [isFetching,setIsFetching]=useState(true);
   const [products,setProduct]= useState([]);
   useEffect(()=>{
-    fetchData()
-  },[isFetching])
+      fetchData()
+  },[router])
   const fetchData = async()=>{
     const getProducts = await axios.post("/api/v1/product/getProducts",{category:categories})
     setProduct(getProducts.data.results)
@@ -24,7 +24,7 @@ const shop = () => {
     <div>Loading</div>
     :
     <div>
-      {catagoryBool? 
+      {categoryBool? 
       <div>
         <div className='flex items-center text-center justify-start max-sm:justify-center flex-wrap w-[80%] gap-5 max-sm:w-[95%] mb-10 mx-auto mt-10 h-full'>
           {products.map((el,index)=>(

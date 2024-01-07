@@ -1,28 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 const homeMenu = ["Cricket", "Football", "Tennis", "Volleyball", "All"];
+import axios from 'axios'
 const Home = () => {
-  const exampleArr = [
-    {
-      product_id: "1SJI002", name: "dipsy Popular WillowBat for All Tennis Balls", price: 2000, price_after_discount: 1000, percentage: '50%', image_uri: "/exampleBat.webp"
-    },
-    {
-      product_id: "1SJI003", name: "dipsy Popular WillowBat for All Tennis Balls, Wood(.8 kg)", price: 4000, price_after_discount: 2000, percentage: '50%', image_uri: "/exampleBat.webp"
-    },
-    {
-      product_id: "1SJI004", name: "Grit Gear Poplar Willow Scooped Cricket Bat with German Vinyl Sticker - Alpha (Orange) Poplar Willow Cricket Bat  (0.85 kg)", price: 8000, price_after_discount: 4000, percentage: '50%', image_uri: "/exampleBat.webp"
-    },
-    {
-      product_id: "1SJI005", name: "bat bhai", price: 8000, price_after_discount: 4000, percentage: '50%', image_uri: "/exampleBat.webp"
-    },
-    {
-      product_id: "1SJI006", name: "bat bhai", price: 8000, price_after_discount: 4000, percentage: '50%', image_uri: "/exampleBat.webp"
-    },
-    {
-      product_id: "1SJI007", name: "bat bhai", price: 0, price_after_discount: 99999, percentage: '0%', image_uri: "/exampleBat.webp"
-    }
-  ]
+  const [product, setProduct] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
+
+  const fetchData = async () => {
+    const getProducts = await axios.post("/api/v1/product/getProducts", { category: 'cricket' })
+    setProduct(getProducts.data.results)
+    setIsFetching(false)
+  }
+  useState(() => {
+    fetchData();
+  }, [])
   return (
     <div className='w-full overflow-hidden mb-10'>
       <div className='offer_banner w-full h-full text-white max-sm:my-5 flex justify-center'>
@@ -51,25 +43,27 @@ const Home = () => {
         </div>
       </div>
       <div className='w-full text-5xl max-sm:text-4xl pt-5 max-sm:text-center font-semibold px-10 mt-8'>
-          Top Selling
-        </div>
-      <div className='flex items-center text-center justify-start max-sm:justify-center flex-wrap w-[80%] gap-5 max-sm:w-[95%] mb-10 mx-auto mt-10 h-full'>
-        {exampleArr.map((el, index) => (
-          <Link href={`/shop/${el.name}`} key={index} className='w-[300px] max-sm:border h-96 batList flex flex-col justify-center items-center hover:shadow-md transition-all duration-100'>
-            <Image
-              className='mt-2'
-              src={`${el.image_uri}`}
-              width={135}
-              height={100}
-              priority='eagar'
-            />
-            <div className='w-full h-full flex justify-start items-start flex-col'>
-              <div className='text-sm overflow-hidden h-10 text-start'>{el.name}...</div>
-              <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage} off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
-            </div>
-          </Link>
-        ))}
+        Top Selling
       </div>
+      {isFetching ? <div>loading</div> :
+        <div className='flex items-center text-center justify-start max-sm:justify-center flex-wrap w-[80%] gap-5 max-sm:w-[95%] mb-10 mx-auto mt-10 h-full'>
+          {product.map((el, index) => (
+            <Link href={`/shop/${el.name}`} key={index} className='w-[300px] max-sm:border h-96 batList flex flex-col justify-center items-center hover:shadow-md transition-all duration-100'>
+              <Image
+                className='mt-2'
+                src={`${el.image_uri}`}
+                width={135}
+                height={100}
+                priority='eagar'
+              />
+              <div className='w-full h-full flex justify-start items-start flex-col'>
+                <div className='text-sm overflow-hidden h-10 text-start'>{el.name}...</div>
+                <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage} off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      }
     </div>
   )
 }

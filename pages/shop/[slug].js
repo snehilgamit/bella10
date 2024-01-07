@@ -38,23 +38,23 @@ const Slug = () => {
     setCart_to_menu();
   }
   useEffect(() => {
-    if(slug){
+    if (slug) {
       fetchData()
     }
     setCart_to_menu()
     setValue(slug)
   }, [slug])
   const fetchData = async () => {
-      const getProducts = await axios.post("/api/v1/product/getProduct", { product_id:slug})
-      setProduct(getProducts.data.results)
-      setIsFetching(false)
+    const getProducts = await axios.post("/api/v1/product/getProduct", { product_id: slug })
+    setProduct(getProducts.data.results)
+    setIsFetching(false)
   }
   return (
     <>
+      <Menubar cartNum={cartNum} />
       {isFetching ?
         <div>Loading</div> :
         <>
-          <Menubar cartNum={cartNum} />
           <div className='bg-slate-100 min-h-screen'>
             <div className='flex justify-center max-sm:flex-col w-full h-full p-5'>
               <div className='Image border max-sm:ml-0 bg-white flex justify-center items-center'>

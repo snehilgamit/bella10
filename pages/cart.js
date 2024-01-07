@@ -56,6 +56,7 @@ const cart = () => {
     }
     const couponApply = async () => {
         const getProducts = await axios.post("/api/v1/coupon/checkCoupon", { couponCode })
+        getCartValue();
         if (getProducts.data.status) {
             if (getProducts.data.minimumCart <= finalPrice) {
                 setisCouponApplied(true)
@@ -64,7 +65,7 @@ const cart = () => {
                 setfinalPrice(prev => prev - getProducts.data.off)
             }
             else {
-                alert(`Minimum cart balance is ${getProducts.data.minimumCart}`)
+                alert(`Minimum cart value is ${getProducts.data.minimumCart}`)
             }
         }
         else {
@@ -90,7 +91,7 @@ const cart = () => {
                         {carts.length == 0 ? <div className='ml-5 mt-5'>Empty cart</div> : ""}
                         {carts.map((el, index) => (
                             <div key={index} className='relative'>
-                                <Link href={`/shop/${el.name}`} className='w-full batList flex justify-center border max-sm:flex-col items-center transition-all duration-100 z-[1]'>
+                                <Link href={`/shop/${el.product_id}`} className='w-full batList flex justify-center border max-sm:flex-col items-center transition-all duration-100 z-[1]'>
                                     <Image
                                         className='m-5'
                                         src={`${el.image_uri}`}

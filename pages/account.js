@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Style from '@/styles/account.module.css'
 import axios from 'axios'
@@ -8,24 +8,24 @@ const account = () => {
     const router = useRouter();
     const [isLogined, setisLogined] = useState(true)
 
-    const session = async ()=>{
+    const session = async () => {
         const getSession = localStorage.getItem('bella10_state')
-        if (getSession && getSession !='{}'&& getSession !='' ) {
+        if (getSession && getSession != '{}' && getSession != '') {
             const { token } = JSON.parse(getSession);
-            const req = await axios.post('/api/v1/session',{token})
-            if(req.data.status){
-                localStorage.setItem('bella10_state',JSON.stringify({email:req.data.email,token:req.data.token}))
+            const req = await axios.post('/api/v1/session', { token })
+            if (req.data.status) {
+                localStorage.setItem('bella10_state', JSON.stringify({ email: req.data.email, token: req.data.token }))
                 setisLogined(false)
             }
-            else{
-                localStorage.setItem('bella10_state','{}')
+            else {
+                localStorage.setItem('bella10_state', '{}')
             }
         }
-        else{
+        else {
             router.push('/login')
         }
     }
-    const logout = ()=>{
+    const logout = () => {
         localStorage.removeItem('bella10_state')
         location.reload()
     }
@@ -34,9 +34,11 @@ const account = () => {
     }, [])
     return (
         <>
-                <div>Account
-                    <div onClick={logout}>Logout</div>
-                </div>
+        <div className='min-h-screen px-10 py-10 w-full mx-auto flex justify-center'>
+            <div className='w-full text-3xl font-semibold'>
+                <h1>Account</h1>
+            </div>
+        </div>
         </>
     )
 }

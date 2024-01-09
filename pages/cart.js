@@ -72,6 +72,7 @@ const cart = () => {
             setisCouponApplied(false)
             isApplied.current = false
             getCartValue();
+            alert("Invalid coupon")
         }
         if (cartNo == 0) {
             alert("Empty cart")

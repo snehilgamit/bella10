@@ -13,7 +13,6 @@ const cart = () => {
     const [billAmount, setBillAmount] = useState(0);
     const [finalPrice, setfinalPrice] = useState(0);
     const [without_discount_Amount, setwithout_discount_Amount] = useState(0);
-    const exampleCoupon = { bella10: { discount: 200 }, OFF50: { discount: 1000 } }
     const setCart = () => {
         const cart = localStorage.getItem('cart')
         if (cart && cart != '') {

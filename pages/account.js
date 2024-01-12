@@ -7,6 +7,13 @@ import { useRouter } from 'next/router'
 const account = () => {
     const router = useRouter();
     const [isLogined, setisLogined] = useState(true)
+    const [ accountDetails,setAccountdetails ] = useState({
+        bellaPoints:0,
+        orders:[],
+        totalOrders:0,
+        Ordercanceled:0,
+        email:""
+    })
 
     const session = async () => {
         const getSession = localStorage.getItem('bella10_state')
@@ -29,8 +36,16 @@ const account = () => {
         localStorage.removeItem('bella10_state')
         location.reload()
     }
+    const getUser = async () => {
+        const user = JSON.parse(localStorage.getItem('bella10_state'))
+        if(user){
+            const getRes = await axios.post('/api/v1/getUser',{token:user.token});    
+            console.log(getRes.data)
+        }
+    }
     useEffect(() => {
         session()
+        getUser()
     }, [])
     return (
         <>

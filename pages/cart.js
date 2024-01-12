@@ -4,15 +4,15 @@ import Image from 'next/image'
 import purchase from '@/utils/purchase'
 import axios from 'axios'
 const cart = () => {
-    const [carts, setCarts] = useState([]);
-    const [cartNo, setCartNo] = useState(0);
-    const [couponCode, setCouponCode] = useState('');
-    const [isCouponApplied, setisCouponApplied] = useState(false);
+    const [ carts, setCarts ] = useState([]);
+    const [ cartNo, setCartNo ] = useState(0);
+    const [ couponCode, setCouponCode ] = useState('');
+    const [ isCouponApplied, setisCouponApplied ] = useState(false);
     const isApplied = useRef(false)
-    const [coupon_amount, setCoupon_amount] = useState(0);
-    const [billAmount, setBillAmount] = useState(0);
-    const [finalPrice, setfinalPrice] = useState(0);
-    const [without_discount_Amount, setwithout_discount_Amount] = useState(0);
+    const [ coupon_amount, setCoupon_amount ] = useState(0);
+    const [ billAmount, setBillAmount ] = useState(0);
+    const [ finalPrice, setfinalPrice ] = useState(0);
+    const [ without_discount_Amount, setwithout_discount_Amount ] = useState(0);
     const setCart = () => {
         const cart = localStorage.getItem('cart')
         if (cart && cart != '') {

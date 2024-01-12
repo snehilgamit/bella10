@@ -18,7 +18,7 @@ export default async function handler(req,res){
             }
             return res.json( { status:false , message:"Coupon problem!" } );
         }
-        return res.json( { status:true , amount:totalbill } );;
+        return res.json( { status:true , amount:totalbill } );
     }
     return res.json({message:"Invalid method",status:false});
 }

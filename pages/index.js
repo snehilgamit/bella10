@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
 const homeMenu = ["Cricket", "Football", "Tennis", "Volleyball", "All"];
-import axios from 'axios'
 const Home = () => {
   const [product, setProduct] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
 
-  const fetchData = async () => {
-    const getProducts = await axios.post("/api/v1/product/getProducts", { category: 'cricket' })
-    setProduct(getProducts.data.results)
-    setIsFetching(false)
-  }
   useState(() => {
+    const fetchData = async () => {
+      const getProducts = await axios.post('/api/v1/product/getProducts', { category: 'cricket' });
+      setProduct(getProducts.data.results)
+      setIsFetching(false)
+    }
     fetchData();
   }, [])
   return (

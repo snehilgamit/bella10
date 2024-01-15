@@ -1,7 +1,8 @@
 import products from "@/models/products";
 import connectDB from "@/util/mongoDB";
 export default async function handler(req, res) {
-    const fetch = async (result) => {
+    await connectDB();
+    const fetching = async (result) => {
         const resResult = [];
         result.forEach(el => {
             resResult.push({
@@ -18,14 +19,13 @@ export default async function handler(req, res) {
     }
     if (req.method == 'POST') {
         const { category } = req.body;
-        await connectDB();
-        if (category === 'all') {
+        if (category ==='all') {
             const result = await products.find();
-            await fetch(result);
+            await fetching(result);
         }
         else{
             const result = await products.find({ category });
-            await fetch(result);
+            await fetching(result);
         }
     };
     return res.json({ status: false, message: "Invalid method" });

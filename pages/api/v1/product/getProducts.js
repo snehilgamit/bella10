@@ -23,7 +23,7 @@ export default async function handler(req, res) {
             const result = await products.find();
             await fetch(result);
         }
-        if (category) {
+        if (category !== "all") {
             const result = await products.find({ category });
             await fetch(result);
         }

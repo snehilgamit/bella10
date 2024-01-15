@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -7,7 +7,7 @@ const Home = () => {
   const [product, setProduct] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
 
-  useState(() => {
+  useEffect(() => {
     const fetchData = async () => {
       const getProducts = await axios.post('/api/v1/product/getProducts', { category: 'cricket' });
       setProduct(getProducts.data.results)
@@ -58,7 +58,7 @@ const Home = () => {
               />
               <div className='w-full h-full flex justify-start items-start flex-col'>
                 <div className='text-sm overflow-hidden h-10 text-start'>{el.name}...</div>
-                <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage} off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
+                <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage} %off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
               </div>
             </Link>
           ))}

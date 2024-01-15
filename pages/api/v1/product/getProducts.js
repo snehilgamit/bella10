@@ -1,7 +1,7 @@
 import products from "@/models/products";
 import connectDB from "@/util/mongoDB";
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
+    if (req.method == 'POST') {
         const { category } = req.body;
         await connectDB();
         const fetch = async (result) => {

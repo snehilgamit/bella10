@@ -9,17 +9,25 @@ export default function App({ Component, pageProps }) {
   const path  = router.pathname
   const session = async () => {
     const getSession = localStorage.getItem('bella10_state')
+
     if (getSession && getSession != '{}' && getSession != '') {
+      console.log(getSession)
         const { token } = JSON.parse(getSession);
-        const req = await axios.post('/api/v1/session', { token })
-        if (req.data.status) {
+        try{
+
+          const req = await axios.post('/api/v1/session', { token })
+          if (req.data.status) {
             localStorage.setItem('bella10_state', JSON.stringify({ email: req.data.email, token: req.data.token }))
             setisLogined(false)
-        }
-        else {
+          }
+          else {
             localStorage.setItem('bella10_state', {})
+          }
         }
-    }
+        catch(err){
+          console.log(err)
+        }
+        }
 }
   useEffect(()=>{
     session()

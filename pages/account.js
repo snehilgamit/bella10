@@ -7,12 +7,12 @@ import { useRouter } from 'next/router'
 const account = () => {
     const router = useRouter();
     const [isLogined, setisLogined] = useState(true)
-    const [ accountDetails,setAccountdetails ] = useState({
-        bellaPoints:0,
-        orders:[],
-        totalOrders:0,
-        Ordercanceled:0,
-        email:""
+    const [accountDetails, setAccountdetails] = useState({
+        bellaPoints: 0,
+        orders: [],
+        totalOrders: 0,
+        Ordercanceled: 0,
+        email: ""
     })
 
     const session = async () => {
@@ -38,8 +38,8 @@ const account = () => {
     }
     const getUser = async () => {
         const user = JSON.parse(localStorage.getItem('bella10_state'))
-        if(user){
-            const getRes = await axios.post('/api/v1/getUser',{token:user.token});    
+        if (user) {
+            const getRes = await axios.post('/api/v1/getUser', { token: user.token });
             console.log(getRes.data)
         }
     }
@@ -49,11 +49,16 @@ const account = () => {
     }, [])
     return (
         <>
-        <div className='min-h-screen px-10 py-10 w-full mx-auto flex justify-center'>
-            <div className='w-full text-3xl font-semibold'>
-                <h1>Account</h1>
+            <div className='min-h-screen px-10 py-5 w-full mx-auto flex justify-center'>
+                <div className='w-full text-3xl font-semibold'>
+                    <h1>
+                        Account
+                    </h1>
+                    <div className='bellapoint w-full h-56 bg-gray-200 rounded-lg mt-5 flex justify-center items-center'>
+                        <div className='font-normal'>Bella Points:<span className='text-orange-500 font-semibold'> 50999</span></div>
+                    </div>
+                </div>
             </div>
-        </div>
         </>
     )
 }

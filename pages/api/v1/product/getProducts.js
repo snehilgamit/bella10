@@ -2,7 +2,7 @@ import products from "@/models/products";
 import connectDB from "@/util/mongoDB";
 export default async function handler(req, res) {
     await connectDB();
-    if (req.method == 'POST') {
+    if (req.method === 'POST') {
         const { category } = req.body;
         if (category === 'all') {
             const result = await products.find();

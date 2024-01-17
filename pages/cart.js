@@ -1,18 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
 import purchase from '@/utils/purchase'
 import axios from 'axios'
 const cart = () => {
-    const [ carts, setCarts ] = useState([]);
-    const [ cartNo, setCartNo ] = useState(0);
-    const [ couponCode, setCouponCode ] = useState('');
-    const [ isCouponApplied, setisCouponApplied ] = useState(false);
+    const [carts, setCarts] = useState([]);
+    const [cartNo, setCartNo] = useState(0);
+    const [isLogined, setisLogined] = useState(false);
+    const [couponCode, setCouponCode] = useState('');
+    const [isCouponApplied, setisCouponApplied] = useState(false);
     const isApplied = useRef(false)
-    const [ coupon_amount, setCoupon_amount ] = useState(0);
-    const [ billAmount, setBillAmount ] = useState(0);
-    const [ finalPrice, setfinalPrice ] = useState(0);
-    const [ without_discount_Amount, setwithout_discount_Amount ] = useState(0);
+    const [coupon_amount, setCoupon_amount] = useState(0);
+    const [billAmount, setBillAmount] = useState(0);
+    const [finalPrice, setfinalPrice] = useState(0);
+    const [without_discount_Amount, setwithout_discount_Amount] = useState(0);
+    const router = useRouter();
     const setCart = () => {
         const cart = localStorage.getItem('cart')
         if (cart && cart != '') {
@@ -77,10 +80,25 @@ const cart = () => {
             alert("Empty cart")
         }
     }
+    const session = async () => {
+        const getSession = localStorage.getItem('bella10_state')
+        if (getSession && getSession != '{}' && getSession != '') {
+            const { token } = JSON.parse(getSession);
+            const req = await axios.post('/api/v1/session', { token })
+            if (req.data.status) {
+                localStorage.setItem('bella10_state', JSON.stringify({ email: req.data.email, token: req.data.token }))
+                setisLogined(true)
+            }
+            else {
+                localStorage.setItem('bella10_state', '{}')
+            }
+        }
+    }
     useEffect(() => {
-        setCart_to_menu()
-        setCart()
-        getCartValue()
+        setCart_to_menu();
+        setCart();
+        session();
+        getCartValue();
     }, [])
     return (
         <>
@@ -127,6 +145,12 @@ const cart = () => {
                             <span>Discount</span>
                             <span className='text-orange-500'>-₹{without_discount_Amount - billAmount}</span>
                         </div>
+                        {isLogined && 
+                        <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
+                                <div>Use bella10 point</div>
+                                <input className='text-orange-500' type='checkbox' value={true}></input>
+                        </div>
+                        }
                         {isCouponApplied ?
                             <div className=' flex justify-between m-1 border-b-2 pb-4 mt-4 border-dashed'>
                                 <span>Coupon discount</span>
@@ -136,10 +160,18 @@ const cart = () => {
                             <span>Grand total</span>
                             <span className=''>₹{finalPrice}</span>
                         </div>
+
                         <div className='text-sm text-gray-400 m-1  border-b-2 pb-6 border-dashed'>Inclusive of all taxes</div>
                     </div>
                     <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
-                        {cartNo == 0 ? <div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div> : <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { purchase(carts, couponCode) }}> Purchase</div>}
+                        {cartNo == 0 ?
+                            <div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div> : <>
+                                {isLogined ?
+                                    <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { purchase(carts, couponCode) }}>Purchase</div>
+                                    :
+                                    <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { router.push('/login') }}>Login</div>
+                                }</>
+                        }
                     </div>
                 </div>
             </div>

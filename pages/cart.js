@@ -5,8 +5,12 @@ import Image from 'next/image'
 import purchase from '@/utils/purchase'
 import axios from 'axios'
 const cart = () => {
+    const bellacoinsRef = useRef(null);
     const [carts, setCarts] = useState([]);
     const [cartNo, setCartNo] = useState(0);
+    const [bellacoins, setbellacoins] = useState(0);
+    const [bellacoinsInUse, setbellacoinsInUse] = useState(0);
+    const [bellacoinsUse, setbellacoinsUse] = useState(false);
     const [isLogined, setisLogined] = useState(false);
     const [couponCode, setCouponCode] = useState('');
     const [isCouponApplied, setisCouponApplied] = useState(false);
@@ -23,6 +27,27 @@ const cart = () => {
             setCarts(cartTemp)
         }
     }
+    const couponRemove = () => {
+        setCouponCode('')
+        isApplied.current = false;
+        setCoupon_amount(0);
+        setisCouponApplied(false);
+    }
+    const applycoins = (type) => {
+        if (type) {
+            couponRemove()
+            if(billAmount<=bellacoins){
+                setbellacoinsInUse(billAmount);
+                return setfinalPrice(0);
+            }
+            else{
+                setbellacoinsInUse(bellacoins);
+                return setfinalPrice(prev => prev - bellacoins);
+            }
+        }
+        couponRemove()
+        return getCartValue();
+    }
     const removeItem = (number) => {
         const tempCart = carts
         setCartNo(prev => prev - 1)
@@ -30,6 +55,7 @@ const cart = () => {
         localStorage.setItem('cart', JSON.stringify(tempCart))
         setCarts(tempCart)
         setCart()
+        couponRemove()
         getCartValue()
     }
     const getCartValue = () => {
@@ -45,6 +71,7 @@ const cart = () => {
             setwithout_discount_Amount(without_discount_bill)
         }
     }
+
     const setCart_to_menu = () => {
         const cart = localStorage.getItem('cart')
         if (cart && cart != '[]' && cart != '') {
@@ -57,17 +84,23 @@ const cart = () => {
         }
     }
     const couponApply = async () => {
+        couponRemove();
         const getProducts = await axios.post("/api/v1/coupon/checkCoupon", { couponCode })
         getCartValue();
+        if(bellacoinsRef.current.checked){
+            checkUncheck(false)   
+        }
         if (getProducts.data.status) {
-            if (getProducts.data.minimumCart <= finalPrice) {
-                setisCouponApplied(true)
-                isApplied.current = true
-                setCoupon_amount(getProducts.data.off)
-                setfinalPrice(prev => prev - getProducts.data.off)
-            }
-            else {
-                alert(`Minimum cart value is ${getProducts.data.minimumCart}`)
+            if(!isApplied.current){
+                if (getProducts.data.minimumCart <= finalPrice) {
+                    setisCouponApplied(true)
+                    isApplied.current = true
+                    setCoupon_amount(getProducts.data.off)
+                    setfinalPrice(prev => prev - getProducts.data.off)
+                }
+                else {
+                    alert(`Minimum cart value is ${getProducts.data.minimumCart}`)
+                }
             }
         }
         else {
@@ -94,12 +127,45 @@ const cart = () => {
             }
         }
     }
+    // const checkUncheck = () => {
+    //     if (bellacoinsRef.current.checked == false) {
+    //         bellacoinsRef.current.checked = true
+    //         setbellacoinsUse(true)
+    //         applycoins(true)
+    //     }
+    //     else {
+    //         bellacoinsRef.current.checked = false
+    //         setbellacoinsUse(false)
+    //         applycoins(false)
+    //     }
+    // }
+    const checkUncheck = () => {
+        if (bellacoinsRef.current.checked == false) {
+            setbellacoinsUse(false)
+            applycoins()
+        }
+        else {
+            setbellacoinsUse(true)
+            applycoins(true)
+        }
+    }
+    const getUser = async () =>{
+        const getSession = localStorage.getItem('bella10_state')
+        const { token }  = JSON.parse(getSession);
+        const getData = await axios.post('/api/v1/getUser',{token});
+        setbellacoins(getData.data.bellaPoints)
+    }
     useEffect(() => {
-        setCart_to_menu();
-        setCart();
         session();
+        setCart();
         getCartValue();
+        setCart_to_menu();
     }, [])
+    useEffect(()=>{
+        if(isLogined){
+            getUser();
+        }
+    },[isLogined])
     return (
         <>
             <div className='w-full flex justify-center max-sm:flex-col max-sm:items-center pt-5 mb-20'>
@@ -134,31 +200,40 @@ const cart = () => {
                     <div className='text-2xl flex items-center mb-2'>Bill</div>
                     <div className='w-full border-2 text-sm mt-4 p-9 font-medium'>
                         <div className='flex justify-center m-1 mb-4 relative'>
-                            <input className='h-10 border w-full px-2 rounded-md' onChange={(e) => { setCouponCode(e.target.value) }} placeholder='Enter coupon code' type="text" name="coupon code" id="coupon code" />
+                            <input className='h-10 border w-full px-2 rounded-md' onChange={(e) => { setCouponCode(e.target.value) }} value={couponCode} placeholder='Enter coupon code' type="text" name="coupon code" id="coupon code" />
                             <div onClick={couponApply} className='absolute rounded-r-md hover:bg-slate-700 bg-black text-white right-0 h-full w-20 cursor-pointer flex justify-center items-center'>Apply</div>
                         </div>
                         <div className='flex justify-between m-1'>
                             <span>Item total</span>
                             <span><span className='text-xs line-through mr-1 text-slate-400'>₹{without_discount_Amount}</span>₹{billAmount}</span>
                         </div>
+                        {bellacoinsUse &&
+                        <div className='flex justify-between m-1'>
+                            <span>Bella10 coins</span>
+                            <span className='text-orange-500'>-₹{bellacoinsInUse}</span>
+                        </div>}
                         <div className='flex justify-between m-1 border-b-2 pb-6 border-dashed'>
                             <span>Discount</span>
                             <span className='text-orange-500'>-₹{without_discount_Amount - billAmount}</span>
                         </div>
-                        {isLogined? <div className='flex opacity-60 justify-between m-1 border-b-2 pb-2 border-dashed'>
-                                <div>Use bella10 point</div>
-                                <input className='text-orange-500 p-2' type='checkbox' onChange={(e)=>{console.log(e.target.checked)}}></input>
-                        </div>: 
-                        <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
-                                <div>Use bella10 point</div>
-                                <input className='text-orange-500 p-2' disabled  type='checkbox'></input>
-                        </div>
+                        {isLogined ? <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed' style={isLogined ? {} : { opacity: 0.6 }}>
+                            <div>
+                                Use
+                                <span className='text-orange-500 font-bold'> {bellacoins} </span>
+                                bella10 coins
+                            </div>
+                            <input ref={bellacoinsRef} onChange={checkUncheck} className='text-orange-500 p-2' type='checkbox'></input>
+                        </div> :
+                            <div className='flex justify-between opacity-60 m-1 border-b-2 pb-2 border-dashed'>
+                                <div>Use bella10 coins</div>
+                                <input className='text-orange-500 p-2' disabled type='checkbox'></input>
+                            </div>
                         }
-                        {isCouponApplied ?
+                        {isCouponApplied &&
                             <div className=' flex justify-between m-1 border-b-2 pb-4 mt-4 border-dashed'>
                                 <span>Coupon discount</span>
                                 <span className='text-orange-500'>-₹{coupon_amount}</span>
-                            </div> : ""}
+                            </div>}
                         <div className='flex justify-between m-1 mt-2 text-2xl'>
                             <span>Grand total</span>
                             <span className=''>₹{finalPrice}</span>

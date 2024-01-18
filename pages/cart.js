@@ -145,10 +145,13 @@ const cart = () => {
                             <span>Discount</span>
                             <span className='text-orange-500'>-₹{without_discount_Amount - billAmount}</span>
                         </div>
-                        {isLogined && 
+                        {isLogined? <div className='flex opacity-60 justify-between m-1 border-b-2 pb-2 border-dashed'>
+                                <div>Use bella10 point</div>
+                                <input className='text-orange-500 p-2' type='checkbox' onChange={(e)=>{console.log(e.target.checked)}}></input>
+                        </div>: 
                         <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
                                 <div>Use bella10 point</div>
-                                <input className='text-orange-500' type='checkbox' value={true}></input>
+                                <input className='text-orange-500 p-2' disabled  type='checkbox'></input>
                         </div>
                         }
                         {isCouponApplied ?

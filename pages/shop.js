@@ -47,7 +47,7 @@ export default shop
 
 
 export async function getServerSideProps(ctx) {
-  const getProducts = await axios.post('http://localhost:3000/api/v1/product/getProducts', { category: ctx.query.categories || 'all' });
+  const getProducts = await axios.post('https://bella10-delta.vercel.app/api/v1/product/getProducts', { category: ctx.query.categories || 'all' });
   const products = await getProducts.data.results;
   return { props: { products } };
 }

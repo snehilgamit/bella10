@@ -7,6 +7,8 @@ import axios from 'axios'
 const cart = () => {
     const bellacoinsRef = useRef(null);
     const [carts, setCarts] = useState([]);
+    const [token,setToken] = useState(null); 
+    const [loading,setLoading]=useState('Purchase');
     const [cartNo, setCartNo] = useState(0);
     const [bellacoins, setbellacoins] = useState(0);
     const [bellacoinsInUse, setbellacoinsInUse] = useState(0);
@@ -35,7 +37,6 @@ const cart = () => {
     }
     const applycoins = (getType) => {
         if (getType) {
-            couponRemove();
             if (billAmount <= bellacoins) {
                 setbellacoinsInUse(billAmount);
                 setfinalPrice(0);
@@ -84,7 +85,6 @@ const cart = () => {
         }
     }
     const couponApply = async () => {
-        couponRemove();
         const getProducts = await axios.post("/api/v1/coupon/checkCoupon", { couponCode });
         getCartValue();
         if (bellacoinsRef.current.checked) {
@@ -120,6 +120,7 @@ const cart = () => {
             const req = await axios.post('/api/v1/session', { token });
             if (req.data.status) {
                 localStorage.setItem('bella10_state', JSON.stringify({ email: req.data.email, token: req.data.token }));
+                setToken(req.data.token);
                 setisLogined(true);
             }
             else {
@@ -154,6 +155,27 @@ const cart = () => {
         const { token } = JSON.parse(getSession);
         const getData = await axios.post('/api/v1/getUser', { token });
         setbellacoins(getData.data.bellaPoints);
+    }
+
+
+    const purchaseIt = async() =>{
+        setLoading("Loading...");
+        const getPurchased = await purchase(carts, couponCode,bellacoinsUse,token);
+        if(getPurchased.status){
+            setLoading("Done");
+            localStorage.setItem('cart','[]')
+            setCart_to_menu();
+            setTimeout(()=>{
+                router.push("/account");
+            },500)  
+        }
+        else{
+            setLoading("Faild");
+            alert(getPurchased.message);
+            setTimeout(()=>{
+                setLoading("Purchase");
+            },500)
+        }
     }
     useEffect(() => {
         session();
@@ -245,7 +267,7 @@ const cart = () => {
                         {cartNo == 0 ?
                             <div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div> : <>
                                 {isLogined ?
-                                    <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { purchase(carts, couponCode) }}>Purchase</div>
+                                    <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { purchaseIt() }}>{loading}</div>
                                     :
                                     <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { router.push('/login') }}>Login</div>
                                 }</>

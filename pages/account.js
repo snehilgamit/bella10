@@ -14,7 +14,12 @@ const account = () => {
         Ordercanceled: 0,
         email: ""
     })
-
+    const getUser = async () => {
+        const getSession = localStorage.getItem('bella10_state');
+        const { token } = JSON.parse(getSession);
+        const getData = await axios.post('/api/v1/getUser', { token });
+        setAccountdetails({bellaPoints:getData.data.bellaPoints});
+    }
     const session = async () => {
         const getSession = localStorage.getItem('bella10_state');
         if (getSession && getSession != '{}' && getSession != '') {
@@ -36,7 +41,7 @@ const account = () => {
         localStorage.removeItem('bella10_state');
         location.reload();
     }
-    const getUser = async () => {
+    const getUserSession = async () => {
         const user = JSON.parse(localStorage.getItem('bella10_state'));
         if (user) {
             const getRes = await axios.post('/api/v1/getUser', { token: user.token });
@@ -44,6 +49,7 @@ const account = () => {
     }
     useEffect(() => {
         session();
+        getUserSession();
         getUser();
     }, []);
     return (
@@ -54,7 +60,7 @@ const account = () => {
                         Account
                     </h1>
                     <div className='bellapoint w-full h-56 bg-gray-200 rounded-lg mt-5 flex justify-center ;items-center'>
-                        <div className='font-normal'>Bella Points:<span className='text-orange-500 font-semibold'> 50999</span></div>
+                        <div className='font-normal'>Bella Points:<span className='text-orange-500 font-semibold'> {accountDetails.bellaPoints}</span></div>
                     </div>
                 </div>
             </div>

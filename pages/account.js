@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Style from '@/styles/account.module.css'
 import axios from 'axios'
-import Login from './login'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 const account = () => {
     const router = useRouter();
     const [isLogined, setisLogined] = useState(true);
@@ -13,12 +13,12 @@ const account = () => {
         totalOrders: 0,
         Ordercanceled: 0,
         email: ""
-    })
+    });
     const getUser = async () => {
         const getSession = localStorage.getItem('bella10_state');
         const { token } = JSON.parse(getSession);
         const getData = await axios.post('/api/v1/getUser', { token });
-        setAccountdetails({bellaPoints:getData.data.bellaPoints});
+        setAccountdetails(getData.data);
     }
     const session = async () => {
         const getSession = localStorage.getItem('bella10_state');
@@ -59,9 +59,50 @@ const account = () => {
                     <h1>
                         Account
                     </h1>
-                    <div className='bellapoint w-full h-56 bg-gray-200 rounded-lg mt-5 flex justify-center ;items-center'>
-                        <div className='font-normal'>Bella Points:<span className='text-orange-500 font-semibold'> {accountDetails.bellaPoints}</span></div>
+                    <div className='bellapoint items-center w-full my-7 flex justify-center'>
+                        <div className='w-full flex justify-center text-white gap-5 max-sm:gap-1 flex-wrap'>
+                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Bella Points :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.bellaPoints}</span></div>
+                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Orders :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.totalOrders}</span></div>
+                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Cancelled order :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.Ordercanceled}</span></div>
+                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Referral's order :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.Ordercanceled}</span></div>
+                        </div>
                     </div>
+                    <div>Orders</div>
+                    {accountDetails.orders.reverse().map((el, index) => (
+                        <div key={index} className='w-[65%] max-md:w-full my-4 mx-auto border rounded-md bg-white'>
+                            <div className='w-full h-16 px-5 bg-gray-200 max-lg:hidden text-gray-600 border-b border-gray-700 flex items-center justify-around'>
+                                <div className='text-xs font-semibold'><h1>ORDER PLACED:</h1> <h2>{el.time.split("T")[0].split("-").reverse().join("-")}</h2></div>
+                                <div className='text-xs font-semibold'><h1>Total:</h1> <h2 className='text-black'>₹{el.totalbill}</h2></div>
+                                <div className='text-xs font-semibold'><h1>Order id:</h1> <h2 className='text-black'>{el.orderID}</h2></div>
+                                <div className='text-xs font-semibold'><h1>BellaPoint used:</h1> <h2 className='text-black'>{el.usedBellaPoints}</h2></div>
+                                <div className='text-xs font-semibold'><h1>Status:</h1> <h2 className='text-orange-500'>{el.isConfirmed ? 'Delivered' : 'Pending'}</h2></div>
+                                {el.couponCode && <div className='text-xs font-semibold'><h1>Coupon used:</h1> <h2 className='text-black'>{el.couponCode}</h2></div>}
+                            </div>
+                            <div className='border px-2'>
+                                {el.orderCart.map((product, index) => (
+                                    <Link href={`/shop/${product.productIDs}`} key={index} className='bg-white mx-4 flex max-lg:border max-lg:rounded-md'>
+                                        <Image
+                                            className='p-4 max-md:p-2 max-md:w-56 max-md:h-56'
+                                            width={110}
+                                            height={110}
+                                            alt={product.name}
+                                            src={`/${product.productIDs}.webp`} />
+                                        <div className='w-full'>
+                                            <div className='text-orange-500 hover:text-black text-xs mt-4'>{product.name}</div>
+                                            <div className='px-5 hidden max-lg:flex w-full max-lg:flex-wrap max-lg:gap-3 max-lg:mt-5 text-gray-600'>
+                                                <div className='text-xs font-semibold'><h1>ORDER PLACED:</h1> <h2>{el.time.split("T")[0].split("-").reverse().join("-")}</h2></div>
+                                                <div className='text-xs font-semibold'><h1>Total:</h1> <h2 className='text-black'>₹{el.totalbill}</h2></div>
+                                                <div className='text-xs font-semibold'><h1>Order id:</h1> <h2 className='text-black'>{el.orderID}</h2></div>
+                                                <div className='text-xs font-semibold'><h1>BellaPoint used:</h1> <h2 className='text-black'>{el.usedBellaPoints}</h2></div>
+                                                <div className='text-xs font-semibold'><h1>Status:</h1> <h2 className='text-orange-500'>{el.isConfirmed ? 'Delivered' : 'Pending'}</h2></div>
+                                                {el.couponCode && <div className='text-xs font-semibold'><h1>Coupon used:</h1> <h2 className='text-black'>{el.couponCode}</h2></div>}
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </>

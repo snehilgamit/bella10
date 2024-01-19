@@ -4,9 +4,6 @@ import User from '@/models/User';
 import connectDB from "@/util/mongoDB";
 import jwt from 'jsonwebtoken'
 
-const setTransaction =  async (status,orderID,time,billamount,usedBellaPoints)=>{
-    console.log(status,orderID,time,billamount,usedBellaPoints)
-}
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         const { couponCode, productIDs, bellacoinsUse, token } = req.body;
@@ -27,11 +24,13 @@ export default async function handler(req, res) {
                 const findUser = await User.findOne({ email: verify.email })
                 if (findUser) {
                     let totalbill = 0;
+                    const orderCart = [];
                     for (let i = 0; i < productIDs.length; i++) {
                         const findPRprice = await products.findOne({ product_id: productIDs[i] });
                         if (findPRprice === null) {
                             return res.json({ message: "Something went wrong", status: false });
                         }
+                        orderCart.push({ productIDs: findPRprice.product_id, name: findPRprice.name })
                         totalbill += findPRprice.price_after_discount;
                     }
                     const orderID = getOrder();
@@ -46,78 +45,83 @@ export default async function handler(req, res) {
                                 if (findUser.bellaPoints >= totalbill) {
 
                                     await User.updateOne({ 'email': findUser.email }, { $inc: { bellaPoints: -totalbill } })
-
+                                    await User.updateOne({ email: findUser.email }, { $push: { bellaTransaction: { status: true, orderID, time: new Date(), totalbill, usedBellaPoints: totalbill } } })
                                     totalbill = 0;
-
-                                    await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, productIDs, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date() } } })
-                                    await User.updateOne({email:findUser.email},{$inc:{totalOrders:+1}})
+                                    await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: totalbill, isConfirmed: false, time: new Date() } } })
+                                    await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
 
                                     return res.json({ status: true, amount: totalbill, orderID });
                                 }
                                 await User.updateOne({ 'email': findUser.email }, { $inc: { bellaPoints: -findUser.bellaPoints } })
 
                                 totalbill = totalbill - findUser.bellaPoints;
-                                
-                                await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, productIDs, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date
-                                () } } })
-                                await User.updateOne({email:findUser.email},{$inc:{totalOrders:+1}})
-                                setTransaction(true,orderID,new Date(),totalbill,findUser.bellaPoints)
-                                
+                                await User.updateOne({ email: findUser.email }, { $push: { bellaTransaction: { status: true, orderID, time: new Date(), totalbill:findUser.bellaPoints, usedBellaPoints: findUser.bellaPoints } } })
+                                await User.updateOne({ email: findUser.email }, {
+                                    $push: {
+                                        orders: {
+                                            couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: findUser.bellaPoints, isConfirmed: false, time: new Date
+                                                ()
+                                        }
+                                    }
+                                })
+                                await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
+
                                 return res.json({ status: true, amount: totalbill, orderID });
                             }
-                            await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, productIDs, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date() } } })
-                            await User.updateOne({email:findUser.email},{$inc:{totalOrders:+1}})
-                            
+                            await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date() } } })
+                            await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
+
                             return res.json({ status: true, amount: totalbill, orderID });
                         }
                         return res.json({ status: false, message: "Coupon problem!" });
                     }
                     if (bellacoinsUse) {
-                        
+
                         if (bellacoinsUse) {
-                            
+
                             if (findUser.bellaPoints >= totalbill) {
-                                
+
                                 await User.updateOne({ 'email': findUser.email }, { $inc: { bellaPoints: -totalbill } })
-                                
+                                await User.updateOne({ email: findUser.email }, { $push: { bellaTransaction: { status: true, orderID, time: new Date(), totalbill, usedBellaPoints: totalbill } } })
                                 totalbill = 0;
-                                await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, productIDs, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date() } } })
-                                await User.updateOne({email:findUser.email},{$inc:{totalOrders:+1}})
-                                
-                                
+                                await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: totalbill, isConfirmed: false, time: new Date() } } })
+                                await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
+
+
                                 return res.json({ status: true, amount: totalbill, orderID });
                             }
-                            
+
                             await User.updateOne({ 'email': findUser.email }, { $inc: { bellaPoints: -findUser.bellaPoints } })
+                            await User.updateOne({ email: findUser.email }, { $push: { bellaTransaction: { status: true, orderID, time: new Date(), totalbill, usedBellaPoints: findUser.bellaPoints } } })
                             totalbill = totalbill - findUser.bellaPoints;
-                            await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, productIDs, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date() } } })
-                            await User.updateOne({email:findUser.email},{$inc:{totalOrders:+1}})
-                            
-                            
+                            await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: totalbill, isConfirmed: false, time: new Date() } } })
+                            await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
+
+
                             return res.json({ status: true, amount: totalbill, orderID });
                         }
                     }
                     if (couponCode && couponCode != "") {
-                        
+
                         const checkticket = await coupons.findOne({ couponId: couponCode })
-                        
+
                         if (checkticket.minimumCart <= totalbill) {
                             totalbill -= checkticket.off;
-                            
-                            await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, productIDs, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date() } } })
-                            await User.updateOne({email:findUser.email},{$inc:{totalOrders:+1}})
-                            
+
+                            await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date() } } })
+                            await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
+
                             return res.json({ status: true, amount: totalbill, orderID });
                         }
-                        
+
                         return res.json({ status: false, message: "Coupon problem!" });
                     }
-                    await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, productIDs, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date() } } })
-                    await User.updateOne({email:findUser.email},{$inc:{totalOrders:+1}})
+                    await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date() } } })
+                    await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
 
                     return res.json({ status: true, amount: totalbill, orderID });
                 }
-                
+
                 return res.json({ message: "unAuthorised", status: false })
             }
         }

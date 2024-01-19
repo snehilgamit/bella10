@@ -26,6 +26,10 @@ const userSchema = new Schema({
         type:Array,
         default:[]
     },
+    bellaTransaction:{
+        type:Array,
+        default:[]
+    },
     totalOrders:{
         type:Number,
         default:0

@@ -6,7 +6,7 @@ export default async function main(req,res){
         const { email , password , repassword ,referralcode } = req.body;
         try{
             if(email.length ==0 || password.length ==0 || repassword.length == 0 || referralcode.length==0){
-                res.json({status:false,message:"Something missing"})   
+                return res.json({status:false,message:"Something missing"})   
             }
             await connectDB();
             const findEmail = await User.findOne({email});

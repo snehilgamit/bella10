@@ -14,116 +14,116 @@ const cart = () => {
     const [isLogined, setisLogined] = useState(false);
     const [couponCode, setCouponCode] = useState('');
     const [isCouponApplied, setisCouponApplied] = useState(false);
-    const isApplied = useRef(false)
+    const isApplied = useRef(false);
     const [coupon_amount, setCoupon_amount] = useState(0);
     const [billAmount, setBillAmount] = useState(0);
     const [finalPrice, setfinalPrice] = useState(0);
     const [without_discount_Amount, setwithout_discount_Amount] = useState(0);
     const router = useRouter();
     const setCart = () => {
-        const cart = localStorage.getItem('cart')
+        const cart = localStorage.getItem('cart');
         if (cart && cart != '') {
-            const cartTemp = JSON.parse(cart)
-            setCarts(cartTemp)
+            const cartTemp = JSON.parse(cart);
+            setCarts(cartTemp);
         }
     }
     const couponRemove = () => {
-        setCouponCode('')
+        setCouponCode('');
         isApplied.current = false;
         setCoupon_amount(0);
         setisCouponApplied(false);
     }
-    const applycoins = (type) => {
-        if (type) {
-            couponRemove()
-            if(billAmount<=bellacoins){
+    const applycoins = (getType) => {
+        if (getType) {
+            couponRemove();
+            if (billAmount <= bellacoins) {
                 setbellacoinsInUse(billAmount);
-                return setfinalPrice(0);
-            }
-            else{
+                setfinalPrice(0);
+            } else {
                 setbellacoinsInUse(bellacoins);
-                return setfinalPrice(prev => prev - bellacoins);
+                setfinalPrice(billAmount - bellacoins);
             }
+        } else {
+            couponRemove();
+            getCartValue();
         }
-        couponRemove()
-        return getCartValue();
     }
     const removeItem = (number) => {
-        const tempCart = carts
-        setCartNo(prev => prev - 1)
+        const tempCart = carts;
+        setCartNo(prev => prev - 1);
         tempCart.splice(number, 1);
-        localStorage.setItem('cart', JSON.stringify(tempCart))
-        setCarts(tempCart)
-        setCart()
-        couponRemove()
-        getCartValue()
+        localStorage.setItem('cart', JSON.stringify(tempCart));
+        setCarts(tempCart);
+        setCart();
+        couponRemove();
+        getCartValue();
     }
     const getCartValue = () => {
         const cart = localStorage.getItem('cart')
         if (cart) {
-            const cartTemp = JSON.parse(cart)
-            let total_bill = 0
-            let without_discount_bill = 0
+            const cartTemp = JSON.parse(cart);
+            let total_bill = 0;
+            let without_discount_bill = 0;
             cartTemp.forEach(element => total_bill += element.price_after_discount);
             cartTemp.forEach(element => without_discount_bill += element.price);
-            setfinalPrice(total_bill)
-            setBillAmount(total_bill)
-            setwithout_discount_Amount(without_discount_bill)
+            setfinalPrice(total_bill);
+            setBillAmount(total_bill);
+            setwithout_discount_Amount(without_discount_bill);
         }
     }
 
     const setCart_to_menu = () => {
-        const cart = localStorage.getItem('cart')
+        const cart = localStorage.getItem('cart');
         if (cart && cart != '[]' && cart != '') {
             const len = cart.split('},{').length;
             if (len == 0) {
-                setCartNo(0)
+                setCartNo(0);
             } else {
-                setCartNo(len)
+                setCartNo(len);
             }
         }
     }
     const couponApply = async () => {
         couponRemove();
-        const getProducts = await axios.post("/api/v1/coupon/checkCoupon", { couponCode })
+        const getProducts = await axios.post("/api/v1/coupon/checkCoupon", { couponCode });
         getCartValue();
-        if(bellacoinsRef.current.checked){
-            checkUncheck(false)   
+        if (bellacoinsRef.current.checked) {
+            checkUncheck(false);
         }
         if (getProducts.data.status) {
-            if(!isApplied.current){
+            if (!isApplied.current) {
                 if (getProducts.data.minimumCart <= finalPrice) {
-                    setisCouponApplied(true)
-                    isApplied.current = true
-                    setCoupon_amount(getProducts.data.off)
-                    setfinalPrice(prev => prev - getProducts.data.off)
+                    setisCouponApplied(true);
+                    isApplied.current = true;
+                    setCoupon_amount(getProducts.data.off);
+                    setfinalPrice(prev => prev - getProducts.data.off);
                 }
                 else {
-                    alert(`Minimum cart value is ${getProducts.data.minimumCart}`)
+                    alert(`Minimum cart value is ${getProducts.data.minimumCart}`);
                 }
             }
         }
         else {
-            setisCouponApplied(false)
-            isApplied.current = false
+            setisCouponApplied(false);
+            isApplied.current = false;
             getCartValue();
-            alert("Invalid coupon")
+            alert("Invalid coupon");
         }
         if (cartNo == 0) {
-            alert("Empty cart")
+            alert("Empty cart");
         }
     }
     const session = async () => {
-        const getSession = localStorage.getItem('bella10_state')
+        const getSession = localStorage.getItem('bella10_state');
         if (getSession && getSession != '{}' && getSession != '') {
             const { token } = JSON.parse(getSession);
-            const req = await axios.post('/api/v1/session', { token })
+            const req = await axios.post('/api/v1/session', { token });
             if (req.data.status) {
-                localStorage.setItem('bella10_state', JSON.stringify({ email: req.data.email, token: req.data.token }))
-                setisLogined(true)
+                localStorage.setItem('bella10_state', JSON.stringify({ email: req.data.email, token: req.data.token }));
+                setisLogined(true);
             }
             else {
-                localStorage.setItem('bella10_state', '{}')
+                localStorage.setItem('bella10_state', '{}');
             }
         }
     }
@@ -141,19 +141,19 @@ const cart = () => {
     // }
     const checkUncheck = () => {
         if (bellacoinsRef.current.checked == false) {
-            setbellacoinsUse(false)
-            applycoins()
+            setbellacoinsUse(false);
+            applycoins(false);
         }
         else {
-            setbellacoinsUse(true)
-            applycoins(true)
+            setbellacoinsUse(true);
+            applycoins(true);
         }
     }
-    const getUser = async () =>{
-        const getSession = localStorage.getItem('bella10_state')
-        const { token }  = JSON.parse(getSession);
-        const getData = await axios.post('/api/v1/getUser',{token});
-        setbellacoins(getData.data.bellaPoints)
+    const getUser = async () => {
+        const getSession = localStorage.getItem('bella10_state');
+        const { token } = JSON.parse(getSession);
+        const getData = await axios.post('/api/v1/getUser', { token });
+        setbellacoins(getData.data.bellaPoints);
     }
     useEffect(() => {
         session();
@@ -161,11 +161,11 @@ const cart = () => {
         getCartValue();
         setCart_to_menu();
     }, [])
-    useEffect(()=>{
-        if(isLogined){
+    useEffect(() => {
+        if (isLogined) {
             getUser();
         }
-    },[isLogined])
+    }, [isLogined])
     return (
         <>
             <div className='w-full flex justify-center max-sm:flex-col max-sm:items-center pt-5 mb-20'>
@@ -208,10 +208,10 @@ const cart = () => {
                             <span><span className='text-xs line-through mr-1 text-slate-400'>₹{without_discount_Amount}</span>₹{billAmount}</span>
                         </div>
                         {bellacoinsUse &&
-                        <div className='flex justify-between m-1'>
-                            <span>Bella10 coins</span>
-                            <span className='text-orange-500'>-₹{bellacoinsInUse}</span>
-                        </div>}
+                            <div className='flex justify-between m-1'>
+                                <span>Bella10 coins</span>
+                                <span className='text-orange-500'>-₹{bellacoinsInUse}</span>
+                            </div>}
                         <div className='flex justify-between m-1 border-b-2 pb-6 border-dashed'>
                             <span>Discount</span>
                             <span className='text-orange-500'>-₹{without_discount_Amount - billAmount}</span>

@@ -10,10 +10,9 @@ export default async function handler(req, res) {
             const verify = jwt.verify(token, process.env.SECRET)
             if (verify) {
                 const findUser = await User.findOne({ email: verify.email })
-                const productIDs = []
                 if (findUser) {
                     return res.json({
-                        status: true, orders: findUser.orders,
+                        status: true, orders: findUser.orders.reverse(),
                         totalOrders: findUser.totalOrders,
                         Ordercanceled: findUser.Ordercanceled,
                         email: findUser.email, bellaPoints: findUser.bellaPoints,

@@ -76,9 +76,6 @@ export default async function handler(req, res) {
                         return res.json({ status: false, message: "Coupon problem!" });
                     }
                     if (bellacoinsUse) {
-
-                        if (bellacoinsUse) {
-
                             if (findUser.bellaPoints >= totalbill) {
 
                                 await User.updateOne({ 'email': findUser.email }, { $inc: { bellaPoints: -totalbill } })
@@ -94,12 +91,11 @@ export default async function handler(req, res) {
                             await User.updateOne({ 'email': findUser.email }, { $inc: { bellaPoints: -findUser.bellaPoints } })
                             await User.updateOne({ email: findUser.email }, { $push: { bellaTransaction: { status: true, orderID, time: new Date(), totalbill, usedBellaPoints: findUser.bellaPoints } } })
                             totalbill = totalbill - findUser.bellaPoints;
-                            await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: totalbill, isConfirmed: false, time: new Date() } } })
+                            await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: findUser.bellaPoints, isConfirmed: false, time: new Date() } } })
                             await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
 
 
                             return res.json({ status: true, amount: totalbill, orderID });
-                        }
                     }
                     if (couponCode && couponCode != "") {
 

@@ -68,7 +68,7 @@ const account = () => {
                         </div>
                     </div>
                     <div>Orders</div>
-                    {accountDetails.orders.reverse().map((el, index) => (
+                    {accountDetails.orders.map((el, index) => (
                         <div key={index} className='w-[65%] max-md:w-full my-4 mx-auto border rounded-md bg-white'>
                             <div className='w-full h-16 px-5 bg-gray-200 max-lg:hidden text-gray-600 border-b border-gray-700 flex items-center justify-around'>
                                 <div className='text-xs font-semibold'><h1>ORDER PLACED:</h1> <h2>{el.time.split("T")[0].split("-").reverse().join("-")}</h2></div>
@@ -79,27 +79,17 @@ const account = () => {
                                 {el.couponCode && <div className='text-xs font-semibold'><h1>Coupon used:</h1> <h2 className='text-black'>{el.couponCode}</h2></div>}
                             </div>
                             <div className='border px-2'>
-                                {el.orderCart.map((product, index) => (
-                                    <Link href={`/shop/${product.productIDs}`} key={index} className='bg-white mx-4 flex max-lg:border max-lg:rounded-md'>
+                                    <Link href={`/shop/${el.orderCart[0].productIDs}`} className='bg-white mx-4 flex'>
                                         <Image
                                             className='p-4 max-md:p-2 max-md:w-56 max-md:h-56'
                                             width={110}
                                             height={110}
-                                            alt={product.name}
-                                            src={`/${product.productIDs}.webp`} />
+                                            alt={el.orderCart[0].name}
+                                            src={`/${el.orderCart[0].productIDs}.webp`} />
                                         <div className='w-full'>
                                             <div className='text-orange-500 hover:text-black text-xs mt-4'>{product.name}</div>
-                                            <div className='px-5 hidden max-lg:flex w-full max-lg:flex-wrap max-lg:gap-3 max-lg:mt-5 text-gray-600'>
-                                                <div className='text-xs font-semibold'><h1>ORDER PLACED:</h1> <h2>{el.time.split("T")[0].split("-").reverse().join("-")}</h2></div>
-                                                <div className='text-xs font-semibold'><h1>Total:</h1> <h2 className='text-black'>₹{el.totalbill}</h2></div>
-                                                <div className='text-xs font-semibold'><h1>Order id:</h1> <h2 className='text-black'>{el.orderID}</h2></div>
-                                                <div className='text-xs font-semibold'><h1>BellaPoint used:</h1> <h2 className='text-black'>{el.usedBellaPoints}</h2></div>
-                                                <div className='text-xs font-semibold'><h1>Status:</h1> <h2 className='text-orange-500'>{el.isConfirmed ? 'Delivered' : 'Pending'}</h2></div>
-                                                {el.couponCode && <div className='text-xs font-semibold'><h1>Coupon used:</h1> <h2 className='text-black'>{el.couponCode}</h2></div>}
-                                            </div>
                                         </div>
                                     </Link>
-                                ))}
                             </div>
                         </div>
                     ))}

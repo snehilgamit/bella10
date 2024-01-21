@@ -17,7 +17,7 @@ export default async function handler(req, res) {
                         totalOrders: findUser.totalOrders,
                         Ordercanceled: findUser.Ordercanceled,
                         email: findUser.email, bellaPoints: findUser.bellaPoints,
-                        
+
                     })
                 }
                 return res.json({ message: "unAuthorised", status: false })
@@ -26,6 +26,6 @@ export default async function handler(req, res) {
         catch {
             return res.json({ message: "unAuthorised", status: false })
         }
-        return res.json({ token })
+        return res.json({ message: "unAuthorised", status: false })
     }
 }

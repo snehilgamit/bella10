@@ -21,13 +21,18 @@ export default async function handler(req, res) {
                         }
                     })
                 }
+                else {
+                    return res.json({ message: "unAuthorised", status: false })
+                }
+            }
+            else {
                 return res.json({ message: "unAuthorised", status: false })
             }
         }
-        catch(e) {
+        catch (e) {
             console.log(e)
             return res.json({ message: "unAuthorised", status: false })
         }
-        return res.json({ message: "unAuthorised", status: false })
     }
+    return res.json({ message: "unAuthorised", status: false })
 }

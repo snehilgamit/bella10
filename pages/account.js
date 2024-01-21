@@ -61,7 +61,7 @@ const account = () => {
                     <h1>
                         Account
                     </h1>
-                    <div className='absolute max-md:relative max-md:text-xs max-md:mt-3 text-lg right-0 top-0 flex gap-2'>
+                    <div className='absolute max-md:relative max-md:text-sm max-md:mt-3 text-lg right-0 top-0 flex gap-2'>
                     <div className='bg-black text-white py-1 rounded-3xl px-4 cursor-pointer' onClick={()=>{localStorage.removeItem('bella10_state');router.push('/login')}}>Logout</div>
                     <div className='bg-black text-white py-1 rounded-3xl px-4 cursor-pointer' onClick={()=>{router.push('/transaction')}}>Transaction</div>
                     </div>

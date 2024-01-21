@@ -16,7 +16,7 @@ const account = () => {
     });
     const getUser = async () => {
         const getSession = localStorage.getItem('bella10_state');
-        if(getSession){
+        if (getSession) {
             const { token } = JSON.parse(getSession);
             const getData = await axios.post('/api/v1/getUser', { token });
             setAccountdetails(getData.data);
@@ -88,7 +88,10 @@ const account = () => {
                                         height={110}
                                         alt={el.orderCart[0].name}
                                         src={`/${el.orderCart[0].productIDs}.webp`} />
-                                    <div className='w-full'>
+
+                                    <div className='text-orange-500 hover:text-black text-xs mt-4 max-lg:hidden'>{el.orderCart[0].name} <span className='text-sm ml-4 max-md:ml-0 mt-1 text-black'>+ {el.orderCart.length - 1} more</span> </div>
+
+                                    <div className='w-full hidden max-lg:block'>
                                         <div className='text-orange-500 hover:text-black text-xs mt-4'>{el.orderCart[0].name} <span className='text-sm ml-4 max-md:ml-0 mt-1 text-black'>+ {el.orderCart.length - 1} more</span> </div>
                                         <div className='flex items-center flex-wrap gap-2 my-3 p-2  border border-gray-200'><div className='text-xs font-semibold'><h1>ORDER PLACED:</h1> <h2 className='text-orange-500'>{el.time.split("T")[0].split("-").reverse().join("-")}</h2></div>
                                             <div className='text-xs font-semibold'><h1>Total:</h1> <h2 className='text-orange-500'>₹{el.totalbill}</h2></div>

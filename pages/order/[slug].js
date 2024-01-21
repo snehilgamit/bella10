@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import { useQRCode } from 'next-qrcode';
+import Link from 'next/link'
+import Image from 'next/image'
 const order = () => {
+    const { Canvas } = useQRCode();
     const router = useRouter();
     const { slug } = router.query;
-    const [isLogined, setisLogined] = useState(true);
+    const [token, setToken] = useState('');
+    const [data, setData] = useState(null);
+    const [isLogined, setisLogined] = useState(false);
     const [accountDetails, setAccountdetails] = useState({
         bellaPoints: 0,
         orders: [],
@@ -14,10 +20,12 @@ const order = () => {
     });
     const getUser = async () => {
         const getSession = localStorage.getItem('bella10_state');
-        if (getSession && getSession!='{}' && getSession != '[Object,object]') {
+        if (getSession && getSession != '{}' && getSession != '[Object,object]') {
             const { token } = JSON.parse(getSession);
             const getData = await axios.post('/api/v1/orders/getOrder', { token, orderID: slug });
-            setAccountdetails(getData.data);
+            if (getData.data.status) {
+                setData(getData.data);
+            }
         }
     }
     const session = async () => {
@@ -26,8 +34,9 @@ const order = () => {
             const { token } = JSON.parse(getSession);
             const req = await axios.post('/api/v1/session', { token });
             if (req.data.status) {
+                setToken(req.data.token)
                 localStorage.setItem('bella10_state', JSON.stringify({ email: req.data.email, token: req.data.token }));
-                setisLogined(false);
+                setisLogined(true);
             }
             else {
                 localStorage.setItem('bella10_state', '{}');
@@ -42,7 +51,85 @@ const order = () => {
         getUser();
     }, [slug])
     return (
-        <div>{slug}</div>
+        <>
+            {data &&
+                <div className='w-full flex justify-center max-sm:flex-col max-sm:items-center pt-5 mb-20'>
+                    <div className='w-[85%] border p-5'>
+                        <div className='text-2xl flex items-center mb-2'>Cart <span className='ml-1'>({data.orders.orderCart.length} items)</span></div>
+                        <div className='flex flex-col justify-start'>
+                            {data.orders.orderCart.length == 0 ? <div className='ml-5 mt-5'>Invalid order id</div> : ""}
+                            {data.orders.orderCart.map((el, index) => (
+                                <div key={index} className='relative'>
+                                    <Link href={`/shop/${el.product_id}`} className='w-full batList flex justify-center border max-sm:flex-col transition-all duration-100 z-[1]'>
+                                        <Image
+                                            className='m-5'
+                                            src={`/${el.productIDs}.webp`}
+                                            alt={el.name}
+                                            width={80}
+                                            height={80}
+                                            priority='eagar'
+                                        />
+                                        <div className='w-full flex mt-4 max-md:my-2 max-md:mt-0 justify-start items-start flex-col'>
+                                            <div className='text-sm overflow-hidden h-10 text-start text-orange-500'>{el.name}</div>
+                                        </div>
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className='w-[85%] h-full p-5'>
+                        <div className='text-2xl flex items-center mb-2'>Bill</div>
+                        <div className='w-full border-2 text-sm mt-4 p-9 font-medium'>
+                            <div className='flex justify-between m-1'>
+                                <span>Item total</span>
+                                <span>₹{data.orders.totalbill}</span>
+                            </div>
+                            <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
+                                <span>Bella10 coins</span>
+                                <span className='text-orange-500'>₹{data.orders.usedBellaPoints}</span>
+                            </div>
+                            {data.orders.couponCode &&
+                                <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
+                                    <span>Coupon used</span>
+                                    <span className='text-orange-500'>{data.orders.couponCode}</span>
+                                </div>
+                            }
+                            <div className='flex justify-between m-1 mt-2 text-2xl'>
+                                <span>Grand total</span>
+                                <span className=''>₹{data.orders.totalbill}</span>
+                            </div>
+
+                            <div className='text-sm text-gray-400 m-1  border-b-2 pb-6 border-dashed'>Inclusive of all taxes</div>
+                        </div>
+                        <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
+                            <>
+                                {isLogined ?
+                                <div className='flex flex-col justify-center items-center'>
+                                    <Canvas
+                                        text={slug}
+                                        options={{
+                                            errorCorrectionLevel: 'M',
+                                            margin: 3,
+                                            scale: 4,
+                                            width: 200,
+                                            color: {
+                                                dark: '#000000',
+                                                light: '#f97316',
+                                            },
+                                        }}
+                                    />
+                                    <div className='text-center mt-4'>Share this qr code or <span className='text-orange-500 font-bold'>{slug} </span>in shop</div>
+                                    </div>
+                                    :
+                                    <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { router.push('/login') }}>Login</div>
+                                }
+                            </>
+                        </div>
+                    </div>
+                </div>
+            }
+        </>
     )
 }
 

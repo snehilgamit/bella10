@@ -24,9 +24,10 @@ export default async function handler(req, res) {
                 return res.json({ message: "unAuthorised", status: false })
             }
         }
-        catch {
+        catch(e) {
+            console.log(e)
             return res.json({ message: "unAuthorised", status: false })
         }
-        return res.json({ token })
+        return res.json({ message: "unAuthorised", status: false })
     }
 }

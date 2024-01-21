@@ -83,7 +83,7 @@ const order = () => {
                         <div className='w-full border-2 text-sm mt-4 p-9 font-medium'>
                             <div className='flex justify-between m-1'>
                                 <span>Item total</span>
-                                <span>₹{data.orders.totalbill}</span>
+                                <span>₹{data.orders.totalProductSum}</span>
                             </div>
                             <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
                                 <span>Bella10 coins</span>

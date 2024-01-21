@@ -31,7 +31,7 @@ const Home = () => {
         </div>
         <div className='flex justify-start max-sm:justify-center items-center mt-6 flex-wrap pb-10 max-sm:gap-10 gap-14'>
           {homeMenu.map((el, index) => (
-            <Link href={el == "All" ? "/shop" : `/shop?categories=${el}`} key={index} className='p-4 cursor-pointer px-3 flex justify-center items-center flex-col rounded-full max-sm:scale-90 max-sm:p-2'>
+            <Link href={el == "All" ? "/shop" : `/shop?categories=${el.toLowerCase()}`} key={index} className='p-4 cursor-pointer px-3 flex justify-center items-center flex-col rounded-full max-sm:scale-90 max-sm:p-2'>
               <Image
                 src={`/${el}.png`}
                 height={50}

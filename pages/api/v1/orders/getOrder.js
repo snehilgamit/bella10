@@ -11,9 +11,9 @@ export default async function handler(req, res) {
                 const findUser = await User.findOne({ email: verify.email })
                 if (findUser) {
                     for(let i = 0; i<findUser.orders.length;i++){
-                        if (el.orderID === orderID) {
+                        if (findUser.orders[i].orderID === orderID) {
                             return res.json({
-                                status: true, orders: el,
+                                status: true, orders: findUser.orders[i],
                                 totalOrders: findUser.totalOrders,
                                 Ordercanceled: findUser.Ordercanceled,
                                 email: findUser.email, bellaPoints: findUser.bellaPoints,

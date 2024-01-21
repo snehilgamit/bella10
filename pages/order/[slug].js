@@ -60,7 +60,7 @@ const order = () => {
                             {data.orders.orderCart.length == 0 ? <div className='ml-5 mt-5'>Invalid order id</div> : ""}
                             {data.orders.orderCart.map((el, index) => (
                                 <div key={index} className='relative'>
-                                    <Link href={`/shop/${el.productIDs}`} className='w-full batList flex justify-center border max-sm:flex-col transition-all duration-100 z-[1]'>
+                                    <Link href={`/shop/${el.productIDs}`} className='w-full batList flex justify-center border transition-all duration-100 z-[1]'>
                                         <Image
                                             className='m-5'
                                             src={`/${el.productIDs}.webp`}
@@ -69,7 +69,7 @@ const order = () => {
                                             height={80}
                                             priority='eagar'
                                         />
-                                        <div className='w-full flex mt-4 max-md:my-2 max-md:mt-0 justify-start items-start flex-col text-orange-500 z-10'>
+                                        <div className='w-full flex pt-4 max-md:my-2 max-md:mt-0 justify-start items-start flex-col text-orange-500 z-10'>
                                             <div className='text-sm overflow-hidden h-10 text-start '>{el.name}</div>
                                         </div>
                                     </Link>
@@ -87,7 +87,7 @@ const order = () => {
                             </div>
                             <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
                                 <span>Bella10 coins</span>
-                                <span className='text-orange-500'>₹{data.orders.usedBellaPoints}</span>
+                                <span className='text-orange-500'>-₹{data.orders.usedBellaPoints || 0}</span>
                             </div>
                             {data.orders.couponCode &&
                                 <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>

@@ -13,7 +13,7 @@ export default async function handler(req, res) {
             let i = 0;
             let orderId = "";
             while (i < 12) {
-                orderId += str[Math.floor(Math.random() * str.length - 1)];
+                orderId += str[Math.floor(Math.random() * (str.length - 1))];
                 i++;
             }
             return orderId
@@ -42,7 +42,6 @@ export default async function handler(req, res) {
                         if (checkticket.minimumCart <= totalbill) {
                             totalbill -= checkticket.off;
                             if (bellacoinsUse) {
-
                                 if (findUser.bellaPoints >= totalbill) {
 
                                     await User.updateOne({ 'email': findUser.email }, { $inc: { bellaPoints: -totalbill } })

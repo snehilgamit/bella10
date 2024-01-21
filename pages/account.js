@@ -57,10 +57,11 @@ const account = () => {
     return (
         <>
             <div className='min-h-screen px-10 py-5 w-full mx-auto flex justify-center'>
-                <div className='w-full text-3xl font-semibold'>
+                <div className='w-full text-3xl font-semibold relative'>
                     <h1>
                         Account
                     </h1>
+                    <div className='absolute right-0 top-0 text-lg bg-black text-white py-0.5 rounded-3xl px-4 cursor-pointer' onClick={()=>{localStorage.removeItem('bella10_state');router.push('/login')}}>Logout</div>
                     <div className='bellapoint items-center w-full my-7 flex justify-center'>
                         <div className='w-full flex justify-center text-white gap-5 max-sm:gap-1 flex-wrap'>
                             <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Bella Points :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.bellaPoints}</span></div>

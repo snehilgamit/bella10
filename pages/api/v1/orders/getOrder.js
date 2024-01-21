@@ -10,7 +10,7 @@ export default async function handler(req, res) {
             if (verify) {
                 const findUser = await User.findOne({ email: verify.email })
                 if (findUser) {
-                    findUser.orders.forEach(el => {
+                    for(let i = 0; i<findUser.orders.length;i++){
                         if (el.orderID === orderID) {
                             return res.json({
                                 status: true, orders: el,
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
                                 email: findUser.email, bellaPoints: findUser.bellaPoints,
                             })
                         }
-                    })
+                    }
                 }
                 else {
                     return res.json({ message: "unAuthorised", status: false })

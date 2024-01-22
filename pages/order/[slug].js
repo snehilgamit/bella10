@@ -52,7 +52,7 @@ const order = () => {
     }, [slug])
     return (
         <>
-            {data &&
+            {data==null ?<>loading</>:
                 <div className='w-full flex justify-center max-sm:flex-col max-sm:items-center pt-5 mb-20'>
                     <div className='w-[85%] border p-5'>
                         <div className='text-2xl flex items-center mb-2'>Cart <span className='ml-1'>({data.orders.orderCart.length} items)</span></div>

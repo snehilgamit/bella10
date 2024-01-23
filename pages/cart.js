@@ -6,9 +6,10 @@ import purchase from '@/utils/purchase'
 import axios from 'axios'
 const cart = () => {
     const bellacoinsRef = useRef(null);
+    const [mobileNo, setMobileNo] = useState(null);
     const [carts, setCarts] = useState([]);
-    const [token,setToken] = useState(null); 
-    const [loading,setLoading]=useState('Purchase');
+    const [token, setToken] = useState(null);
+    const [loading, setLoading] = useState('Purchase');
     const [cartNo, setCartNo] = useState(0);
     const [bellacoins, setbellacoins] = useState(0);
     const [bellacoinsInUse, setbellacoinsInUse] = useState(0);
@@ -158,23 +159,32 @@ const cart = () => {
     }
 
 
-    const purchaseIt = async() =>{
+    const purchaseIt = async () => {
         setLoading("Loading...");
-        const getPurchased = await purchase(carts, couponCode,bellacoinsUse,token);
-        if(getPurchased.status){
-            setLoading("Done");
-            localStorage.setItem('cart','[]')
-            setCart_to_menu();
-            setTimeout(()=>{
-                router.push("/account");
-            },500)  
+        if (mobileNo != null) {
+            const getPurchased = await purchase(carts, couponCode, bellacoinsUse, token, mobileNo);
+            if (getPurchased.status) {
+                setLoading("Done");
+                localStorage.setItem('cart', '[]')
+                setCart_to_menu();
+                setTimeout(() => {
+                    router.push("/account");
+                }, 500)
+            }
+            else {
+                setLoading("Faild");
+                alert(getPurchased.message);
+                setTimeout(() => {
+                    setLoading("Purchase");
+                }, 500)
+            }
         }
         else{
             setLoading("Faild");
-            alert(getPurchased.message);
-            setTimeout(()=>{
-                setLoading("Purchase");
-            },500)
+                alert("Enter mobile number");
+                setTimeout(() => {
+                    setLoading("Purchase");
+             }, 500)
         }
     }
     useEffect(() => {
@@ -199,10 +209,10 @@ const cart = () => {
                             <div key={index} className='relative'>
                                 <Link href={`/shop/${el.product_id}`} className='w-full batList flex justify-center border max-sm:flex-col items-center transition-all duration-100 z-[1]'>
                                     <Image
-                                        className='m-5'
-                                        src={`${el.image_uri}`}
-                                        alt={el.name}
+                                        className='m-3'
+                                        src={el.image_uri}
                                         width={80}
+                                        alt={el.name}
                                         height={80}
                                         priority='eagar'
                                     />
@@ -263,6 +273,12 @@ const cart = () => {
 
                         <div className='text-sm text-gray-400 m-1  border-b-2 pb-6 border-dashed'>Inclusive of all taxes</div>
                     </div>
+                    {isLogined &&
+                        <div className='flex justify-center m-1 mb-4 relative'>
+                            <input className='h-10 border w-full px-2 rounded-md' onChange={(e) => { setMobileNo(e.target.value) }} value={mobileNo} placeholder='Enter coupon code' type="text" name="coupon code" id="coupon code" />
+                        </div>
+                        
+                    }
                     <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
                         {cartNo == 0 ?
                             <div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div> : <>

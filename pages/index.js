@@ -19,8 +19,9 @@ const Home = () => {
     <div className='w-full overflow-hidden mb-10'>
       <div className='offer_banner w-full h-full text-white max-sm:my-5 flex justify-center'>
         <Image
-          src={'/poster.png'}
+          src={'/poster.jpg'}
           height={1000}
+          alt={'poster'}
           width={1200}
           priority='eagar'
         />
@@ -34,6 +35,7 @@ const Home = () => {
             <Link href={el == "All" ? "/shop" : `/shop?categories=${el.toLowerCase()}`} key={index} className='p-4 cursor-pointer px-3 flex justify-center items-center flex-col rounded-full max-sm:scale-90 max-sm:p-2'>
               <Image
                 src={`/${el}.png`}
+                alt={el}
                 height={50}
                 width={50}
               />
@@ -50,16 +52,16 @@ const Home = () => {
           {product.map((el, index) => (
             <Link href={`/shop/${el.product_id}`} key={index} className='w-[300px] max-sm:border h-96 batList flex flex-col justify-center items-center hover:shadow-md transition-all duration-100'>
               <Image
-                className='mt-2'
+                className='my-3'
                 src={el.image_uri}
-                width={135}
+                width={140}
                 alt={el.name}
-                height={100}
+                height={180}
                 priority='eagar'
               />
               <div className='w-full h-full flex justify-start items-start flex-col'>
-                <div className='text-sm overflow-hidden h-10 text-start'>{el.name}...</div>
-                <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage} %off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
+                <div className='text-sm overflow-hidden h-10 text-start'>{el.name}</div>
+                <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage}% off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
               </div>
             </Link>
           ))}

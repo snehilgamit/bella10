@@ -62,11 +62,11 @@ const order = () => {
                                 <div key={index} className='relative'>
                                     <Link href={`/shop/${el.productIDs}`} className='w-full batList flex justify-center border transition-all duration-100 z-[1]'>
                                         <Image
-                                            className='m-5'
-                                            src={`/${el.productIDs}.webp`}
+                                            className='m-3'
+                                            src={`/${el.productIDs}.jpg`}
                                             alt={el.name}
                                             width={80}
-                                            height={80}
+                                            height={100}
                                             priority='eagar'
                                         />
                                         <div className='w-full flex pt-4 max-md:my-2 max-md:mt-0 justify-start items-start flex-col text-orange-500 z-10'>

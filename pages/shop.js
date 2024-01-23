@@ -17,10 +17,11 @@ const shop = ({ products }) => {
               {products.map((el, index) => (
                 <Link href={`/shop/${el.product_id}`} key={index} className='w-[300px] max-sm:border h-96 batList flex flex-col justify-center items-center hover:shadow-md transition-all duration-100'>
                   <Image
-                    className='mt-2'
-                    src={`${el.image_uri}`}
-                    width={135}
-                    height={100}
+                    className='my-3'
+                    src={el.image_uri}
+                    width={140}
+                    alt={el.name}
+                    height={180}
                     priority='eagar'
                   />
                   <div className='w-full h-full flex justify-start items-start flex-col'>

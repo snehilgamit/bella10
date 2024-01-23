@@ -4,128 +4,337 @@ import User from '@/models/User';
 import connectDB from "@/util/mongoDB";
 import jwt from 'jsonwebtoken'
 
+// TO-DO: ReWrite entire code
+
+// Function for generating order id 
+const getOrder = () => {
+    const str = "1234567890abcdefghijklmnopqrstuvwxyz"
+    let i = 0;
+    let orderId = "";
+    while (i < 12) {
+        orderId += str[Math.floor(Math.random() * (str.length - 1))];
+        i++;
+    }
+    return orderId
+}
+
+// Increase totalOrders count by +1
+const setorderCount = async (email) => {
+    await User.updateOne({ email }, { $inc: { totalOrders: +1 } })
+    return 0;
+}
+
+
 export default async function handler(req, res) {
-    if (req.method === 'POST') {
-        const { couponCode, productIDs, bellacoinsUse, token } = req.body;
-        connectDB();
-        const getOrder = () => {
-            const str = "1234567890abcdefghijklmnopqrstuvwxyz"
-            let i = 0;
-            let orderId = "";
-            while (i < 12) {
-                orderId += str[Math.floor(Math.random() * (str.length - 1))];
-                i++;
-            }
-            return orderId
-        }
-        try {
-            const verify = jwt.verify(token, process.env.SECRET)
-            if (verify) {
-                const findUser = await User.findOne({ email: verify.email })
-                if (findUser) {
-                    let totalbill = 0;
-                    const orderCart = [];
-                    for (let i = 0; i < productIDs.length; i++) {
-                        const findPRprice = await products.findOne({ product_id: productIDs[i] });
-                        if (findPRprice === null) {
-                            return res.json({ message: "Something went wrong", status: false });
-                        }
-                        orderCart.push({ productIDs: findPRprice.product_id, name: findPRprice.name })
-                        totalbill += findPRprice.price_after_discount;
+    if (req.method !== 'POST') {
+        return res.json({ message: "Invalid method", status: false });
+    }
+
+    const { couponCode, productIDs, bellacoinsUse, token, mobileNo } = req.body;
+    await connectDB();
+
+    try {
+        // Verifying jwt token
+        const verify = jwt.verify(token, process.env.SECRET)
+        if (verify) {
+            const findUser = await User.findOne({ email: verify.email });
+
+            if (findUser) {
+                if(findUser.bellaPoints<0){
+                    return res.json({ message: "Something went wrong", status: false });
+                }
+                // Total bill with price discount
+                let totalbill = 0;
+                const orderCart = [];
+                for (let i = 0; i < productIDs.length; i++) {
+                    const findPRprice = await products.findOne({ product_id: productIDs[i] });
+                    if (findPRprice === null) {
+                        return res.json({ message: "Something went wrong", status: false });
                     }
-                    const totalProductSum = totalbill;
-                    const orderID = getOrder();
-                    if (couponCode && couponCode != "" && bellacoinsUse) {
+                    orderCart.push(
+                        { productIDs: findPRprice.product_id, name: findPRprice.name }
+                    )
+                    totalbill += findPRprice.price_after_discount;
+                }
+                // Saving totalbill to update on database query, it is constant bill can not be changed.
+                const totalProductSum = totalbill;
 
-                        const checkticket = await coupons.findOne({ couponId: couponCode })
+                // Generating order ID
+                const orderID = getOrder();
 
-                        if (checkticket.minimumCart <= totalbill) {
-                            totalbill -= checkticket.off;
-                            if (bellacoinsUse) {
-                                if (findUser.bellaPoints >= totalbill) {
+                // If the coupon code and bellacoins used
+                if (couponCode && couponCode != "" && bellacoinsUse) {
 
-                                    await User.updateOne({ 'email': findUser.email }, { $inc: { bellaPoints: -totalbill } })
-                                    await User.updateOne({ email: findUser.email }, { $push: { bellaTransaction: { status: true, orderID, time: new Date(), totalbill, usedBellaPoints: totalbill } } })
-                                    totalbill = 0;
-                                    await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: totalbill, isConfirmed: false, time: new Date(),totalProductSum } } })
+                    const checkticket = await coupons.findOne({ couponId: couponCode })
 
-                                    await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
+                    // If the minimumcart value is smaller than total bill (it is for setting the minimum order value)
+                    if (checkticket.minimumCart <= totalbill) {
+                        totalbill -= checkticket.off;
 
-                                    return res.json({ status: true, amount: totalbill, orderID });
-                                }
-                                await User.updateOne({ 'email': findUser.email }, { $inc: { bellaPoints: -findUser.bellaPoints } })
+                        // If bella points used
+                        if (bellacoinsUse) {
 
-                                totalbill = totalbill - findUser.bellaPoints;
-                                await User.updateOne({ email: findUser.email }, { $push: { bellaTransaction: { status: true, orderID, time: new Date(), totalbill: findUser.bellaPoints, usedBellaPoints: findUser.bellaPoints,totalProductSum } } })
-                                await User.updateOne({ email: findUser.email }, {
-                                    $push: {
-                                        orders: {
-                                            couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: findUser.bellaPoints, isConfirmed: false, time: new Date(),totalProductSum
+                            // If the user total bill is smaller than user bella points(coins)
+                            const { bellaPoints } = await User.findOne({ email: verify.email });
+                            if (bellaPoints !== findUser.bellaPoints) {
+                                return res.json({ message: "Something went wrong", status: false })
+                            }
+                            if(bellaPoints<0){
+                                return res.json({ message: "Something went wrong", status: false });
+                            }
+                            if (bellaPoints >= totalbill) {
+
+                                // Decreasing user bella points
+                                await User.updateOne(
+                                    { 'email': findUser.email }, {
+                                    $inc: { bellaPoints: -totalbill }
+                                })
+
+                                // Pushing bella transaction
+                                await User.updateOne(
+                                    { email: findUser.email },
+                                    {
+                                        $push: {
+                                            bellaTransaction: {
+                                                status: true, orderID, time: new Date(), totalbill, usedBellaPoints: totalbill
+                                            }
                                         }
                                     }
-                                })
-                                await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
+                                )
+
+                                // Total bill is 0 beacuase all amount paid by bella point(coins)
+                                totalbill = 0;
+
+                                // Storing order
+                                await User.updateOne(
+                                    { email: findUser.email },
+                                    {
+                                        $push: {
+                                            orders: {
+                                                couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: totalbill, isConfirmed: false, time: new Date(), totalProductSum, mobileNo
+                                            }
+                                        }
+                                    }
+                                )
+
+                                // Increase totalOrders count by +1
+                                await setorderCount(findUser.email);
 
                                 return res.json({ status: true, amount: totalbill, orderID });
                             }
-                            await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date() ,totalProductSum} } })
-                            await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
+
+                            // Decreasing user bella points
+                            const getUser = await User.findOne({ email: verify.email });
+                            if (getUser.bellaPoints !== findUser.bellaPoints) {
+                                return res.json({ message: "Something went wrong", status: false })
+                            }
+                            if(getUser.bellaPoints<0){
+                                return res.json({ message: "Something went wrong", status: false });
+                            }
+                            
+                            await User.updateOne(
+                                { 'email': findUser.email },
+                                {
+                                    $inc: {
+                                        bellaPoints: -getUser.bellaPoints
+                                    }
+                                }
+                            )
+
+                            totalbill = totalbill - getUser.bellaPoints;
+
+                            // Pushing bella transaction
+                            await User.updateOne(
+                                { email: findUser.email },
+                                {
+                                    $push: {
+                                        bellaTransaction: {
+                                            status: true, orderID, time: new Date(), totalbill: getUser.bellaPoints, usedBellaPoints: getUser.bellaPoints, totalProductSum
+                                        }
+                                    }
+                                }
+                            )
+
+                            // Storing order
+                            await User.updateOne({ email: findUser.email }, {
+                                $push: {
+                                    orders: {
+                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: getUser.bellaPoints, isConfirmed: false, time: new Date(), totalProductSum, mobileNo
+                                    }
+                                }
+                            })
+
+                            // Increase totalOrders count by +1
+                            await setorderCount(findUser.email);
 
                             return res.json({ status: true, amount: totalbill, orderID });
                         }
-                        return res.json({ status: false, message: "Coupon problem!" });
+
+                        // Storing order
+                        await User.updateOne(
+                            { email: findUser.email },
+                            {
+                                $push: {
+                                    orders: {
+                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date(), totalProductSum, mobileNo
+                                    }
+                                }
+                            }
+                        )
+                        // Increase totalOrders count by +1
+                        await setorderCount(findUser.email);
+
+                        return res.json({ status: true, amount: totalbill, orderID });
                     }
-                    if (bellacoinsUse) {
-                        if (findUser.bellaPoints >= totalbill) {
+                    return res.json({ status: false, message: "Coupon problem!" });
+                }
+                if (bellacoinsUse) {
+                    const getUser = await User.findOne({ email: verify.email });
+                    if (getUser.bellaPoints !== findUser.bellaPoints) {
+                        return res.json({ message: "Something went wrong", status: false })
+                    }
+                    if(getUser.bellaPoints<0){
+                        return res.json({ message: "Something went wrong", status: false });
+                    }
+                    
+                    if (getUser.bellaPoints >= totalbill) {
+                        // Decreasing user bella points
+                        await User.updateOne(
+                            { 'email': findUser.email },
+                            {
+                                $inc: { bellaPoints: -totalbill }
+                            }
+                        )
 
-                            await User.updateOne({ 'email': findUser.email }, { $inc: { bellaPoints: -totalbill } })
-                            await User.updateOne({ email: findUser.email }, { $push: { bellaTransaction: { status: true, orderID, time: new Date(), totalbill, usedBellaPoints: totalbill } } })
-                            totalbill = 0;
-                            await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: totalbill, isConfirmed: false, time: new Date(),totalProductSum } } })
-                            await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
+                        // Pushing bella transaction
+                        await User.updateOne(
+                            { email: findUser.email },
+                            {
+                                $push: {
+                                    bellaTransaction: {
+                                        status: true, orderID, time: new Date(), totalbill, usedBellaPoints: totalbill
+                                    }
+                                }
+                            }
+                        )
+                        totalbill = 0;
 
-
-                            return res.json({ status: true, amount: totalbill, orderID });
-                        }
-
-                        await User.updateOne({ 'email': findUser.email }, { $inc: { bellaPoints: -findUser.bellaPoints } })
-                        await User.updateOne({ email: findUser.email }, { $push: { bellaTransaction: { status: true, orderID, time: new Date(), totalbill, usedBellaPoints: findUser.bellaPoints } } })
-                        totalbill = totalbill - findUser.bellaPoints;
-                        await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: findUser.bellaPoints, isConfirmed: false, time: new Date(),totalProductSum } } })
-                        await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
+                        // Storing order
+                        await User.updateOne(
+                            { email: findUser.email },
+                            {
+                                $push: {
+                                    orders: {
+                                        couponCode, orderCart, bellacoinsUse, totalbill, mobileNo, orderID, usedBellaPoints: totalbill, isConfirmed: false, time: new Date(), totalProductSum
+                                    }
+                                }
+                            }
+                        )
+                        // Increase totalOrders count by +1
+                        await setorderCount(findUser.email);
 
 
                         return res.json({ status: true, amount: totalbill, orderID });
                     }
-                    if (couponCode && couponCode != "") {
-
-                        const checkticket = await coupons.findOne({ couponId: couponCode })
-
-                        if (checkticket.minimumCart <= totalbill) {
-                            totalbill -= checkticket.off;
-
-                            await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date(),totalProductSum } } })
-                            await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
-
-                            return res.json({ status: true, amount: totalbill, orderID });
-                        }
-
-                        return res.json({ status: false, message: "Coupon problem!" });
+                    // Decreasing user bella points
+                    const getUsertemp = await User.findOne({ email: verify.email });
+                    if (getUsertemp.bellaPoints !== findUser.bellaPoints) {
+                        return res.json({ message: "Something went wrong", status: false })
                     }
-                    await User.updateOne({ email: findUser.email }, { $push: { orders: { couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date(),totalProductSum } } })
-                    await User.updateOne({ email: findUser.email }, { $inc: { totalOrders: +1 } })
+                    if(getUsertemp.bellaPoints<0){
+                        return res.json({ message: "Something went wrong", status: false });
+                    }
+                    await User.updateOne(
+                        { 'email': findUser.email },
+                        {
+                            $inc: {
+                                bellaPoints: -getUsertemp.bellaPoints
+                            }
+                        }
+                    )
+
+                    // Pushing bella transaction      
+                    await User.updateOne(
+                        { email: findUser.email },
+                        {
+                            $push: {
+                                bellaTransaction: {
+                                    status: true, orderID, time: new Date(), totalbill, usedBellaPoints:getUsertemp.bellaPoints
+                                }
+                            }
+                        }
+                    )
+                    totalbill = totalbill - getUsertemp.bellaPoints;
+                    // Storing order
+                    await User.updateOne(
+                        { email: findUser.email },
+                        {
+                            $push: {
+                                orders: {
+                                    couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: getUsertemp.bellaPoints, isConfirmed: false, time: new Date(), totalProductSum, mobileNo
+                                }
+                            }
+                        }
+                    )
+
+                    // Increase totalOrders count by +1
+                    await setorderCount(findUser.email);
+
 
                     return res.json({ status: true, amount: totalbill, orderID });
                 }
+                if (couponCode && couponCode != "") {
+                    const checkticket = await coupons.findOne({ couponId: couponCode })
 
-                return res.json({ message: "unAuthorised", status: false })
+                    if (checkticket.minimumCart <= totalbill) {
+                        totalbill -= checkticket.off;
+
+                        // Storing order
+                        await User.updateOne(
+                            { email: findUser.email },
+                            {
+                                $push: {
+                                    orders:
+                                    {
+                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date(), totalProductSum, mobileNo
+                                    }
+                                }
+                            }
+                        )
+
+                        // Increase totalOrders count by +1
+                        await setorderCount(findUser.email);
+
+                        return res.json({ status: true, amount: totalbill, orderID });
+                    }
+
+                    return res.json({ status: false, message: "Coupon problem!" });
+                }
+                // Storing order
+                await User.updateOne(
+                    { email: findUser.email },
+                    {
+                        $push: {
+                            orders: {
+                                couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date(), totalProductSum, mobileNo
+                            }
+                        }
+                    }
+                )
+
+                // Increase totalOrders count by +1
+                await setorderCount(findUser.email);
+
+                return res.json({ status: true, amount: totalbill, orderID });
             }
-        }
-        catch (e) {
-            console.log(e)
-            return res.json({ message: "Something want wrong", status: false })
-        }
 
+            return res.json({ message: "unAuthorised", status: false })
+        }
     }
-    return res.json({ message: "Invalid method", status: false });
+    // catching unExpected errors
+    catch (e) {
+        console.log(e)
+        return res.json({ message: "Something want wrong", status: false })
+    }
+
 }

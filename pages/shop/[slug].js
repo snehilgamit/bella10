@@ -95,9 +95,14 @@ const Slug = () => {
                   </div>
                 </div>
                 <div className={`flex justify-center items-center ${Style.loginArea}`}>
-                  <Link href={'/buy'}>
+                  <a onClick={
+                    () => {
+                      addtocart(product);
+                      router.push('/cart');
+                    }
+                  }>
                     Buy
-                  </Link>
+                  </a>
                   <a onClick={() => { addtocart(product) }}>
                     {add_to_cartText}
                   </a>

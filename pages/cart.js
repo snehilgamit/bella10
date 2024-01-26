@@ -9,7 +9,7 @@ const cart = () => {
     const [isLogined, setIsLogined] = useState(false);
     const [token, setToken] = useState('');
     const [user, setUser] = useState({});
-    const [mobileNo,setMobileNo] = useState('');
+    const [mobileNo, setMobileNo] = useState('');
 
     const [carts, setCarts] = useState([]);
     const cartsRef = useRef([]);
@@ -20,6 +20,8 @@ const cart = () => {
     const [couponCode, setCouponCode] = useState('');
     const bellainputRef = useRef(null);
 
+    const [loading, setLoading] = useState("Purchase");
+    const purchaseBtn = useRef(null);
     const setCart = () => {
         let getcart = localStorage.getItem('cart');
         if (getcart && getcart != '') {
@@ -31,7 +33,7 @@ const cart = () => {
 
     const getCartValue = () => {
         const tempValues = {}
-        if (cartsRef.current.length>0) {
+        if (cartsRef.current.length > 0) {
             cartsRef.current.forEach(el => {
                 tempValues['price_after_discount'] ? tempValues.price_after_discount += el.price_after_discount : tempValues.price_after_discount = el.price_after_discount;
                 tempValues['price'] ? tempValues.price += el.price : tempValues.price = el.price;
@@ -45,8 +47,8 @@ const cart = () => {
             cartValue.current = tempValues;
             setCartsM(tempValues);
         }
-        else{
-            const temp = {"price_after_discount":0,total:0,BellacoinsUsed:0,couponValue:0,price:0,isBellacoinsUsed:false,isCouponApplied:false,percentage:0,price_after_discount:0}
+        else {
+            const temp = { "price_after_discount": 0, total: 0, BellacoinsUsed: 0, couponValue: 0, price: 0, isBellacoinsUsed: false, isCouponApplied: false, percentage: 0, price_after_discount: 0 }
             cartValue.current = temp;
             setCartsM(temp);
         }
@@ -113,42 +115,28 @@ const cart = () => {
     const useBella = () => {
         if (user) {
             if (bellainputRef.current.checked) {
+                var common = {
+                    BellacoinsUsed: user.bellaPoints,
+                    isBellacoinsUsed: true
+                }
                 setCartsM(prev => {
-                    if (prev.isCouponApplied) {
-                        return {
-                            ...prev,
-                            BellacoinsUsed: user.bellaPoints,
-                            isBellacoinsUsed: true,
-                            total: prev.price_after_discount - user.bellaPoints - prev.couponValue
-                        }
-                    }
-                    else {
-                        return {
-                            ...prev,
-                            BellacoinsUsed: user.bellaPoints,
-                            isBellacoinsUsed: true,
-                            total: prev.price_after_discount - user.bellaPoints
-                        }
+                    return {
+                        ...prev,
+                        ...common,
+                        total: prev.isCouponApplied ? prev.price_after_discount - user.bellaPoints - prev.couponValue : prev.price_after_discount - user.bellaPoints
                     }
                 })
             }
             else {
+                var common = {
+                    BellacoinsUsed: 0,
+                    isBellacoinsUsed: false,
+                }
                 setCartsM(prev => {
-                    if (prev.isCouponApplied) {
-                        return {
-                            ...prev,
-                            BellacoinsUsed: 0,
-                            isBellacoinsUsed: false,
-                            total: cartValue.current.price_after_discount - prev.couponValue,
-                        }
-                    }
-                    else {
-                        return {
-                            ...prev,
-                            BellacoinsUsed: 0,
-                            isBellacoinsUsed: false,
-                            total: cartValue.current.price_after_discount,
-                        }
+                    return {
+                        ...prev,
+                        ...common,
+                        total: prev.isCouponApplied ? cartValue.current.price_after_discount - prev.couponValue : cartValue.current.price_after_discount,
                     }
                 })
             }
@@ -278,19 +266,19 @@ const cart = () => {
                             </div>}
                         <div className='flex justify-between m-1 border-b-2 pb-6 border-dashed'>
                             <span>Discount</span>
-                            <span className='text-orange-500'>-₹{cartsM.price - cartsM.price_after_discount ||0}({cartsM.percentage}%)</span>
+                            <span className='text-orange-500'>-₹{cartsM.price - cartsM.price_after_discount || 0}({cartsM.percentage}%)</span>
                         </div>
-                        {isLogined&&carts.length!=0 ? <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed' style={isLogined ? {} : { opacity: 0.6 }}>
+                        {isLogined && carts.length != 0 ? <div className='flex justify-between mt-2 m-1 border-b-2 pb-2 border-dashed' style={isLogined ? {} : { opacity: 0.6 }}>
                             <div>
                                 Use
                                 <span className='text-orange-500 font-bold'> {user.bellaPoints} </span>
                                 bella10 coins
                             </div>
-                            <input className='text-orange-500 p-2' type='checkbox' ref={bellainputRef} onChange={useBella}></input>
+                            <input className='text-orange-500 pb-2' type='checkbox' ref={bellainputRef} onChange={useBella}></input>
                         </div> :
-                            <div className='flex justify-between opacity-60 m-1 border-b-2 pb-2 border-dashed'>
-                                <div>Use <span className='text-orange-500 font-bold'> {user.bellaPoints} </span> bella10 coins</div>
-                                <input className='text-orange-500 p-2' disabled type='checkbox'></input>
+                            <div className='flex justify-between opacity-60 mt-2 m-1 border-b-2 pb-2 border-dashed'>
+                                <div>Use <span className='text-orange-500 font-bold'> {user.bellaPoints || 0} </span> bella10 coins</div>
+                                <input className='text-orange-500 pb-2' disabled type='checkbox'></input>
                             </div>
                         }
                         {cartsM.isCouponApplied &&
@@ -313,10 +301,10 @@ const cart = () => {
 
                     }
                     <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
-                        {0 == 0 ?
+                        {carts.length == 0 ?
                             <div className='cursor-pointer px-10 py-6 bg-black text-white'>Empty cart</div> : <>
                                 {isLogined ?
-                                    <div ref={purchaseBtn} className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { purchaseIt() }}>{ }</div>
+                                    <div ref={purchaseBtn} className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { purchaseIt() }}>{loading}</div>
                                     :
                                     <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { router.push('/login') }}>Login</div>
                                 }</>

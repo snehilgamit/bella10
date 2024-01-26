@@ -4,9 +4,9 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 export default function App({ Component, pageProps }) {
-  const router = useRouter()
+  const router = useRouter();
   const [isLogined,setisLogined]=useState(true);
-  const path  = router.pathname
+  const path  = router.pathname;
   const session = async () => {
     const getSession = localStorage.getItem('bella10_state');
 
@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }) {
             setisLogined(false);
           }
           else {
-            localStorage.setItem('bella10_state', {});
+            localStorage.setItem('bella10_state', '{}');
           }
         }
         catch(err){
@@ -28,8 +28,8 @@ export default function App({ Component, pageProps }) {
         }
 }
   useEffect(()=>{
-    session()
-  },[router])
+    session();
+  },[router]);
   return <>
     {path=='/shop/[slug]'?null:<Menubar isLogined={isLogined}/>}
     <Component {...pageProps} />

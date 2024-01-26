@@ -5,99 +5,75 @@ import Image from 'next/image'
 import purchase from '@/utils/purchase'
 import axios from 'axios'
 const cart = () => {
-    const bellacoinsRef = useRef(null);
-    const [mobileNo, setMobileNo] = useState(null);
-    const [carts, setCarts] = useState([]);
-    const [token, setToken] = useState(null);
-    const [loading, setLoading] = useState('Purchase');
-    const [cartNo, setCartNo] = useState(0);
-    const [bellacoins, setbellacoins] = useState(0);
-    const [bellacoinsInUse, setbellacoinsInUse] = useState(0);
-    const [bellacoinsUse, setbellacoinsUse] = useState(false);
-    const [isLogined, setisLogined] = useState(false);
-    const [couponCode, setCouponCode] = useState('');
-    const [isCouponApplied, setisCouponApplied] = useState(false);
-    const isApplied = useRef(false);
-    const [coupon_amount, setCoupon_amount] = useState(0);
-    const [billAmount, setBillAmount] = useState(0);
-    const [finalPrice, setfinalPrice] = useState(0);
-    const [without_discount_Amount, setwithout_discount_Amount] = useState(0);
     const router = useRouter();
+    const [isLogined, setIsLogined] = useState(false);
+    const [token, setToken] = useState('');
+    const [user, setUser] = useState({});
+    const [mobileNo,setMobileNo] = useState('');
+
+    const [carts, setCarts] = useState([]);
+    const cartsRef = useRef([]);
+
+    const cartValue = useRef({});
+    const [cartsM, setCartsM] = useState({});
+
+    const [couponCode, setCouponCode] = useState('');
+    const bellainputRef = useRef(null);
+
     const setCart = () => {
-        const cart = localStorage.getItem('cart');
-        if (cart && cart != '') {
-            const cartTemp = JSON.parse(cart);
-            setCarts(cartTemp);
-        }
-    }
-    const couponRemove = () => {
-        setCouponCode('');
-        isApplied.current = false;
-        setCoupon_amount(0);
-        setisCouponApplied(false);
-    }
-    const applycoins = (getType) => {
-        if (getType) {
-            if (billAmount <= bellacoins) {
-                setbellacoinsInUse(billAmount);
-                setfinalPrice(0);
-            } else {
-                setbellacoinsInUse(bellacoins);
-                setfinalPrice(billAmount - bellacoins);
-            }
-        } else {
-            couponRemove();
-            getCartValue();
-        }
-    }
-    const removeItem = (number) => {
-        const tempCart = carts;
-        setCartNo(prev => prev - 1);
-        tempCart.splice(number, 1);
-        localStorage.setItem('cart', JSON.stringify(tempCart));
-        setCarts(tempCart);
-        setCart();
-        couponRemove();
-        getCartValue();
-    }
-    const getCartValue = () => {
-        const cart = localStorage.getItem('cart')
-        if (cart) {
-            const cartTemp = JSON.parse(cart);
-            let total_bill = 0;
-            let without_discount_bill = 0;
-            cartTemp.forEach(element => total_bill += element.price_after_discount);
-            cartTemp.forEach(element => without_discount_bill += element.price);
-            setfinalPrice(total_bill);
-            setBillAmount(total_bill);
-            setwithout_discount_Amount(without_discount_bill);
+        let getcart = localStorage.getItem('cart');
+        if (getcart && getcart != '') {
+            getcart = JSON.parse(getcart);
+            setCarts(getcart);
+            cartsRef.current = getcart;
         }
     }
 
-    const setCart_to_menu = () => {
-        const cart = localStorage.getItem('cart');
-        if (cart && cart != '[]' && cart != '') {
-            const len = cart.split('},{').length;
-            if (len == 0) {
-                setCartNo(0);
-            } else {
-                setCartNo(len);
-            }
+    const getCartValue = () => {
+        const tempValues = {}
+        if (cartsRef.current.length>0) {
+            cartsRef.current.forEach(el => {
+                tempValues['price_after_discount'] ? tempValues.price_after_discount += el.price_after_discount : tempValues.price_after_discount = el.price_after_discount;
+                tempValues['price'] ? tempValues.price += el.price : tempValues.price = el.price;
+            })
+            tempValues.percentage = (tempValues.price_after_discount / tempValues.price) * 100;
+            tempValues.isCouponApplied = false;
+            tempValues.isBellacoinsUsed = false;
+            tempValues.total = tempValues.price_after_discount;
+            tempValues.BellacoinsUsed = 0;
+            tempValues.couponValue = 0;
+            cartValue.current = tempValues;
+            setCartsM(tempValues);
+        }
+        else{
+            const temp = {"price_after_discount":0,total:0,BellacoinsUsed:0,couponValue:0,price:0,isBellacoinsUsed:false,isCouponApplied:false,percentage:0,price_after_discount:0}
+            cartValue.current = temp;
+            setCartsM(temp);
         }
     }
+
     const couponApply = async () => {
         const getProducts = await axios.post("/api/v1/coupon/checkCoupon", { couponCode });
-        getCartValue();
-        if (bellacoinsRef.current.checked) {
-            checkUncheck(false);
-        }
         if (getProducts.data.status) {
-            if (!isApplied.current) {
-                if (getProducts.data.minimumCart <= finalPrice) {
-                    setisCouponApplied(true);
-                    isApplied.current = true;
-                    setCoupon_amount(getProducts.data.off);
-                    setfinalPrice(prev => prev - getProducts.data.off);
+            if (!cartsM.isCouponApplied) {
+                if (getProducts.data.minimumCart <= cartsM.total) {
+                    setCartsM(prev => {
+                        if (prev.isBellacoinsUsed) {
+                            return {
+                                ...prev,
+                                isCouponApplied: true,
+                                couponValue: getProducts.data.off,
+                                total: prev.price_after_discount - getProducts.data.off - prev.BellacoinsUsed,
+                            }
+                        } else {
+                            return {
+                                ...prev,
+                                isCouponApplied: true,
+                                couponValue: getProducts.data.off,
+                                total: prev.price_after_discount - getProducts.data.off,
+                            }
+                        }
+                    })
                 }
                 else {
                     alert(`Minimum cart value is ${getProducts.data.minimumCart}`);
@@ -105,14 +81,87 @@ const cart = () => {
             }
         }
         else {
-            setisCouponApplied(false);
-            isApplied.current = false;
-            getCartValue();
             alert("Invalid coupon");
         }
-        if (cartNo == 0) {
+        if (carts.length === 0) {
             alert("Empty cart");
         }
+    }
+    const removeCoupon = async () => {
+        if (cartsM.isCouponApplied) {
+            setCartsM(prev => {
+                if (prev.isBellacoinsUsed) {
+                    return {
+                        ...prev,
+                        isCouponApplied: false,
+                        couponValue: 0,
+                        total: cartValue.current.price_after_discount - prev.BellacoinsUsed,
+                    }
+                }
+                else {
+                    return {
+                        ...prev,
+                        isCouponApplied: false,
+                        couponValue: 0,
+                        total: cartValue.current.price_after_discount,
+                    }
+                }
+            })
+        }
+        setCouponCode("")
+    }
+    const useBella = () => {
+        if (user) {
+            if (bellainputRef.current.checked) {
+                setCartsM(prev => {
+                    if (prev.isCouponApplied) {
+                        return {
+                            ...prev,
+                            BellacoinsUsed: user.bellaPoints,
+                            isBellacoinsUsed: true,
+                            total: prev.price_after_discount - user.bellaPoints - prev.couponValue
+                        }
+                    }
+                    else {
+                        return {
+                            ...prev,
+                            BellacoinsUsed: user.bellaPoints,
+                            isBellacoinsUsed: true,
+                            total: prev.price_after_discount - user.bellaPoints
+                        }
+                    }
+                })
+            }
+            else {
+                setCartsM(prev => {
+                    if (prev.isCouponApplied) {
+                        return {
+                            ...prev,
+                            BellacoinsUsed: 0,
+                            isBellacoinsUsed: false,
+                            total: cartValue.current.price_after_discount - prev.couponValue,
+                        }
+                    }
+                    else {
+                        return {
+                            ...prev,
+                            BellacoinsUsed: 0,
+                            isBellacoinsUsed: false,
+                            total: cartValue.current.price_after_discount,
+                        }
+                    }
+                })
+            }
+        }
+    }
+    const removeItem = (number) => {
+        const tempCart = carts;
+        setCarts(prev => prev - 1);
+        tempCart.splice(number, 1);
+        localStorage.setItem('cart', JSON.stringify(tempCart));
+        setCarts(tempCart);
+        cartsRef.current = tempCart
+        getCartValue()
     }
     const session = async () => {
         const getSession = localStorage.getItem('bella10_state');
@@ -122,44 +171,24 @@ const cart = () => {
             if (req.data.status) {
                 localStorage.setItem('bella10_state', JSON.stringify({ email: req.data.email, token: req.data.token }));
                 setToken(req.data.token);
-                setisLogined(true);
+                setIsLogined(true);
             }
             else {
+                setIsLogined(false);
                 localStorage.setItem('bella10_state', '{}');
             }
-        }
-    }
-    // const checkUncheck = () => {
-    //     if (bellacoinsRef.current.checked == false) {
-    //         bellacoinsRef.current.checked = true
-    //         setbellacoinsUse(true)
-    //         applycoins(true)
-    //     }
-    //     else {
-    //         bellacoinsRef.current.checked = false
-    //         setbellacoinsUse(false)
-    //         applycoins(false)
-    //     }
-    // }
-    const checkUncheck = () => {
-        if (bellacoinsRef.current.checked == false) {
-            setbellacoinsUse(false);
-            applycoins(false);
-        }
-        else {
-            setbellacoinsUse(true);
-            applycoins(true);
         }
     }
     const getUser = async () => {
         const getSession = localStorage.getItem('bella10_state');
         const { token } = JSON.parse(getSession);
         const getData = await axios.post('/api/v1/getUser', { token });
-        setbellacoins(getData.data.bellaPoints);
+        setUser(getData.data);
     }
 
 
     const purchaseIt = async () => {
+        purchaseBtn.current.disabled = true;
         setLoading("Loading...");
         if (mobileNo != null) {
             const getPurchased = await purchase(carts, couponCode, bellacoinsUse, token, mobileNo);
@@ -179,19 +208,19 @@ const cart = () => {
                 }, 500)
             }
         }
-        else{
+        else {
             setLoading("Faild");
-                alert("Enter mobile number");
-                setTimeout(() => {
-                    setLoading("Purchase");
-             }, 500)
+            alert("Enter mobile number");
+            setTimeout(() => {
+                setLoading("Purchase");
+            }, 500)
         }
+        purchaseBtn.current.disabled = false;
     }
     useEffect(() => {
         session();
         setCart();
         getCartValue();
-        setCart_to_menu();
     }, [])
     useEffect(() => {
         if (isLogined) {
@@ -202,7 +231,7 @@ const cart = () => {
         <>
             <div className='w-full flex justify-center max-sm:flex-col max-sm:items-center pt-5 mb-20'>
                 <div className='w-[85%] border p-5'>
-                    <div className='text-2xl flex items-center mb-2'>Cart <span className='ml-1'>({cartNo} items)</span></div>
+                    <div className='text-2xl flex items-center mb-2'>Cart <span className='ml-1'>({carts.length || 0} items)</span></div>
                     <div className='flex flex-col justify-start'>
                         {carts.length == 0 ? <div className='ml-5 mt-5'>Empty cart</div> : ""}
                         {carts.map((el, index) => (
@@ -233,57 +262,61 @@ const cart = () => {
                     <div className='w-full border-2 text-sm mt-4 p-9 font-medium'>
                         <div className='flex justify-center m-1 mb-4 relative'>
                             <input className='h-10 border w-full px-2 rounded-md' onChange={(e) => { setCouponCode(e.target.value) }} value={couponCode} placeholder='Enter coupon code' type="text" name="coupon code" id="coupon code" />
-                            <div onClick={couponApply} className='absolute rounded-r-md hover:bg-slate-700 bg-black text-white right-0 h-full w-20 cursor-pointer flex justify-center items-center'>Apply</div>
+                            {cartsM.isCouponApplied ?
+                                <div className='absolute rounded-r-md hover:bg-slate-700 bg-black text-white right-0 h-full w-20 cursor-pointer flex justify-center items-center' onClick={removeCoupon}>Remove</div> :
+                                <div className='absolute rounded-r-md hover:bg-slate-700 bg-black text-white right-0 h-full w-20 cursor-pointer flex justify-center items-center' onClick={couponApply}>Apply</div>
+                            }
                         </div>
                         <div className='flex justify-between m-1'>
                             <span>Item total</span>
-                            <span><span className='text-xs line-through mr-1 text-slate-400'>₹{without_discount_Amount}</span>₹{billAmount}</span>
+                            <span><span className='text-xs line-through mr-1 text-slate-400'>₹{cartsM.price}</span>₹{cartsM.price_after_discount}</span>
                         </div>
-                        {bellacoinsUse &&
+                        {cartsM.isBellacoinsUsed &&
                             <div className='flex justify-between m-1'>
                                 <span>Bella10 coins</span>
-                                <span className='text-orange-500'>-₹{bellacoinsInUse}</span>
+                                <span className='text-orange-500'>-₹{user.bellaPoints}</span>
                             </div>}
                         <div className='flex justify-between m-1 border-b-2 pb-6 border-dashed'>
                             <span>Discount</span>
-                            <span className='text-orange-500'>-₹{without_discount_Amount - billAmount}</span>
+                            <span className='text-orange-500'>-₹{cartsM.price - cartsM.price_after_discount ||0}({cartsM.percentage}%)</span>
                         </div>
-                        {isLogined ? <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed' style={isLogined ? {} : { opacity: 0.6 }}>
+                        {isLogined&&carts.length!=0 ? <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed' style={isLogined ? {} : { opacity: 0.6 }}>
                             <div>
                                 Use
-                                <span className='text-orange-500 font-bold'> {bellacoins} </span>
+                                <span className='text-orange-500 font-bold'> {user.bellaPoints} </span>
                                 bella10 coins
                             </div>
-                            <input ref={bellacoinsRef} onChange={checkUncheck} className='text-orange-500 p-2' type='checkbox'></input>
+                            <input className='text-orange-500 p-2' type='checkbox' ref={bellainputRef} onChange={useBella}></input>
                         </div> :
                             <div className='flex justify-between opacity-60 m-1 border-b-2 pb-2 border-dashed'>
-                                <div>Use bella10 coins</div>
+                                <div>Use <span className='text-orange-500 font-bold'> {user.bellaPoints} </span> bella10 coins</div>
                                 <input className='text-orange-500 p-2' disabled type='checkbox'></input>
                             </div>
                         }
-                        {isCouponApplied &&
+                        {cartsM.isCouponApplied &&
                             <div className=' flex justify-between m-1 border-b-2 pb-4 mt-4 border-dashed'>
                                 <span>Coupon discount</span>
-                                <span className='text-orange-500'>-₹{coupon_amount}</span>
+                                <span className='text-orange-500'>-₹{cartsM.couponValue}</span>
                             </div>}
                         <div className='flex justify-between m-1 mt-2 text-2xl'>
                             <span>Grand total</span>
-                            <span className=''>₹{finalPrice}</span>
+                            <span className=''>₹{cartsM.total}</span>
                         </div>
 
                         <div className='text-sm text-gray-400 m-1  border-b-2 pb-6 border-dashed'>Inclusive of all taxes</div>
                     </div>
                     {isLogined &&
-                        <div className='flex justify-center m-1 mb-4 relative'>
-                            <input className='h-10 border w-full px-2 rounded-md' onChange={(e) => { setMobileNo(e.target.value) }} value={mobileNo} placeholder='Enter coupon code' type="text" name="coupon code" id="coupon code" />
+                        <div className='flex justify-center m-4 relative'>
+                            <div className='rounded-l-md absolute left-0 h-full  hover:bg-slate-700 bg-black text-white w-20 flex justify-center items-center'>+91</div>
+                            <input className='h-10 border w-full px-2 rounded-md pl-[5.3rem] placeholder:text-black' value={mobileNo} onChange={(e) => { setMobileNo(e.target.value) }} pattern="[0-9]{10}" placeholder="Enter 10-digit phone number" required name="Mobile number" id="mobileNo" />
                         </div>
-                        
+
                     }
                     <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
-                        {cartNo == 0 ?
-                            <div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div> : <>
+                        {0 == 0 ?
+                            <div className='cursor-pointer px-10 py-6 bg-black text-white'>Empty cart</div> : <>
                                 {isLogined ?
-                                    <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { purchaseIt() }}>{loading}</div>
+                                    <div ref={purchaseBtn} className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { purchaseIt() }}>{ }</div>
                                     :
                                     <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { router.push('/login') }}>Login</div>
                                 }</>

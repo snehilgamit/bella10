@@ -96,7 +96,7 @@ export default async function handler(req, res) {
                                     {
                                         $push: {
                                             bellaTransaction: {
-                                                status: true, orderID, time: new Date(), totalbill, usedBellaPoints: totalbill
+                                                status: true, orderID, time: new Date(),type:"order", totalbill, usedBellaPoints: totalbill
                                             }
                                         }
                                     }
@@ -149,7 +149,7 @@ export default async function handler(req, res) {
                                 {
                                     $push: {
                                         bellaTransaction: {
-                                            status: true, orderID, time: new Date(), totalbill: getUser.bellaPoints, usedBellaPoints: getUser.bellaPoints, totalProductSum
+                                            status: true, orderID, time: new Date(), type:"order", totalbill: getUser.bellaPoints, usedBellaPoints: getUser.bellaPoints, totalProductSum
                                         }
                                     }
                                 }
@@ -212,7 +212,7 @@ export default async function handler(req, res) {
                             {
                                 $push: {
                                     bellaTransaction: {
-                                        status: true, orderID, time: new Date(), totalbill, usedBellaPoints: totalbill
+                                        status: true, orderID, time: new Date(), type:"order", totalbill, usedBellaPoints: totalbill
                                     }
                                 }
                             }
@@ -259,7 +259,7 @@ export default async function handler(req, res) {
                         {
                             $push: {
                                 bellaTransaction: {
-                                    status: true, orderID, time: new Date(), totalbill, usedBellaPoints:getUsertemp.bellaPoints
+                                    status: true, orderID, time: new Date(), type:"order", totalbill, usedBellaPoints:getUsertemp.bellaPoints
                                 }
                             }
                         }

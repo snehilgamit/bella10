@@ -89,6 +89,14 @@ const order = () => {
                                 <span>Bella10 coins</span>
                                 <span className='text-orange-500'>-₹{data.orders.usedBellaPoints || 0}</span>
                             </div>
+                            <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
+                                <span>Date</span>
+                                <span className='text-orange-500'>{new Date(data.orders.time).toLocaleDateString()}</span>
+                            </div>
+                            <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
+                                <span>Time</span>
+                                <span className='text-orange-500'>{new Date(data.orders.time).toLocaleTimeString('en-IN').toUpperCase() }</span>
+                            </div>
                             {data.orders.couponCode &&
                                 <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
                                     <span>Coupon used</span>

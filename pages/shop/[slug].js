@@ -10,8 +10,9 @@ const Slug = () => {
   const router = useRouter();
   const { slug } = router.query
   const [value, setValue] = useState("loading")
-  const [cartNum, setCartNum] = useState(0)
+  const [cartNum, setCartNum] = useState(0);
   const [add_to_cartText, setadd_to_cartText] = useState("Add to cart")
+  const [addtoCart, setaddtoCart] = useState(true);
   const [product, setProduct] = useState({});
 
   const setCart_to_menu = () => {
@@ -22,19 +23,19 @@ const Slug = () => {
     }
   }
   const addtocart = (getCart) => {
-    setadd_to_cartText("Added!")
-    const cart = localStorage.getItem('cart')
+    setaddtoCart(false)
+    const cart = localStorage.getItem('cart');
     if (cart) {
       const tempCart = JSON.parse(cart);
-      tempCart.push(getCart)
-      localStorage.setItem('cart', JSON.stringify(tempCart))
+      tempCart.push(getCart);
+      localStorage.setItem('cart', JSON.stringify(tempCart));
     }
     else {
-      localStorage.setItem('cart', JSON.stringify([getCart]))
+      localStorage.setItem('cart', JSON.stringify([getCart]));
     }
     setTimeout(() => {
-      setadd_to_cartText("Add to cart")
-    }, 800)
+      setaddtoCart(true)
+    }, 1000)
     setCart_to_menu();
   }
   useEffect(() => {
@@ -45,9 +46,9 @@ const Slug = () => {
     setValue(slug)
   }, [slug])
   const fetchData = async () => {
-    const getProducts = await axios.post("/api/v1/product/getProduct", { product_id: slug })
-    setProduct(getProducts.data.results)
-    setIsFetching(false)
+    const getProducts = await axios.post("/api/v1/product/getProduct", { product_id: slug });
+    setProduct(getProducts.data.results);
+    setIsFetching(false);
   }
   return (
     <>
@@ -95,17 +96,20 @@ const Slug = () => {
                   </div>
                 </div>
                 <div className={`flex justify-center items-center ${Style.loginArea}`}>
-                  <a onClick={
-                    () => {
-                      addtocart(product);
-                      router.push('/cart');
-                    }
+                  <a onClick={() => {
+                  addtocart(product);
+                  router.push('/cart');
+                  }
                   }>
                     Buy
                   </a>
-                  <a onClick={() => { addtocart(product) }}>
-                    {add_to_cartText}
+                  {addtoCart ? <a onClick={() => { addtocart(product) }}>
+                      Add to cart
                   </a>
+                  :
+                  <a>
+                      Adding...
+                  </a>}
                 </div>
               </div>
             </div>

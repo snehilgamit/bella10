@@ -32,6 +32,7 @@ const account = () => {
                 setisLogined(false);
             }
             else {
+                setisLogined(true);
                 localStorage.setItem('bella10_state', '{}');
             }
         }

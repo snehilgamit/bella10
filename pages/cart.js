@@ -6,6 +6,7 @@ import purchase from '@/utils/purchase'
 import axios from 'axios'
 const cart = () => {
     const router = useRouter();
+
     const [isLogined, setIsLogined] = useState(false);
     const [token, setToken] = useState('');
     const [user, setUser] = useState({});
@@ -22,6 +23,7 @@ const cart = () => {
 
     const [loading, setLoading] = useState("Purchase");
     const purchaseBtn = useRef(null);
+
     const setCart = () => {
         let getcart = localStorage.getItem('cart');
         if (getcart && getcart != '') {
@@ -32,7 +34,7 @@ const cart = () => {
     }
 
     const getCartValue = () => {
-        const tempValues = {}
+        const tempValues = {};
         if (cartsRef.current.length > 0) {
             cartsRef.current.forEach(el => {
                 tempValues['price_after_discount'] ? tempValues.price_after_discount += el.price_after_discount : tempValues.price_after_discount = el.price_after_discount;
@@ -48,13 +50,17 @@ const cart = () => {
             setCartsM(tempValues);
         }
         else {
-            const temp = { "price_after_discount": 0, total: 0, BellacoinsUsed: 0, couponValue: 0, price: 0, isBellacoinsUsed: false, isCouponApplied: false, percentage: 0, price_after_discount: 0 }
+            const temp = { "price_after_discount": 0, total: 0, BellacoinsUsed: 0, couponValue: 0, price: 0, isBellacoinsUsed: false, isCouponApplied: false, percentage: 0, price_after_discount: 0 };
             cartValue.current = temp;
             setCartsM(temp);
         }
     }
 
     const couponApply = async () => {
+        if(carts.length>0){
+            alert("Cart is empty")
+            return 0
+        }
         const getProducts = await axios.post("/api/v1/coupon/checkCoupon", { couponCode });
         if (getProducts.data.status) {
             if (!cartsM.isCouponApplied) {
@@ -85,10 +91,8 @@ const cart = () => {
         else {
             alert("Invalid coupon");
         }
-        if (carts.length === 0) {
-            alert("Empty cart");
-        }
     }
+
     const removeCoupon = async () => {
         if (cartsM.isCouponApplied) {
             setCartsM(prev => {
@@ -112,6 +116,7 @@ const cart = () => {
         }
         setCouponCode("")
     }
+
     const useBella = () => {
         if (user) {
             if (bellainputRef.current.checked) {
@@ -142,6 +147,7 @@ const cart = () => {
             }
         }
     }
+
     const removeItem = (number) => {
         const tempCart = carts;
         setCarts(prev => prev - 1);
@@ -151,6 +157,7 @@ const cart = () => {
         cartsRef.current = tempCart
         getCartValue()
     }
+
     const session = async () => {
         const getSession = localStorage.getItem('bella10_state');
         if (getSession && getSession != '{}' && getSession != '') {
@@ -167,6 +174,7 @@ const cart = () => {
             }
         }
     }
+
     const getUser = async () => {
         const getSession = localStorage.getItem('bella10_state');
         const { token } = JSON.parse(getSession);
@@ -174,26 +182,25 @@ const cart = () => {
         setUser(getData.data);
     }
 
-
     const purchaseIt = async () => {
         purchaseBtn.current.disabled = true;
         setLoading("Loading...");
         if (mobileNo != null) {
-            const getPurchased = await purchase(carts, couponCode, bellacoinsUse, token, mobileNo);
+            const getPurchased = await purchase(carts, couponCode, cartsM.isBellacoinsUsed, token, mobileNo);
             if (getPurchased.status) {
                 setLoading("Done");
                 localStorage.setItem('cart', '[]')
-                setCart_to_menu();
+                setCart();
                 setTimeout(() => {
                     router.push("/account");
-                }, 500)
+                }, 500);
             }
             else {
                 setLoading("Faild");
                 alert(getPurchased.message);
                 setTimeout(() => {
                     setLoading("Purchase");
-                }, 500)
+                }, 500);
             }
         }
         else {
@@ -205,16 +212,19 @@ const cart = () => {
         }
         purchaseBtn.current.disabled = false;
     }
+
     useEffect(() => {
         session();
         setCart();
         getCartValue();
-    }, [])
+    }, []);
+
     useEffect(() => {
         if (isLogined) {
             getUser();
         }
-    }, [isLogined])
+    }, [isLogined]);
+
     return (
         <>
             <div className='w-full flex justify-center max-sm:flex-col max-sm:items-center pt-5 mb-20'>
@@ -257,7 +267,9 @@ const cart = () => {
                         </div>
                         <div className='flex justify-between m-1'>
                             <span>Item total</span>
-                            <span><span className='text-xs line-through mr-1 text-slate-400'>₹{cartsM.price}</span>₹{cartsM.price_after_discount}</span>
+                            <span>
+                                {/* <span className='text-xs line-through mr-1 text-slate-400'>₹{cartsM.price}</span> */}
+                                ₹{cartsM.price}</span>
                         </div>
                         {cartsM.isBellacoinsUsed &&
                             <div className='flex justify-between m-1'>
@@ -266,7 +278,7 @@ const cart = () => {
                             </div>}
                         <div className='flex justify-between m-1 border-b-2 pb-6 border-dashed'>
                             <span>Discount</span>
-                            <span className='text-orange-500'>-₹{cartsM.price - cartsM.price_after_discount || 0}({cartsM.percentage}%)</span>
+                            <span className='text-orange-500'>-₹{cartsM.price - cartsM.price_after_discount || 0}({cartsM.percentage ? cartsM.percentage.toFixed(2) : 0}%)</span>
                         </div>
                         {isLogined && carts.length != 0 ? <div className='flex justify-between mt-2 m-1 border-b-2 pb-2 border-dashed' style={isLogined ? {} : { opacity: 0.6 }}>
                             <div>
@@ -295,14 +307,14 @@ const cart = () => {
                     </div>
                     {isLogined &&
                         <div className='flex justify-center m-4 relative'>
-                            <div className='rounded-l-md absolute left-0 h-full  hover:bg-slate-700 bg-black text-white w-20 flex justify-center items-center'>+91</div>
+                            <div className='rounded-l-md absolute left-0 h-full  bg-black text-white w-20 flex justify-center items-center'>+91</div>
                             <input className='h-10 border w-full px-2 rounded-md pl-[5.3rem] placeholder:text-black' value={mobileNo} onChange={(e) => { setMobileNo(e.target.value) }} pattern="[0-9]{10}" placeholder="Enter phone number" required name="Mobile number" id="mobileNo" />
                         </div>
 
                     }
                     <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
                         {carts.length == 0 ?
-                            <div className='cursor-pointer px-10 py-6 bg-black text-white'>Empty cart</div> : <>
+                            <div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div> : <>
                                 {isLogined ?
                                     <div ref={purchaseBtn} className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { purchaseIt() }}>{loading}</div>
                                     :

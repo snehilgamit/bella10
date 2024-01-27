@@ -226,11 +226,11 @@ const cart = () => {
                             <div key={index} className='relative'>
                                 <Link href={`/shop/${el.product_id}`} className='w-full batList flex justify-center border max-sm:flex-col items-center transition-all duration-100 z-[1]'>
                                     <Image
-                                        className='m-3'
+                                        className='m-3 py-6'
                                         src={el.image_uri}
                                         width={80}
                                         alt={el.name}
-                                        height={80}
+                                        height={120}
                                         priority='eagar'
                                     />
                                     <div className='w-full flex justify-start items-start flex-col'>

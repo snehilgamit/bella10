@@ -226,11 +226,11 @@ const cart = () => {
                             <div key={index} className='relative'>
                                 <Link href={`/shop/${el.product_id}`} className='w-full batList flex justify-center border max-sm:flex-col items-center transition-all duration-100 z-[1]'>
                                     <Image
-                                        className='m-3 py-6'
+                                        className='m-3 max-sm:my-6 mx-6'
                                         src={el.image_uri}
-                                        width={80}
+                                        width={100}
                                         alt={el.name}
-                                        height={120}
+                                        height={160}
                                         priority='eagar'
                                     />
                                     <div className='w-full flex justify-start items-start flex-col'>
@@ -296,7 +296,7 @@ const cart = () => {
                     {isLogined &&
                         <div className='flex justify-center m-4 relative'>
                             <div className='rounded-l-md absolute left-0 h-full  hover:bg-slate-700 bg-black text-white w-20 flex justify-center items-center'>+91</div>
-                            <input className='h-10 border w-full px-2 rounded-md pl-[5.3rem] placeholder:text-black' value={mobileNo} onChange={(e) => { setMobileNo(e.target.value) }} pattern="[0-9]{10}" placeholder="Enter 10-digit phone number" required name="Mobile number" id="mobileNo" />
+                            <input className='h-10 border w-full px-2 rounded-md pl-[5.3rem] placeholder:text-black' value={mobileNo} onChange={(e) => { setMobileNo(e.target.value) }} pattern="[0-9]{10}" placeholder="Enter phone number" required name="Mobile number" id="mobileNo" />
                         </div>
 
                     }

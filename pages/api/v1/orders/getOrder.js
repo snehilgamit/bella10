@@ -6,9 +6,9 @@ export default async function handler(req, res) {
         const { token, orderID } = req.body;
         try {
             await connectDB();
-            const verify = jwt.verify(token, process.env.SECRET)
+            const verify = jwt.verify(token, process.env.SECRET);
             if (verify) {
-                const findUser = await User.findOne({ email: verify.email })
+                const findUser = await User.findOne({ email: verify.email });
                 if (findUser) {
                     for(let i = 0; i<findUser.orders.length;i++){
                         if (findUser.orders[i].orderID === orderID) {
@@ -22,17 +22,17 @@ export default async function handler(req, res) {
                     }
                 }
                 else {
-                    return res.json({ message: "unAuthorised", status: false })
+                    return res.json({ message: "unAuthorised", status: false });
                 }
             }
             else {
-                return res.json({ message: "unAuthorised", status: false })
+                return res.json({ message: "unAuthorised", status: false });
             }
         }
         catch (e) {
-            console.log(e)
-            return res.json({ message: "unAuthorised", status: false })
+            console.log(e);
+            return res.json({ message: "unAuthorised", status: false });
         }
     }
-    return res.json({ message: "unAuthorised", status: false })
+    return res.json({ message: "unAuthorised", status: false });
 }

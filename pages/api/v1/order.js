@@ -180,7 +180,7 @@ export default async function handler(req, res) {
                                     }
                                 }
                             }
-                        )
+                        );
                         // Increase totalOrders count by +1
                         await setorderCount(findUser.email);
 
@@ -204,7 +204,7 @@ export default async function handler(req, res) {
                             {
                                 $inc: { bellaPoints: -totalbill }
                             }
-                        )
+                        );
 
                         // Pushing bella transaction
                         await User.updateOne(
@@ -284,7 +284,7 @@ export default async function handler(req, res) {
                     return res.json({ status: true, amount: totalbill, orderID });
                 }
                 if (couponCode && couponCode != "") {
-                    const checkticket = await coupons.findOne({ couponId: couponCode })
+                    const checkticket = await coupons.findOne({ couponId: couponCode });
 
                     if (checkticket.minimumCart <= totalbill) {
                         totalbill -= checkticket.off;
@@ -328,13 +328,13 @@ export default async function handler(req, res) {
                 return res.json({ status: true, amount: totalbill, orderID });
             }
 
-            return res.json({ message: "unAuthorised", status: false })
+            return res.json({ message: "unAuthorised", status: false });
         }
     }
     // catching unExpected errors
     catch (e) {
-        console.log(e)
-        return res.json({ message: "Something want wrong", status: false })
+        console.log(e);
+        return res.json({ message: "Something want wrong", status: false });
     }
 
 }

@@ -10,5 +10,5 @@ export default async function handler(req,res){
         }
         return res.json({status:false});
     }
-    return res.json({status:false,message:"Invalid method"})
+    return res.json({status:false,message:"Invalid method"});
 }

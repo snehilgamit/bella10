@@ -3,6 +3,8 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import axios from 'axios'
+import connectDB from '@/util/mongoDB'
+import products from '@/models/products'
 const shop = ({ products }) => {
   const router = useRouter();
   const { categories } = router.query;
@@ -48,7 +50,43 @@ export default shop
 
 
 export async function getServerSideProps(ctx) {
-  const getProducts = await axios.post('https://bella10-delta.vercel.app/api/v1/product/getProducts', { category: ctx.query.categories || 'all' });
-  const products = await getProducts.data.results;
-  return { props: { products } };
+  await connectDB();
+  const category = ctx.query.categories || 'all';
+  if (category === 'all') {
+    try{
+      const result = await products.find();
+      const resResult = [];
+      result.forEach(el => {
+        resResult.push({
+          product_id: el.product_id,
+          name: el.name,
+          percentage: el.percentage,
+          image_uri: el.image_uri,
+          price_after_discount: el.price_after_discount,
+          category: el.category,
+          price: el.price,
+        });
+      });
+      return { props: { products: resResult } };
+    }
+    catch(e){
+      console.log(e)
+    }
+  }
+  else {
+    const result = await products.find({ category });
+    const resResult = [];
+    result.forEach(el => {
+      resResult.push({
+        product_id: el.product_id,
+        name: el.name,
+        percentage: el.percentage,
+        image_uri: el.image_uri,
+        price_after_discount: el.price_after_discount,
+        category: el.category,
+        price: el.price,
+      });
+    });
+    return { props: { products: resResult } };
+  }
 }

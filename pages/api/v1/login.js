@@ -8,7 +8,7 @@ export default async function handler(req, res) {
         if (email != '' || password != '') {
             const findUser = await User.findOne({ email });
             if (findUser) {
-                if (findUser.email === email && findUser.password === password) {
+                if (findUser.email === email.toLowerCase() && findUser.password === password) {
                     const token = jwt.sign({ email: findUser.email }, process.env.SECRET);
                     return res.json({ status: true, message: "Authorised", email, token });
                 }

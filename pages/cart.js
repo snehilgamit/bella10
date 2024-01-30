@@ -57,7 +57,7 @@ const cart = () => {
     }
 
     const couponApply = async () => {
-        if(carts.length>0){
+        if(carts.length<=0){
             alert("Cart is empty")
             return 0
         }

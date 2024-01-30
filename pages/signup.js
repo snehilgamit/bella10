@@ -52,15 +52,15 @@ const signup = () => {
             }
         }
     }
+    const { referral } = router.query;
     useEffect(() => {
-        session()
-    }, [])
-    useEffect(() => {
-        localStorage.getItem('bella10_state')
-        if (localStorage.getItem) {
-
+        if(referral){
+            setreferralcode(referral);
         }
-    }, [])
+    }, [referral])
+    useEffect(()=>{
+        session();
+    },[])
     return (
         <>
                 <div className='w-full flex justify-center min-h-[60vh] mt-[10rem] max-sm:mt-4 max-sm:px-3'>

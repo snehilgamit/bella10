@@ -15,14 +15,20 @@ export default async function main(req, res) {
             }
             else {
                 if (password === repassword) {
-                    User.create({ email, password, referralcode })
+                    const referCodeVerify = await User.findOne({myReferralcode:referralcode});
+                    if(!referCodeVerify){
+                        return res.json({ status: false, message: "Referral code not found." });
+                    }
+                    User.create({ email:email.toLowerCase(), password, referralcode })
                     const token = jwt.sign({ email }, process.env.SECRET);
                     return res.json({ status: true, email, token });
                 }
                 return res.json({ status: false, message: "Confirm password not matched" });
             }
         }
-        catch {
+        catch(e) {
+            console.log(e);
+            return res.json({ status: false, message: "Something want wrong" });
         }
     }
     return res.json({ status: false, message: "Invalid method" })

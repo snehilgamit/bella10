@@ -4,6 +4,7 @@ import Style from '@/styles/account.module.css'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import Loading from '@/components/loading'
 const account = () => {
     const router = useRouter();
     const [isLogined, setisLogined] = useState(true);
@@ -57,7 +58,7 @@ const account = () => {
     }, []);
     return (
         <>
-            {isLogined?<>Not logined</>:<div className='min-h-screen px-10 py-5 w-full mx-auto flex justify-center'>
+            {isLogined ? <Loading /> : <div className='min-h-screen px-10 py-5 w-full mx-auto flex justify-center'>
                 <div className='w-full text-3xl font-semibold relative'>
                     <h1>
                         Account
@@ -76,19 +77,21 @@ const account = () => {
                     </div>
                     <div>Orders</div>
                     {accountDetails.orders.map((el, index) => (
-                        <div key={index} className='w-[65%] max-md:w-full my-4 mx-auto border rounded-md bg-white'>
+                        <div onClick={() => { router.push(`/order/${el.orderID}`) }} key={index} className='cursor-pointer w-[65%] max-md:w-full my-4 mx-auto border rounded-md bg-white'>
                             <div className='w-full h-16 px-5 bg-gray-200 max-lg:hidden text-gray-600 border-b border-gray-700 flex items-center justify-around'>
                                 <div className='text-xs font-semibold'><h1>ORDER PLACED:</h1> <h2>{el.time.split("T")[0].split("-").reverse().join("-")}</h2></div>
                                 <div className='text-xs font-semibold'><h1>Total:</h1> <h2 className='text-black'>₹{el.totalbill}</h2></div>
                                 <div className='text-xs font-semibold'><h1>Order id:</h1> <h2 className='text-black'>{el.orderID}</h2></div>
                                 <div className='text-xs font-semibold'><h1>BellaPoint used:</h1> <h2 className='text-black'>{el.usedBellaPoints || 0}</h2></div>
+
+                                <div className='text-xs font-semibold'><h1>Coupon used:</h1> <h2 className='text-black'>{el.couponCode ? el.couponCode : 'None'}</h2></div>
+
                                 <div className='text-xs font-semibold'><h1>Status:</h1> <h2 className='text-orange-500'>{el.isConfirmed ? 'Delivered' : 'Pending'}</h2></div>
-                                {el.couponCode && <div className='text-xs font-semibold'><h1>Coupon used:</h1> <h2 className='text-black'>{el.couponCode}</h2></div>}
                             </div>
                             <div className='border px-2'>
-                                <Link href={`/order/${el.orderID}`} className='bg-white mx-4 flex'>
+                                <div className='bg-white mx-4 flex'>
                                     <Image
-                                        className='p-4 max-md:p-2 mr-4'
+                                        className='p-4 max-md:p-2 mr-4 max-h-[250px]'
                                         width={120}
                                         height={100}
                                         alt={el.orderCart[0].name}
@@ -104,7 +107,7 @@ const account = () => {
                                             <div className='text-xs font-semibold'><h1>BellaPoint used:</h1> <h2 className='text-orange-500'>{el.usedBellaPoints || 0}</h2></div>
                                             <div className='text-xs font-semibold'><h1>Status:</h1> <h2 className='text-orange-500'>{el.isConfirmed ? 'Delivered' : 'Pending'}</h2></div></div>
                                     </div>
-                                </Link>
+                                </div>
                             </div>
                         </div>
                     ))}

@@ -41,6 +41,17 @@ const userSchema = new Schema({
     created:{
         type:String,
         default:new Date(),
+    },
+    isAdmin:{
+        type:Boolean,
+        default:false
+    },
+    isBanned:{
+        type:Boolean,
+        default:false
+    },
+    referrals:{
+        type:Array
     }
 })
 

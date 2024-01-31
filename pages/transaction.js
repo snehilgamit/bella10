@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Link from 'next/link'
+import Loading from '@/components/loading'
+import router from 'next/router'
 const transaction = () => {
 
   const [isLogined, setIsLogined] = useState(false);
@@ -63,7 +65,7 @@ const transaction = () => {
             </Link>
           ))}
         </div>
-      </div> : <>Not logined</>}
+      </div> : <Loading/>}
     </>
   )
 }

@@ -5,6 +5,7 @@ import Style from '@/styles/slug.module.css'
 import Link from 'next/link'
 import Menubar from '@/components/menubar'
 import axios from 'axios'
+import Loading from '@/components/loading'
 const Slug = () => {
   const [isFetching, setIsFetching] = useState(true);
   const router = useRouter();
@@ -54,7 +55,7 @@ const Slug = () => {
     <>
       <Menubar cartNum={cartNum} />
       {isFetching ?
-        <div>Loading</div> :
+        <Loading/>:
         <>
           <div className='bg-slate-100 min-h-screen'>
             <div className='flex justify-center max-sm:flex-col w-full h-full p-5'>

@@ -4,20 +4,16 @@ import axios from 'axios'
 import { useQRCode } from 'next-qrcode';
 import Link from 'next/link'
 import Image from 'next/image'
+import Loading from '@/components/loading';
 const order = () => {
     const { Canvas } = useQRCode();
     const router = useRouter();
     const { slug } = router.query;
     const [token, setToken] = useState('');
     const [data, setData] = useState(null);
+
     const [isLogined, setisLogined] = useState(false);
-    const [accountDetails, setAccountdetails] = useState({
-        bellaPoints: 0,
-        orders: [],
-        totalOrders: 0,
-        Ordercanceled: 0,
-        email: ""
-    });
+
     const getUser = async () => {
         const getSession = localStorage.getItem('bella10_state');
         if (getSession && getSession != '{}' && getSession != '[Object,object]') {
@@ -28,6 +24,7 @@ const order = () => {
             }
         }
     }
+
     const session = async () => {
         const getSession = localStorage.getItem('bella10_state');
         if (getSession && getSession != '{}' && getSession != '') {
@@ -52,7 +49,7 @@ const order = () => {
     }, [slug])
     return (
         <>
-            {data==null ?<>loading</>:
+            {data == null ? <Loading/> :
                 <div className='w-full flex justify-center max-sm:flex-col max-sm:items-center pt-5 mb-20'>
                     <div className='w-[85%] border p-5'>
                         <div className='text-2xl flex items-center mb-2'>Cart <span className='ml-1'>({data.orders.orderCart.length} items)</span></div>
@@ -95,7 +92,7 @@ const order = () => {
                             </div>
                             <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
                                 <span>Time</span>
-                                <span className='text-orange-500'>{new Date(data.orders.time).toLocaleTimeString('en-IN').toUpperCase() }</span>
+                                <span className='text-orange-500'>{new Date(data.orders.time).toLocaleTimeString('en-IN').toUpperCase()}</span>
                             </div>
                             {data.orders.couponCode &&
                                 <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
@@ -113,21 +110,21 @@ const order = () => {
                         <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
                             <>
                                 {isLogined ?
-                                <div className='flex flex-col justify-center items-center'>
-                                    <Canvas
-                                        text={slug}
-                                        options={{
-                                            errorCorrectionLevel: 'M',
-                                            margin: 3,
-                                            scale: 4,
-                                            width: 200,
-                                            color: {
-                                                dark: '#fff',
-                                                light: '#f97316',
-                                            },
-                                        }}
-                                    />
-                                    <div className='text-center mt-4'>Share this qr code or <span className='text-orange-500 font-bold'>{slug} </span>in shop</div>
+                                    <div className='flex flex-col justify-center items-center'>
+                                        <Canvas
+                                            text={slug}
+                                            options={{
+                                                errorCorrectionLevel: 'M',
+                                                margin: 3,
+                                                scale: 4,
+                                                width: 200,
+                                                color: {
+                                                    dark: '#fff',
+                                                    light: '#f97316',
+                                                },
+                                            }}
+                                        />
+                                        <div className='text-center mt-4'>Share this qr code or <span className='text-orange-500 font-bold'>{slug} </span>in shop</div>
                                     </div>
                                     :
                                     <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { router.push('/login') }}>Login</div>

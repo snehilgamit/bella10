@@ -19,7 +19,8 @@ export default async function main(req, res) {
                     if(!referCodeVerify){
                         return res.json({ status: false, message: "Referral code not found." });
                     }
-                    User.create({ email:email.toLowerCase(), password, referralcode })
+                    User.updateOne({myReferralcode:referralcode},{$push:[{email:email.toLowerCase()}]})
+                    await User.create({ email:email.toLowerCase(), password, referralcode })
                     const token = jwt.sign({ email }, process.env.SECRET);
                     return res.json({ status: true, email, token });
                 }

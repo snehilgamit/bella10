@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       }
     }
     catch {
-      return res.json({ message: "unAuthorised", status: false });
+      return res.json({ message: "Something want wrong!", status: false });
     }
     return res.json({ message: "unAuthorised", status: false });
   }

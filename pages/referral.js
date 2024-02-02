@@ -4,15 +4,17 @@ import Style from '@/styles/account.module.css'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import Loading from '@/components/loading'
 const referral = () => {
     const router = useRouter();
     const [isLogined, setisLogined] = useState(true);
     const [accountDetails, setAccountdetails] = useState({
         bellaPoints: 0,
         orders: [],
-        totalOrders: 0,
-        Ordercanceled: 0,
-        email: ""
+        totalReferralOrders: 0,
+        totalReferrals: 0,
+        email: "",
+        referrals:[]
     });
     const getUser = async () => {
         const getSession = localStorage.getItem('bella10_state');
@@ -44,20 +46,13 @@ const referral = () => {
         localStorage.removeItem('bella10_state');
         location.reload();
     }
-    const getUserSession = async () => {
-        const user = JSON.parse(localStorage.getItem('bella10_state'));
-        if (user) {
-            const getRes = await axios.post('/api/v1/getUser', { token: user.token });
-        }
-    }
     useEffect(() => {
         session();
-        getUserSession();
         getUser();
     }, []);
     return (
         <>
-            {isLogined?<>Not logined</>:<div className='min-h-screen px-10 py-5 w-full mx-auto flex justify-center'>
+            {isLogined ? <Loading /> : <div className='min-h-screen px-10 py-5 w-full mx-auto flex justify-center'>
                 <div className='w-full text-3xl font-semibold relative'>
                     <h1>
                         Referral dashboard
@@ -68,10 +63,25 @@ const referral = () => {
                     <div className='bellapoint items-center w-full my-7 flex justify-center'>
                         <div className='w-full flex justify-center text-white gap-5 max-sm:gap-1 flex-wrap'>
                             <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Bella Points :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.bellaPoints || 0}</span></div>
-                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Referral's :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.totalOrders}</span></div>
-                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Referral's order :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.Ordercanceled}</span></div>
+                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Referral's :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.totalReferrals || 0}</span></div>
+                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Referral's order :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.totalReferralOrders || 0}</span></div>
                         </div>
                     </div>
+                    <div>Refer link</div>
+                    <div className='w-full bg-slate-100 text-xl rounded p-2 flex gap-2'>
+                        <div>Share link with your friends and family:</div>
+                        <div>https://bella10-delta.vercel.app?referral={accountDetails.referralCode}</div>
+                        </div>
+                    <div>Referrals</div>
+                    {accountDetails.referrals.length>0?null:<div>No referral's</div>}
+                    {accountDetails.referrals.map((el, index) => (
+                        <div key={index} className='text-sm mt-8 flex justify-around min-w-[60%] w-[30%] max-md:w-[100%] bg-black text-white rounded-xl py-1 my-1 max-sm:text-sm text-center'>
+                            <div className='p-2 px-4'>{index + 1}</div>
+                            <div className='p-2 truncate'>{el.email.split("@")[0]}</div>
+                            {/* <div className='p-2 text-orange-500'>{el.type === 'order' ? '-' + el.usedBellaPoints : '+' + el.usedBellaPoints}</div>
+                            <div className='p-2'>{new Date(el.time).toLocaleDateString()}</div> */}
+                        </div>
+                    ))}
                 </div>
             </div>}
         </>

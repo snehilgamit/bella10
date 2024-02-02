@@ -79,7 +79,7 @@ const signup = () => {
                             <input className='h-10 my-2 text-sm   bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' value={email} onChange={(e) => {setEmail(e.target.value) }} placeholder='Enter email' type="text" name="email" id="email" />
 
                             <input className='h-10 my-2 text-sm   bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' value={password} onChange={(e) => {setPassword(e.target.value)}} placeholder='Enter password' type="Password" name="password" id="password" />
-                            <input className='h-10 my-2 text-sm  bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' value={repassword} onChange={(e) => {setrePassword(e.target.value)}} placeholder='Confirm password' type="text" name="confirmpassword" id="confirmpassword" />
+                            <input className='h-10 my-2 text-sm  bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' value={repassword} onChange={(e) => {setrePassword(e.target.value)}} placeholder='Confirm password' type="Password" name="confirmpassword" id="confirmpassword" />
 
                             <input className='h-10 my-2 text-sm   bg-gray-300 placeholder:text-gray-500 py-1 w-full px-2 rounded-md' value={referralcode} onChange={(e) => {setreferralcode(e.target.value)}} placeholder='Enter referral code' type="text" name="referral code" id="referral code" />
 

@@ -19,8 +19,7 @@ const userSchema = new Schema({
         default:0
     },
     myReferralcode:{
-        type:String,
-        default:newRef()
+        type:String
     },
     orders:{
         type:Array,
@@ -52,6 +51,10 @@ const userSchema = new Schema({
     },
     referrals:{
         type:Array
+    },
+    referralsOrders:{
+        type:Number,
+        default:0
     }
 })
 

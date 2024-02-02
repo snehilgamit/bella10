@@ -1,6 +1,18 @@
 import connectDB from "@/util/mongoDB";
 import User from '@/models/User';
 import jwt from 'jsonwebtoken';
+
+const newRef = () => {
+    const str = "1234567890abcdefghijklmnopqrstuvwxyz@&%$"
+    let i = 0;
+    let referralCode = "";
+    while(i<8){
+        referralCode+=str[Math.floor(Math.random()*40)];
+        i++;
+    }
+    return referralCode;
+};
+
 export default async function main(req, res) {
     if (req.method === 'POST') {
         const { email, password, repassword, referralcode } = req.body;
@@ -19,8 +31,9 @@ export default async function main(req, res) {
                     if(!referCodeVerify){
                         return res.json({ status: false, message: "Referral code not found." });
                     }
-                    User.updateOne({myReferralcode:referralcode},{$push:[{email:email.toLowerCase()}]})
-                    await User.create({ email:email.toLowerCase(), password, referralcode })
+                    await User.updateOne({myReferralcode:referralcode},{$push:{referrals:{email:email.toLowerCase()}}})
+                    const referral = newRef();
+                    await User.create({ email:email.toLowerCase(), password, referralcode,myReferralcode:referral})
                     const token = jwt.sign({ email }, process.env.SECRET);
                     return res.json({ status: true, email, token });
                 }

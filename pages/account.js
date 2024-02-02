@@ -43,7 +43,7 @@ const account = () => {
     }
     const logout = () => {
         localStorage.removeItem('bella10_state');
-        location.reload();
+        router.push('/login') 
     }
     const getUserSession = async () => {
         const user = JSON.parse(localStorage.getItem('bella10_state'));
@@ -65,7 +65,7 @@ const account = () => {
                     </h1>
                     <div className='absolute max-md:relative max-md:text-sm max-md:mt-3 text-lg right-0 top-0 flex gap-2'>
                         <div className='bg-black text-white py-1 rounded-3xl px-4 cursor-pointer' onClick={() => { router.push('/transaction') }}>Transaction</div>
-                        <div className='bg-black text-white py-1 rounded-3xl px-4 cursor-pointer' onClick={() => { localStorage.removeItem('bella10_state'); router.push('/login') }}>Logout</div>
+                        <div className='bg-black text-white py-1 rounded-3xl px-4 cursor-pointer' onClick={logout}>Logout</div>
                     </div>
                     <div className='bellapoint items-center w-full my-7 flex justify-center'>
                         <div className='w-full flex justify-center text-white gap-5 max-sm:gap-1 flex-wrap'>

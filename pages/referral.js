@@ -69,8 +69,8 @@ const referral = () => {
                     </div>
                     <div>Refer link</div>
                     <div className='w-full bg-slate-100 text-xl rounded p-2 flex gap-2'>
-                        <div>Share link with your friends and family:</div>
-                        <div>https://bella10-delta.vercel.app?referral={accountDetails.referralCode}</div>
+                        <div>Share link with your friends and family: </div>
+                        <div><span className='text-orange-500'>https://bella10-delta.vercel.app?referral={accountDetails.referralCode}</span></div>
                         </div>
                     <div>Referrals</div>
                     {accountDetails.referrals.length>0?null:<div>No referral's</div>}

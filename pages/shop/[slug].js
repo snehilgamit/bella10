@@ -39,6 +39,19 @@ const Slug = () => {
     }, 1000)
     setCart_to_menu();
   }
+  const fetchData = async () => {
+    const getProducts = await axios.post("/api/v1/product/getProduct", { product_id: slug });
+    setProduct(getProducts.data.results);
+    setIsFetching(false);
+  };
+
+  const purchaseFunc = () => {
+    addtocart(product);
+    router.push('/cart');
+  };
+  const addtoCartFunc = () => {
+    addtocart(product) 
+  };
   useEffect(() => {
     if (slug) {
       fetchData()
@@ -46,16 +59,11 @@ const Slug = () => {
     setCart_to_menu()
     setValue(slug)
   }, [slug])
-  const fetchData = async () => {
-    const getProducts = await axios.post("/api/v1/product/getProduct", { product_id: slug });
-    setProduct(getProducts.data.results);
-    setIsFetching(false);
-  }
   return (
     <>
       <Menubar cartNum={cartNum} />
       {isFetching ?
-        <Loading/>:
+        <Loading /> :
         <>
           <div className='bg-slate-100 min-h-screen'>
             <div className='flex justify-center max-sm:flex-col w-full h-full p-5'>
@@ -71,7 +79,15 @@ const Slug = () => {
               <div className='order_details flex flex-col justify-start max-sm:justify-center w-[50%] ml-20 max-sm:ml-0 max-sm:w-full'>
                 <div className='w-full details flex justify-start flex-col'>
                   <div className='text-xl w-full overflow-hidden text-start my-5 text-pretty'>{product.name}</div>
-                  <div className='flex items-center font-bold text-xl mb-2'><span className='text-3xl mr-2.5 text-orange-500'>{product.percentage}% off</span></div>
+                  <div className='flex items-center font-bold text-xl'><span className='text-3xl mr-2.5 text-orange-500'>{product.percentage}% off</span></div>
+                  {product.stock === 0 ?
+                    <div className="w-full flex-none text-sm font-medium text-slate-700 mb-2">
+                      Out of stock
+                    </div>
+                    :
+                    <div className="w-full flex-none text-sm font-medium text-slate-700 mb-2">
+                      In stock
+                    </div>}
                   <div>
                     <div className='text-blue-600'>Special price</div>
                     <div className='font-bold text-3xl mt-1'>₹{product.price_after_discount} <span className=' font-normal text-base line-through text-slate-400'>₹{product.price}</span></div>
@@ -96,22 +112,18 @@ const Slug = () => {
                     </div>
                   </div>
                 </div>
+                {product.stock === 0 ? <div className={`flex justify-center items-center ${Style.outofStock}`}>
+                  <a className='opacity-60'>Out of stock</a>
+                </div> 
+                :
                 <div className={`flex justify-center items-center ${Style.loginArea}`}>
-                  <a onClick={() => {
-                  addtocart(product);
-                  router.push('/cart');
-                  }
-                  }>
-                    Buy
-                  </a>
-                  {addtoCart ? <a onClick={() => { addtocart(product) }}>
-                      Add to cart
-                  </a>
+                 <a onClick={purchaseFunc}>Buy</a>
+                  {addtoCart ? <a onClick={addtoCartFunc}>Add to cart</a>
                   :
-                  <a>
-                      Adding...
-                  </a>}
+                  <a>Adding...</a>
+                  }
                 </div>
+                }
               </div>
             </div>
           </div>

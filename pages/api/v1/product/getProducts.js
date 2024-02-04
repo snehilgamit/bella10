@@ -16,6 +16,7 @@ export default async function handler(req, res) {
                     price_after_discount: el.price_after_discount,
                     category: el.category,
                     price: el.price,
+                    stock:el.stock
                 });
             });
             return res.json({ status: true, results: resResult });
@@ -32,6 +33,7 @@ export default async function handler(req, res) {
                     price_after_discount: el.price_after_discount,
                     category: el.category,
                     price: el.price,
+                    stock: el.stock
                 });
             });
             return res.json({ status: true, results: resResult });

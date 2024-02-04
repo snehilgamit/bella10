@@ -7,17 +7,17 @@ export default async function handler(req, res) {
         const { email, password } = req.body;
         if (email != '' || password != '') {
             const findUser = await User.findOne({ email });
-            if(findUser.isBanned){
-                return res.json({ status: false, message: "Account is banned" });
-            }
             if (findUser) {
+                if(findUser.isBanned){
+                    return res.json({ status: false, message: "Account is banned" });
+                }
                 if (findUser.email === email.toLowerCase() && findUser.password === password) {
                     const token = jwt.sign({ email: findUser.email }, process.env.SECRET);
                     return res.json({ status: true, message: "Authorised", email, token });
                 }
-                return res.json({ status: false, message: "Invalid details" });
+                return res.json({ status: false, message: "IInvalid email or password" });
             }
-            return res.json({ status: false, message: "Invalid details" });
+            return res.json({ status: false, message: "Invalid email or password" });
         }
         return res.json({ status: false, message: "Something missing" });
     }

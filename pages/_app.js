@@ -8,7 +8,7 @@ export default function App({ Component, pageProps }) {
   const [isLogined,setisLogined]=useState(true);
   const path  = router.pathname;
   const session = async () => {
-    const getSession = localStorage.getItem('bella10_state');
+    const getSession = localStorage.bella10_state;
 
     if (getSession && getSession != '{}' && getSession != '' && getSession != '[Object, object]'){
         const { token } = JSON.parse(getSession);

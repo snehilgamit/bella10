@@ -68,14 +68,14 @@ const referral = () => {
                         </div>
                     </div>
                     <div>Refer link</div>
-                    <div className='w-full bg-slate-100 text-xl rounded p-2 flex gap-2'>
-                        <div>Share link with your friends and family: </div>
-                        <div><span className='text-orange-500'>https://bella10-delta.vercel.app?referral={accountDetails.referralCode}</span></div>
+                    <div className='w-full bg-slate-100 text-xl rounded p-2 flex gap-2 justify-center items-center flex-col'>
+                        <div>Share link with your friends and family: <span className='text-orange-500'>https://bella10-delta.vercel.app/signup?referral={accountDetails.referralCode}</span></div>
+                        <div>Referral code: <span className='text-orange-500'>{accountDetails.referralCode}</span></div>
                         </div>
                     <div>Referrals</div>
-                    {accountDetails.referrals.length>0?null:<div>No referral's</div>}
+                    {accountDetails.referrals.length>0?null:<div className='text-sm ml-2 mt-2 text-gray-600'>No referral's</div>}
                     {accountDetails.referrals.map((el, index) => (
-                        <div key={index} className='text-sm mt-8 flex justify-around min-w-[60%] w-[30%] max-md:w-[100%] bg-black text-white rounded-xl py-1 my-1 max-sm:text-sm text-center'>
+                        <div key={index} className='text-sm flex justify-around min-w-[60%] w-[30%] max-md:w-[100%] bg-black text-white rounded-xl py-1 my-2 max-sm:text-sm text-center'>
                             <div className='p-2 px-4'>{index + 1}</div>
                             <div className='p-2 truncate'>{el.email.split("@")[0]}</div>
                             {/* <div className='p-2 text-orange-500'>{el.type === 'order' ? '-' + el.usedBellaPoints : '+' + el.usedBellaPoints}</div>

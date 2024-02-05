@@ -67,12 +67,12 @@ const referral = () => {
                             <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Referral's order :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.totalReferralOrders || 0}</span></div>
                         </div>
                     </div>
-                    <div>Refer link</div>
+                    <div>Referral link</div>
                     <div className='w-full bg-slate-100 text-xl rounded p-2 flex gap-2 justify-center items-center flex-col'>
                         <div>Share link with your friends and family: <span className='text-orange-500'>https://bella10-delta.vercel.app/signup?referral={accountDetails.referralCode}</span></div>
                         <div>Referral code: <span className='text-orange-500'>{accountDetails.referralCode}</span></div>
                         </div>
-                    <div>Referrals</div>
+                    <div className='mt-5'>Referrals</div>
                     {accountDetails.referrals.length>0?null:<div className='text-sm ml-2 mt-2 text-gray-600'>No referral's</div>}
                     {accountDetails.referrals.map((el, index) => (
                         <div key={index} className='text-sm flex justify-around min-w-[60%] w-[30%] max-md:w-[100%] bg-black text-white rounded-xl py-1 my-2 max-sm:text-sm text-center'>

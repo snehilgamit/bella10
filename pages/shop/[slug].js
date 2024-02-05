@@ -15,7 +15,7 @@ const Slug = () => {
   const [add_to_cartText, setadd_to_cartText] = useState("Add to cart")
   const [addtoCart, setaddtoCart] = useState(true);
   const [product, setProduct] = useState({});
-
+  const query = router.route.split("/")
   const setCart_to_menu = () => {
     const cart = localStorage.getItem('cart')
     if (cart && cart != '[]') {
@@ -49,8 +49,14 @@ const Slug = () => {
     addtocart(product);
     router.push('/cart');
   };
+
   const addtoCartFunc = () => {
     addtocart(product) 
+  };
+
+  const routing = (path) =>{
+    path ="/"+path
+    router.push(path)
   };
   useEffect(() => {
     if (slug) {
@@ -65,7 +71,17 @@ const Slug = () => {
       {isFetching ?
         <Loading /> :
         <>
-          <div className='bg-slate-100 min-h-screen'>
+          <div className='bg-slate-100 min-h-screen w-full'>
+            <div className='flex pt-5 ml-60 max-sm:ml-6 text-sm text-gray-600'>
+            <span className='cursor-pointer hover:text-orange-500' onClick={()=>{routing("")}}>Home </span>
+            {query.map((el,index)=>(
+              <div className='font-medium text-center px-0.5'>{index==query.length-1?<span className='hover:text-orange-500 cursor-pointer' onClick={()=>{routing("shop/"+slug)}}>{slug}</span>:
+              <>
+              <span className='hover:text-orange-500 cursor-pointer' onClick={()=>{routing(el)}}>{el}</span><span className='text-sm text-slate-400'>{" >"}</span>
+              </>
+              }</div>
+            ))}
+            </div>
             <div className='flex justify-center max-sm:flex-col w-full h-full p-5'>
               <div className='Image border max-sm:ml-0 bg-white flex justify-center items-center'>
                 <Image

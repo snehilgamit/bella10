@@ -65,7 +65,7 @@ const menubar = ({ cartNum ,isLogined}) => {
     return (
         <div className='w-full py-4 shadow-md bg-white z-[999] relative'>
             <div className='w-full flex justify-between text-[16px] font-semibold items-center'>
-                <Link href={'/'} className={`ml-6 cursor-pointer text-lg ${Style.bellaLogo}`}>
+                <Link href={'/'} className={`ml-12 max-sm:ml-6 cursor-pointer text-lg ${Style.bellaLogo}`}>
                     <span className='text-red-500 brightness-105 pr-0.5'>Bella</span><span className='text-xl'>10</span>
                     {/* <Image
                         alt='logo'
@@ -84,7 +84,7 @@ const menubar = ({ cartNum ,isLogined}) => {
                     }
                     <div className={`py-2 ${Style.menu_itemtop}`} onMouseOver={() => { shop_subMenu('show') }} onMouseLeave={() => { shop_subMenu('hide') }}>
                         <span className='cursor-pointer' style={{ color: path == '/shop' ? 'rgb(249 115 22)' : 'inherit' }}>Shop</span>
-                        <div className={`w-[110px] mt-2 min-h-[150px] absolute z-[1] cursor-pointer bg-black ${Style.menuitem_shop} shadow-md`}>
+                        <div className={`w-[110px] mt-2 min-h-[150px] absolute z-[1] cursor-pointer border border-black bg-white ${Style.menuitem_shop} shadow-md`}>
                             <div>
                                 {SubmenuItmes.map((el, index) => {
                                     for (let key in el) {

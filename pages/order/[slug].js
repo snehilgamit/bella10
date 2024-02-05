@@ -100,6 +100,10 @@ const order = () => {
                                     <span className='text-orange-500'>{data.orders.couponCode}</span>
                                 </div>
                             }
+                            <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
+                                    <span>Mobile No.</span>
+                                    <span className='text-orange-500'>+91 {data.orders.mobileNo.slice(0,5)} {data.orders.mobileNo.slice(5)}</span>
+                                </div>
                             <div className='flex justify-between m-1 mt-2 text-2xl'>
                                 <span>Grand total</span>
                                 <span className=''>₹{data.orders.totalbill}</span>

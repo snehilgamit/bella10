@@ -12,7 +12,7 @@ export default async function handler(req, res) {
                 const findUser = await User.findOne({ email: verify.email });
                 if (findUser) {
                     findUser.orders = findUser.orders.reverse()
-                    return res.json({
+                    return res.status(200).json({
                         status: true, orders: findUser.orders,
                         totalOrders: findUser.totalOrders,
                         Ordercanceled: findUser.Ordercanceled,
@@ -20,12 +20,12 @@ export default async function handler(req, res) {
 
                     })
                 }
-                return res.json({ message: "unAuthorised", status: false });
+                return res.status(200).json({ message: "unAuthorised", status: false });
             }
         }
         catch {
-            return res.json({ message: "unAuthorised", status: false });
+            return res.status(500).json({ message: "Error occured", status: false });
         }
-        return res.json({ message: "unAuthorised", status: false });
+        return res.status(200).json({ message: "unAuthorised", status: false });
     }
 }

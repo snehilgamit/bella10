@@ -1,10 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Philosopher:wght@700&display=swap');
+.bellaLogo{
+    background-color: black;
+    padding: 0.14rem 1.1rem;
+    /* border-radius: 16px; */
+    border-radius: 0px 16px 0px 16px;
+}
+.bellaLogo:nth-child(1){
+    font-family: 'Philosopher', sans-serif;
+    font-size: 23px;
+    font-weight: 700;
+}
+.bellaLogo:nth-child(1){
+    color: yellow;
+}
 .menu_item div{
     cursor: pointer;
     color: rgb(68, 68, 68);
 }
 .menu_itemtop div{
     cursor: pointer;
-    color: rgb(252, 252, 252);
+    color: black;
 }
 .menu_item span{
     border-bottom: 1.2px solid transparent;

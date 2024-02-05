@@ -11,16 +11,17 @@ export default async function handler(req, res) {
             if (verify) {
                 const findUser = await User.findOne({ email: verify.email });
                 if (findUser) {
-                    return res.json({
+                    return res.status(200).json({
                         status: true, bellaTransaction:findUser.bellaTransaction,
                     })
                 }
-                return res.json({ message: "unAuthorised", status: false });
+                return res.status(200).json({ message: "unAuthorised", status: false });
             }
         }
         catch {
-            return res.json({ message: "unAuthorised", status: false });
+            return res.status(500).json({ message: "Error occured", status: false });
         }
-        return res.json({ message: "unAuthorised", status: false });
+        return res.status(200).json({ message: "unAuthorised", status: false });
     }
+    return res.status(400).json({ status: false, message: "Invalid method" });
 }

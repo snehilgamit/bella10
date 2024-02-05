@@ -280,7 +280,7 @@ const cart = () => {
                             <span>Discount</span>
                             <span className='text-orange-500'>-₹{cartsM.price - cartsM.price_after_discount || 0}({cartsM.percentage ? cartsM.percentage.toFixed(2) : 0}%)</span>
                         </div>
-                        {isLogined && carts.length != 0 ? <div className='flex justify-between mt-2 m-1 border-b-2 pb-2 border-dashed' style={isLogined ? {} : { opacity: 0.6 }}>
+                        {isLogined && user.bellaPoints > 0&& carts.length != 0 ? <div className='flex justify-between mt-2 m-1 border-b-2 pb-2 border-dashed' style={isLogined ? {} : { opacity: 0.6 }}>
                             <div>
                                 Use
                                 <span className='text-orange-500 font-bold'> {user.bellaPoints} </span>

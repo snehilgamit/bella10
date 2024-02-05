@@ -18,32 +18,32 @@ export default async function main(req, res) {
         const { email, password, repassword, referralcode } = req.body;
         try {
             if (email.length == 0 || password.length == 0 || repassword.length == 0 || referralcode.length == 0) {
-                return res.json({ status: false, message: "Something missing" })
+                return res.status(200).json({ status: false, message: "Something missing" })
             }
             await connectDB();
             const findEmail = await User.findOne({ email });
             if (findEmail) {
-                return res.json({ status: false, message: "Email already exist!" });
+                return res.status(200).json({ status: false, message: "Email already exist!" });
             }
             else {
                 if (password === repassword) {
                     const referCodeVerify = await User.findOne({myReferralcode:referralcode});
                     if(!referCodeVerify){
-                        return res.json({ status: false, message: "Referral code not found." });
+                        return res.status(200).json({ status: false, message: "Referral code not found." });
                     }
                     await User.updateOne({myReferralcode:referralcode},{$push:{referrals:{email:email.toLowerCase()}}})
                     const referral = newRef();
                     await User.create({ email:email.toLowerCase(), password, referralcode,myReferralcode:referral})
                     const token = jwt.sign({ email }, process.env.SECRET);
-                    return res.json({ status: true, email, token });
+                    return res.status(200).json({ status: true, email, token });
                 }
-                return res.json({ status: false, message: "Confirm password not matched" });
+                return res.status(200).json({ status: false, message: "Confirm password not matched" });
             }
         }
         catch(e) {
             console.log(e);
-            return res.json({ status: false, message: "Something want wrong" });
+            return res.status(500).json({ status: false, message: "Something want wrong" });
         }
     }
-    return res.json({ status: false, message: "Invalid method" })
+    return res.status(400).json({ status: false, message: "Invalid method" })
 }

@@ -1,14 +1,4 @@
 import { model , models , Schema } from "mongoose";
-const newRef = () => {
-    const str = "1234567890abcdefghijklmnopqrstuvwxyz@&%$"
-    let i = 0;
-    let referralCode = "";
-    while(i<8){
-        referralCode+=str[Math.floor(Math.random()*40)];
-        i++;
-    }
-    return referralCode;
-};
 
 const userSchema = new Schema({
     email:String,
@@ -55,6 +45,10 @@ const userSchema = new Schema({
     referralsOrders:{
         type:Number,
         default:0
+    },
+    isProcessing:{
+        type:Boolean,
+        default:false
     }
 })
 

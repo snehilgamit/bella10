@@ -5,7 +5,7 @@ export default async function handler(req, res) {
         const { product_id } = req.body;
         await connectDB();
         const result = await products.findOne({ product_id });
-        return res.json({
+        return res.status(200).json({
             status: true, results: {
                 product_id: result.product_id,
                 name: result.name,
@@ -19,5 +19,5 @@ export default async function handler(req, res) {
             }
         })
     };
-    return res.json({ status: false, message: "Invalid method" });
+    return res.status(400).json({ status: false, message: "Invalid method" });
 }

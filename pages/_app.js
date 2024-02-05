@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }) {
         const { token } = JSON.parse(getSession);
         try{
           const req = await axios.post('/api/v1/session', { token });
-          if (req.data.status) {
+          if (req.status) {
             localStorage.setItem('bella10_state', JSON.stringify({ email: req.data.email, token: req.data.token }));
             setisLogined(false);
           }

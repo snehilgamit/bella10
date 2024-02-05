@@ -12,7 +12,7 @@ export default async function handler(req, res) {
                 if (findUser) {
                     for(let i = 0; i<findUser.orders.length;i++){
                         if (findUser.orders[i].orderID === orderID) {
-                            return res.json({
+                            return res.status(200).json({
                                 status: true, orders: findUser.orders[i],
                                 totalOrders: findUser.totalOrders,
                                 Ordercanceled: findUser.Ordercanceled,
@@ -21,18 +21,14 @@ export default async function handler(req, res) {
                         }
                     }
                 }
-                else {
-                    return res.json({ message: "unAuthorised", status: false });
-                }
+                    return res.status(200).json({ message: "unAuthorised", status: false });
             }
-            else {
-                return res.json({ message: "unAuthorised", status: false });
-            }
+                return res.status(200).json({ message: "unAuthorised", status: false });
         }
         catch (e) {
             console.log(e);
-            return res.json({ message: "unAuthorised", status: false });
+            return res.status(500).json({ message: "Internal Error", status: false });
         }
     }
-    return res.json({ message: "unAuthorised", status: false });
+    return res.status(200).json({ message: "unAuthorised", status: false });
 }

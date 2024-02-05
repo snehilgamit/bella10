@@ -11,15 +11,15 @@ export default async function handler(req, res) {
         const findUser = await User.findOne({ email: verify.email });
         if (findUser) {
           const token = jwt.sign({ email: findUser.email }, process.env.SECRET);
-          return res.json({ message: "Authorised", status: true, email: findUser.email, token });
+          return res.status(200).json({ message: "Authorised", status: true, email: findUser.email, token });
         }
-        return res.json({ message: "unAuthorised", status: false });
+        return res.status(200).json({ message: "unAuthorised", status: false });
       }
     }
     catch {
-      return res.json({ message: "Something want wrong!", status: false });
+      return res.status(500).json({ message: "Something want wrong!", status: false });
     }
-    return res.json({ message: "unAuthorised", status: false });
+    return res.status(200).json({ message: "unAuthorised", status: false });
   }
-  return res.json({ message: "Invalid method", status: false });
+  return res.status(400).json({ message: "Invalid method", status: false });
 }

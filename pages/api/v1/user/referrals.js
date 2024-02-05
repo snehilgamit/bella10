@@ -16,14 +16,15 @@ export default async function handler(req, res) {
                     let data ={status: true, referralCode: findUser.myReferralcode,
                         email: findUser.email, bellaPoints: findUser.bellaPoints,
                         totalReferrals,totalReferralOrders,referrals:findUser.referrals}
-                    return res.json(data);
+                    return res.status(200).json(data);
                 }
-                return res.json({ message: "unAuthorised", status: false });
+                return res.status(200).json({ message: "unAuthorised", status: false });
             }
         }
         catch {
-            return res.json({ message: "unAuthorised", status: false });
+            return res.status(500).json({ message: "Error occured", status: false });
         }
-        return res.json({ message: "unAuthorised", status: false });
+        return res.status(200).json({ message: "unAuthorised", status: false });
     }
+    return res.status(400).json({ status: false, message: "Invalid method" });
 }

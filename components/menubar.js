@@ -65,7 +65,7 @@ const menubar = ({ cartNum ,isLogined}) => {
     return (
         <div className='w-full py-4 shadow-md bg-white z-[999] relative'>
             <div className='w-full flex justify-between text-[16px] font-semibold items-center'>
-                <Link href={'/'} className={`ml-12 cursor-pointer text-lg ${Style.bellaLogo}`}>
+                <Link href={'/'} className={`ml-6 cursor-pointer text-lg ${Style.bellaLogo}`}>
                     <span className='text-red-500 brightness-105 pr-0.5'>Bella</span><span className='text-xl'>10</span>
                     {/* <Image
                         alt='logo'

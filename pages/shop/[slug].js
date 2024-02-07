@@ -73,7 +73,7 @@ const Slug = () => {
         <>
           <div className='bg-slate-100 min-h-screen w-full'>
             <div className='flex pt-5 ml-60 max-sm:ml-6 text-sm text-gray-600'>
-            <span className='cursor-pointer hover:text-orange-500' onClick={()=>{routing("")}}>Home </span>
+            <span className='cursor-pointer hover:text-orange-500 font-medium' onClick={()=>{routing("")}}>Home </span>
             {query.map((el,index)=>(
               <div className='font-medium text-center px-0.5'>{index==query.length-1?<span className='hover:text-orange-500 cursor-pointer' onClick={()=>{routing("shop/"+slug)}}>{slug}</span>:
               <>
@@ -97,11 +97,11 @@ const Slug = () => {
                   <div className='text-xl w-full overflow-hidden text-start my-5 text-pretty'>{product.name}</div>
                   <div className='flex items-center font-bold text-xl'><span className='text-3xl mr-2.5 text-orange-500'>{product.percentage}% off</span></div>
                   {product.stock === 0 ?
-                    <div className="w-full flex-none text-sm font-medium text-slate-700 mb-2">
+                    <div className="w-full flex-none text-sm font-medium text-slate-700 mb-2 ml-0.5">
                       Out of stock
                     </div>
                     :
-                    <div className="w-full flex-none text-sm font-medium text-slate-700 mb-2">
+                    <div className="w-full flex-none text-sm font-medium text-slate-700 mb-2  ml-0.5">
                       In stock
                     </div>}
                   <div>

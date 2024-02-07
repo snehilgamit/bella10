@@ -17,6 +17,18 @@ const couponSchema = new Schema({
         type:Number,
         required:true
     },
+    isActive:{
+        type:Boolean,
+        default:true
+    },
+    left:{
+        type:Number,
+        default:100
+    },
+    maxLimit:{
+        type:Number,
+        default:100
+    }
 });
 
 const coupons = models.coupons || model('coupons',couponSchema);

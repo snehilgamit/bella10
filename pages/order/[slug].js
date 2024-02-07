@@ -5,6 +5,7 @@ import { useQRCode } from 'next-qrcode';
 import Link from 'next/link'
 import Image from 'next/image'
 import Loading from '@/components/loading';
+import Style from '@/styles/slug.module.css'
 const order = () => {
     const { Canvas } = useQRCode();
     const router = useRouter();
@@ -14,7 +15,7 @@ const order = () => {
 
     const [isLogined, setisLogined] = useState(false);
 
-    const getUser = async () => {
+    const getOrder = async () => {
         const getSession = localStorage.getItem('bella10_state');
         if (getSession && getSession != '{}' && getSession != '[Object,object]') {
             const { token } = JSON.parse(getSession);
@@ -43,13 +44,22 @@ const order = () => {
             router.push('/login');
         }
     }
+    const cancelFunc = async () => {
+        const req = await axios.post('/api/v1/orders/cancel', { token, orderID: slug });
+        if (req.data.status) {
+            getOrder();
+        }
+        else {
+            alert(req.data.message)
+        }
+    }
     useEffect(() => {
         session();
-        getUser();
+        getOrder();
     }, [slug])
     return (
         <>
-            {data == null ? <Loading/> :
+            {data == null ? <Loading /> :
                 <div className='w-full flex justify-center max-sm:flex-col max-sm:items-center pt-5 mb-20'>
                     <div className='w-[85%] border p-5'>
                         <div className='text-2xl flex items-center mb-2'>Cart <span className='ml-1'>({data.orders.orderCart.length} items)</span></div>
@@ -101,15 +111,23 @@ const order = () => {
                                 </div>
                             }
                             <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
-                                    <span>Mobile No.</span>
-                                    <span className='text-orange-500'>+91 {data.orders.mobileNo.slice(0,5)} {data.orders.mobileNo.slice(5)}</span>
-                                </div>
+                                <span>Mobile No.</span>
+                                <span className='text-orange-500'>+91 {data.orders.mobileNo.slice(0, 5)} {data.orders.mobileNo.slice(5)}</span>
+                            </div>
                             <div className='flex justify-between m-1 mt-2 text-2xl'>
                                 <span>Grand total</span>
                                 <span className=''>₹{data.orders.totalbill}</span>
                             </div>
 
-                            <div className='text-sm text-gray-400 m-1  border-b-2 pb-6 border-dashed'>Inclusive of all taxes</div>
+                            <div className='text-sm text-gray-400 m-1 border-b-2 pb-6 border-dashed'>Inclusive of all taxes</div>
+                            {data.orders.isCancelled || data.orders.isConfirmed ?
+                                <div className={`flex justify-center items-center ${Style.outofStock}`}>
+                                    <a className='opacity-60'>{data.orders.isCancelled ? "Cancelled" : "Delivered"}</a>
+                                </div> :
+                                <div className={`flex justify-center items-center active:opacity-60 hover:opacity-80 ${Style.outofStock}`} onClick={cancelFunc}>
+                                    <a>Cancel order</a>
+                                </div>
+                            }
                         </div>
                         <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
                             <>

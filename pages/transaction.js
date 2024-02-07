@@ -59,7 +59,7 @@ const transaction = () => {
           {transactions.map((el, index) => (
             <Link href={`/order/${el.orderID}`} key={index} className='flex justify-around w-[70%] max-md:w-[95%] bg-black text-white rounded-xl py-1 my-1 max-sm:text-sm text-cente'>
               <div className='p-2 px-4'>{index + 1}</div>
-              <div className='p-2 max-w-[30%] truncate'>{el.orderID}</div>
+              <div className='p-2 truncate'>{el.orderID}</div>
               <div className='p-2 text-orange-500'>{el.type === 'order'?'-'+el.usedBellaPoints:'+'+el.usedBellaPoints}</div>
               <div className='p-2'>{new Date(el.time).toLocaleDateString()}</div>
             </Link>

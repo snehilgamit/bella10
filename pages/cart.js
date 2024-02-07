@@ -57,7 +57,7 @@ const cart = () => {
     }
 
     const couponApply = async () => {
-        if(carts.length<=0){
+        if (carts.length <= 0) {
             alert("Cart is empty")
             return 0
         }
@@ -125,11 +125,19 @@ const cart = () => {
                     isBellacoinsUsed: true
                 }
                 setCartsM(prev => {
+                    if(prev.price_after_discount<= user.bellaPoints){
+                    return {
+                        ...prev,
+                        ...common,
+                        total: prev.isCouponApplied ? prev.price_after_discount - user.bellaPoints - prev.couponValue : 0
+                    }
+                }else{
                     return {
                         ...prev,
                         ...common,
                         total: prev.isCouponApplied ? prev.price_after_discount - user.bellaPoints - prev.couponValue : prev.price_after_discount - user.bellaPoints
                     }
+                }
                 })
             }
             else {
@@ -280,7 +288,7 @@ const cart = () => {
                             <span>Discount</span>
                             <span className='text-orange-500'>-₹{cartsM.price - cartsM.price_after_discount || 0}({cartsM.percentage ? cartsM.percentage.toFixed(2) : 0}%)</span>
                         </div>
-                        {isLogined && user.bellaPoints > 0&& carts.length != 0 ? <div className='flex justify-between mt-2 m-1 border-b-2 pb-2 border-dashed' style={isLogined ? {} : { opacity: 0.6 }}>
+                        {isLogined && user.bellaPoints > 0 && carts.length != 0 ? <div className='flex justify-between mt-2 m-1 border-b-2 pb-2 border-dashed' style={isLogined ? {} : { opacity: 0.6 }}>
                             <div>
                                 Use
                                 <span className='text-orange-500 font-bold'> {user.bellaPoints} </span>

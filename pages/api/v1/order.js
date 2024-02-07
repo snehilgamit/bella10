@@ -31,6 +31,9 @@ export default async function handler(req, res) {
     }
 
     const { couponCode, productIDs, bellacoinsUse, token, mobileNo } = req.body;
+    if(!mobileNo){
+        return res.json({ message: "Mobile number not entered", status: false });
+    }
     await connectDB();
 
     try {
@@ -111,7 +114,7 @@ export default async function handler(req, res) {
                                     {
                                         $push: {
                                             orders: {
-                                                couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: totalbill, isConfirmed: false, time: new Date(), totalProductSum, mobileNo
+                                                couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: totalbill, isConfirmed: false, isComplete:false, isCancelled:false, time: new Date(), totalProductSum, mobileNo
                                             }
                                         }
                                     }
@@ -159,7 +162,7 @@ export default async function handler(req, res) {
                             await User.updateOne({ email: findUser.email }, {
                                 $push: {
                                     orders: {
-                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: getUser.bellaPoints, isConfirmed: false, time: new Date(), totalProductSum, mobileNo
+                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: getUser.bellaPoints, isConfirmed: false, isComplete:false, isCancelled:false, time: new Date(), totalProductSum, mobileNo
                                     }
                                 }
                             })
@@ -176,7 +179,7 @@ export default async function handler(req, res) {
                             {
                                 $push: {
                                     orders: {
-                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date(), totalProductSum, mobileNo
+                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, isComplete:false, isCancelled:false, time: new Date(), totalProductSum, mobileNo
                                     }
                                 }
                             }
@@ -225,7 +228,7 @@ export default async function handler(req, res) {
                             {
                                 $push: {
                                     orders: {
-                                        couponCode, orderCart, bellacoinsUse, totalbill, mobileNo, orderID, usedBellaPoints: totalbill, isConfirmed: false, time: new Date(), totalProductSum
+                                        couponCode, orderCart, bellacoinsUse, totalbill, mobileNo, orderID, usedBellaPoints: totalbill, isConfirmed: false, isCancelled:false, isComplete:false, time: new Date(), totalProductSum
                                     }
                                 }
                             }
@@ -271,7 +274,7 @@ export default async function handler(req, res) {
                         {
                             $push: {
                                 orders: {
-                                    couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: getUsertemp.bellaPoints, isConfirmed: false, time: new Date(), totalProductSum, mobileNo
+                                    couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: getUsertemp.bellaPoints, isConfirmed: false, isComplete:false, isCancelled:false, time: new Date(), totalProductSum, mobileNo
                                 }
                             }
                         }
@@ -296,7 +299,7 @@ export default async function handler(req, res) {
                                 $push: {
                                     orders:
                                     {
-                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date(), totalProductSum, mobileNo
+                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, isComplete:false, isCancelled:false, time: new Date(), totalProductSum, mobileNo
                                     }
                                 }
                             }
@@ -316,7 +319,7 @@ export default async function handler(req, res) {
                     {
                         $push: {
                             orders: {
-                                couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, time: new Date(), totalProductSum, mobileNo
+                                couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, isComplete:false, isCancelled:false, time: new Date(), totalProductSum, mobileNo
                             }
                         }
                     }

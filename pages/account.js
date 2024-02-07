@@ -43,7 +43,7 @@ const account = () => {
     }
     const logout = () => {
         localStorage.removeItem('bella10_state');
-        router.push('/login') 
+        router.push('/login')
     }
     const getUserSession = async () => {
         const user = JSON.parse(localStorage.getItem('bella10_state'));
@@ -53,7 +53,6 @@ const account = () => {
     }
     useEffect(() => {
         session();
-        getUserSession();
         getUser();
     }, []);
     return (
@@ -70,9 +69,9 @@ const account = () => {
                     <div className='bellapoint items-center w-full my-7 flex justify-center'>
                         <div className='w-full flex justify-center text-white gap-5 max-sm:gap-1 flex-wrap'>
                             <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Bella Points :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.bellaPoints || 0}</span></div>
-                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Orders :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.totalOrders}</span></div>
-                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Cancelled order :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.Ordercanceled}</span></div>
-                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Referral's order :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.Ordercanceled}</span></div>
+                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Order's :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.totalOrders}</span></div>
+                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Cancelled order's :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.Ordercanceled}</span></div>
+                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Referral's order's :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails?.referralsOrder}</span></div>
                         </div>
                     </div>
                     <div>Orders</div>
@@ -86,7 +85,7 @@ const account = () => {
 
                                 <div className='text-xs font-semibold'><h1>Coupon used:</h1> <h2 className='text-black'>{el.couponCode ? el.couponCode : 'None'}</h2></div>
 
-                                <div className='text-xs font-semibold'><h1>Status:</h1> <h2 className='text-orange-500'>{el.isConfirmed ? 'Delivered' : 'Pending'}</h2></div>
+                                <div className='text-xs font-semibold'><h1>Status:</h1> <h2 className='text-orange-500'>{el.isConfirmed ? <span>Delivered</span>  : <span>{el.isCancelled? "Cancelled":"Pending" }</span>}</h2></div>
                             </div>
                             <div className='border px-2'>
                                 <div className='bg-white mx-4 flex'>
@@ -105,7 +104,13 @@ const account = () => {
                                             <div className='text-xs font-semibold'><h1>Total:</h1> <h2 className='text-orange-500'>₹{el.totalbill}</h2></div>
                                             <div className='text-xs font-semibold'><h1>Order id:</h1> <h2 className='text-orange-500'>{el.orderID}</h2></div>
                                             <div className='text-xs font-semibold'><h1>BellaPoint used:</h1> <h2 className='text-orange-500'>{el.usedBellaPoints || 0}</h2></div>
-                                            <div className='text-xs font-semibold'><h1>Status:</h1> <h2 className='text-orange-500'>{el.isConfirmed ? 'Delivered' : 'Pending'}</h2></div></div>
+                                            <div className='text-xs font-semibold'><h1>Status:</h1> <h2 className='text-orange-500'>{el.isConfirmed ?
+                                                <span>Delivered</span> :
+                                                <span>{el.isCancelled ? "Cancelled" : "Pending"}
+                                                </span>}
+                                            </h2>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

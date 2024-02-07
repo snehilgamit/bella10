@@ -121,23 +121,23 @@ const cart = () => {
         if (user) {
             if (bellainputRef.current.checked) {
                 var common = {
-                    BellacoinsUsed: user.bellaPoints,
+                    BellacoinsUsed: cartValue.current.price_after_discount <= user.bellaPoints ? cartValue.current.price_after_discount : user.bellaPoints,
                     isBellacoinsUsed: true
                 }
                 setCartsM(prev => {
-                    if(prev.price_after_discount<= user.bellaPoints){
-                    return {
-                        ...prev,
-                        ...common,
-                        total: prev.isCouponApplied ? prev.price_after_discount - user.bellaPoints - prev.couponValue : 0
+                    if (prev.price_after_discount <= user.bellaPoints) {
+                        return {
+                            ...prev,
+                            ...common,
+                            total: prev.isCouponApplied ? prev.price_after_discount - user.bellaPoints - prev.couponValue : 0
+                        }
+                    } else {
+                        return {
+                            ...prev,
+                            ...common,
+                            total: prev.isCouponApplied ? prev.price_after_discount - user.bellaPoints - prev.couponValue : prev.price_after_discount - user.bellaPoints
+                        }
                     }
-                }else{
-                    return {
-                        ...prev,
-                        ...common,
-                        total: prev.isCouponApplied ? prev.price_after_discount - user.bellaPoints - prev.couponValue : prev.price_after_discount - user.bellaPoints
-                    }
-                }
                 })
             }
             else {
@@ -282,7 +282,7 @@ const cart = () => {
                         {cartsM.isBellacoinsUsed &&
                             <div className='flex justify-between m-1'>
                                 <span>Bella10 coins</span>
-                                <span className='text-orange-500'>-₹{user.bellaPoints}</span>
+                                <span className='text-orange-500'>-₹{cartsM.BellacoinsUsed}</span>
                             </div>}
                         <div className='flex justify-between m-1 border-b-2 pb-6 border-dashed'>
                             <span>Discount</span>
@@ -294,11 +294,11 @@ const cart = () => {
                                 <span className='text-orange-500 font-bold'> {user.bellaPoints} </span>
                                 bella10 coins
                             </div>
-                            <input className='text-orange-500 pb-2' type='checkbox' ref={bellainputRef} onChange={useBella}></input>
+                            <input className='text-orange-500 mt-[2px] w-[15px] h-[15px]' type='checkbox' ref={bellainputRef} onChange={useBella}></input>
                         </div> :
                             <div className='flex justify-between opacity-60 mt-2 m-1 border-b-2 pb-2 border-dashed'>
                                 <div>Use <span className='text-orange-500 font-bold'> {user.bellaPoints || 0} </span> bella10 coins</div>
-                                <input className='text-orange-500 pb-2' disabled type='checkbox'></input>
+                                <input className='text-orange-500 mt-[2px] w-[15px] h-[15px]' disabled type='checkbox'></input>
                             </div>
                         }
                         {cartsM.isCouponApplied &&

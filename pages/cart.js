@@ -121,7 +121,10 @@ const cart = () => {
         if (user) {
             if (bellainputRef.current.checked) {
                 var common = {
-                    BellacoinsUsed: cartValue.current.price_after_discount <= user.bellaPoints ? cartValue.current.price_after_discount : user.bellaPoints,
+                    BellacoinsUsed: cartsM.isCouponApplied? 
+                     cartValue.current.price_after_discount - cartsM.couponValue 
+                    :
+                    (cartValue.current.price_after_discount <= user.bellaPoints ? cartValue.current.price_after_discount : user.bellaPoints),
                     isBellacoinsUsed: true
                 }
                 setCartsM(prev => {
@@ -129,7 +132,7 @@ const cart = () => {
                         return {
                             ...prev,
                             ...common,
-                            total: prev.isCouponApplied ? prev.price_after_discount - user.bellaPoints - prev.couponValue : 0
+                            total: prev.isCouponApplied ? prev.price_after_discount - user.bellaPoints : 0
                         }
                     } else {
                         return {
@@ -199,9 +202,7 @@ const cart = () => {
                 setLoading("Done");
                 localStorage.setItem('cart', '[]')
                 setCart();
-                setTimeout(() => {
-                    router.push("/account");
-                }, 500);
+                router.push(`/order/${getPurchased.orderID}`);
             }
             else {
                 setLoading("Faild");

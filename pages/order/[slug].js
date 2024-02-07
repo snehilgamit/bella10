@@ -12,7 +12,7 @@ const order = () => {
     const { slug } = router.query;
     const [token, setToken] = useState('');
     const [data, setData] = useState(null);
-
+    const [cancelTxt,setCancelTxt] = useState('Cancel order')
     const [isLogined, setisLogined] = useState(false);
 
     const getOrder = async () => {
@@ -45,11 +45,14 @@ const order = () => {
         }
     }
     const cancelFunc = async () => {
+        setCancelTxt("Cancelling...");
         const req = await axios.post('/api/v1/orders/cancel', { token, orderID: slug });
         if (req.data.status) {
             getOrder();
+            setCancelTxt("Cancel order")
         }
         else {
+            setCancelTxt("Cancel order")
             alert(req.data.message)
         }
     }
@@ -125,7 +128,7 @@ const order = () => {
                                     <a className='opacity-60'>{data.orders.isCancelled ? "Cancelled" : "Delivered"}</a>
                                 </div> :
                                 <div className={`flex justify-center items-center active:opacity-60 hover:opacity-80 ${Style.outofStock}`} onClick={cancelFunc}>
-                                    <a>Cancel order</a>
+                                    <a>{cancelTxt}</a>
                                 </div>
                             }
                         </div>

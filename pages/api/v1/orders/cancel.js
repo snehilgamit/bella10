@@ -21,7 +21,7 @@ export default async function handler(req, res) {
                             }
                             findUser.orders[i].isCancelled = true;
                             findUser.orders[i].isComplete = true;
-                            findUser.bellaPoints =+ findUser.orders[i].usedBellaPoints;
+                            findUser.bellaPoints = findUser.bellaPoints + findUser.orders[i].usedBellaPoints;
                             findUser.Ordercanceled = findUser.Ordercanceled+1;
                             await User.updateOne({email:verify.email},findUser);
                             await User.updateOne(

@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     }
 
     const { couponCode, productIDs, bellacoinsUse, token, mobileNo } = req.body;
-    if(!mobileNo){
+    if (!mobileNo) {
         return res.json({ message: "Mobile number not entered", status: false });
     }
     await connectDB();
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
             const findUser = await User.findOne({ email: verify.email });
 
             if (findUser) {
-                if(findUser.bellaPoints<0){
+                if (findUser.bellaPoints < 0) {
                     return res.json({ message: "Something went wrong", status: false });
                 }
                 // Total bill with price discount
@@ -82,7 +82,7 @@ export default async function handler(req, res) {
                             if (bellaPoints !== findUser.bellaPoints) {
                                 return res.json({ message: "Something went wrong", status: false })
                             }
-                            if(bellaPoints<0){
+                            if (bellaPoints < 0) {
                                 return res.json({ message: "Something went wrong", status: false });
                             }
                             if (bellaPoints >= totalbill) {
@@ -99,7 +99,7 @@ export default async function handler(req, res) {
                                     {
                                         $push: {
                                             bellaTransaction: {
-                                                status: true, orderID, time: new Date(),type:"order", totalbill, usedBellaPoints: totalbill
+                                                status: true, orderID, time: new Date(), type: "order", totalbill, usedBellaPoints: totalbill
                                             }
                                         }
                                     }
@@ -114,7 +114,7 @@ export default async function handler(req, res) {
                                     {
                                         $push: {
                                             orders: {
-                                                couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: totalbill, isConfirmed: false, isComplete:false, isCancelled:false, time: new Date(), totalProductSum, mobileNo
+                                                couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: totalbill, isConfirmed: false, isComplete: false, isCancelled: false, time: new Date(), totalProductSum, mobileNo
                                             }
                                         }
                                     }
@@ -131,10 +131,10 @@ export default async function handler(req, res) {
                             if (getUser.bellaPoints !== findUser.bellaPoints) {
                                 return res.json({ message: "Something went wrong", status: false })
                             }
-                            if(getUser.bellaPoints<0){
+                            if (getUser.bellaPoints < 0) {
                                 return res.json({ message: "Something went wrong", status: false });
                             }
-                            
+
                             await User.updateOne(
                                 { 'email': findUser.email },
                                 {
@@ -152,7 +152,7 @@ export default async function handler(req, res) {
                                 {
                                     $push: {
                                         bellaTransaction: {
-                                            status: true, orderID, time: new Date(), type:"order", totalbill: getUser.bellaPoints, usedBellaPoints: getUser.bellaPoints, totalProductSum
+                                            status: true, orderID, time: new Date(), type: "order", totalbill: getUser.bellaPoints, usedBellaPoints: getUser.bellaPoints, totalProductSum
                                         }
                                     }
                                 }
@@ -162,7 +162,7 @@ export default async function handler(req, res) {
                             await User.updateOne({ email: findUser.email }, {
                                 $push: {
                                     orders: {
-                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: getUser.bellaPoints, isConfirmed: false, isComplete:false, isCancelled:false, time: new Date(), totalProductSum, mobileNo
+                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: getUser.bellaPoints, isConfirmed: false, isComplete: false, isCancelled: false, time: new Date(), totalProductSum, mobileNo
                                     }
                                 }
                             })
@@ -179,7 +179,7 @@ export default async function handler(req, res) {
                             {
                                 $push: {
                                     orders: {
-                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, isComplete:false, isCancelled:false, time: new Date(), totalProductSum, mobileNo
+                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, isComplete: false, isCancelled: false, time: new Date(), totalProductSum, mobileNo
                                     }
                                 }
                             }
@@ -196,10 +196,10 @@ export default async function handler(req, res) {
                     if (getUser.bellaPoints !== findUser.bellaPoints) {
                         return res.json({ message: "Something went wrong", status: false })
                     }
-                    if(getUser.bellaPoints<0){
+                    if (getUser.bellaPoints < 0) {
                         return res.json({ message: "Something went wrong", status: false });
                     }
-                    
+
                     if (getUser.bellaPoints >= totalbill) {
                         // Decreasing user bella points
                         await User.updateOne(
@@ -215,11 +215,12 @@ export default async function handler(req, res) {
                             {
                                 $push: {
                                     bellaTransaction: {
-                                        status: true, orderID, time: new Date(), type:"order", totalbill, usedBellaPoints: totalbill
+                                        status: true, orderID, time: new Date(), type: "order", totalbill, usedBellaPoints: totalbill
                                     }
                                 }
                             }
                         )
+                        var temp = totalbill;
                         totalbill = 0;
 
                         // Storing order
@@ -228,7 +229,7 @@ export default async function handler(req, res) {
                             {
                                 $push: {
                                     orders: {
-                                        couponCode, orderCart, bellacoinsUse, totalbill, mobileNo, orderID, usedBellaPoints: totalbill, isConfirmed: false, isCancelled:false, isComplete:false, time: new Date(), totalProductSum
+                                        couponCode, orderCart, bellacoinsUse, totalbill, mobileNo, orderID, usedBellaPoints: temp, isConfirmed: false, isCancelled: false, isComplete: false, time: new Date(), totalProductSum
                                     }
                                 }
                             }
@@ -244,7 +245,7 @@ export default async function handler(req, res) {
                     if (getUsertemp.bellaPoints !== findUser.bellaPoints) {
                         return res.json({ message: "Something went wrong", status: false })
                     }
-                    if(getUsertemp.bellaPoints<0){
+                    if (getUsertemp.bellaPoints < 0) {
                         return res.json({ message: "Something went wrong", status: false });
                     }
                     await User.updateOne(
@@ -262,7 +263,7 @@ export default async function handler(req, res) {
                         {
                             $push: {
                                 bellaTransaction: {
-                                    status: true, orderID, time: new Date(), type:"order", totalbill, usedBellaPoints:getUsertemp.bellaPoints
+                                    status: true, orderID, time: new Date(), type: "order", totalbill, usedBellaPoints: getUsertemp.bellaPoints
                                 }
                             }
                         }
@@ -274,7 +275,7 @@ export default async function handler(req, res) {
                         {
                             $push: {
                                 orders: {
-                                    couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: getUsertemp.bellaPoints, isConfirmed: false, isComplete:false, isCancelled:false, time: new Date(), totalProductSum, mobileNo
+                                    couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: getUsertemp.bellaPoints, isConfirmed: false, isComplete: false, isCancelled: false, time: new Date(), totalProductSum, mobileNo
                                 }
                             }
                         }
@@ -299,7 +300,7 @@ export default async function handler(req, res) {
                                 $push: {
                                     orders:
                                     {
-                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, isComplete:false, isCancelled:false, time: new Date(), totalProductSum, mobileNo
+                                        couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, isComplete: false, isCancelled: false, time: new Date(), totalProductSum, mobileNo
                                     }
                                 }
                             }
@@ -319,7 +320,7 @@ export default async function handler(req, res) {
                     {
                         $push: {
                             orders: {
-                                couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, isComplete:false, isCancelled:false, time: new Date(), totalProductSum, mobileNo
+                                couponCode, orderCart, bellacoinsUse, totalbill, orderID, isConfirmed: false, isComplete: false, isCancelled: false, time: new Date(), totalProductSum, mobileNo
                             }
                         }
                     }

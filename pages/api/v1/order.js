@@ -71,7 +71,8 @@ export default async function handler(req, res) {
                     const checkticket = await coupons.findOne({ couponId: couponCode })
                     if (!checkticket.isActive) return res.json({ message: "Coupon is not active", status: false });
                     if (checkticket.left <= 0) return res.json({ message: "Coupon limit is over", status: false });
-
+                    checkticket.left = checkticket.left - 1;
+                    await coupons.updateOne({ couponId: couponCode }, checkticket);
                     // If the minimumcart value is smaller than total bill (it is for setting the minimum order value)
                     if (checkticket.minimumCart <= totalbill) {
                         totalbill -= checkticket.off;
@@ -293,6 +294,8 @@ export default async function handler(req, res) {
                     const checkticket = await coupons.findOne({ couponId: couponCode });
                     if (!checkticket.isActive) return res.json({ message: "Coupon is not active", status: false });
                     if (checkticket.left <= 0) return res.json({ message: "Coupon limit is over", status: false });
+                    checkticket.left = checkticket.left - 1;
+                    await coupons.updateOne({ couponId: couponCode }, checkticket);
                     if (checkticket.minimumCart <= totalbill) {
                         totalbill -= checkticket.off;
 

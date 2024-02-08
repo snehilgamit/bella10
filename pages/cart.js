@@ -89,7 +89,7 @@ const cart = () => {
             }
         }
         else {
-            alert("Invalid coupon");
+            alert(getProducts.data.message);
         }
     }
 

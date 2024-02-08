@@ -69,6 +69,8 @@ export default async function handler(req, res) {
                 if (couponCode && couponCode != "" && bellacoinsUse) {
 
                     const checkticket = await coupons.findOne({ couponId: couponCode })
+                    if (!checkticket.isActive) return res.json({ message: "Coupon is not active", status: false });
+                    if (checkticket.left <= 0) return res.json({ message: "Coupon limit is over", status: false });
 
                     // If the minimumcart value is smaller than total bill (it is for setting the minimum order value)
                     if (checkticket.minimumCart <= totalbill) {
@@ -80,7 +82,7 @@ export default async function handler(req, res) {
                             // If the user total bill is smaller than user bella points(coins)
                             const { bellaPoints } = await User.findOne({ email: verify.email });
                             if (bellaPoints !== findUser.bellaPoints) {
-                                return res.json({ message: "Something went wrong", status: false })
+                                return res.json({ message: "Something went wrong", status: false });
                             }
                             if (bellaPoints < 0) {
                                 return res.json({ message: "Something went wrong", status: false });
@@ -289,7 +291,8 @@ export default async function handler(req, res) {
                 }
                 if (couponCode && couponCode != "") {
                     const checkticket = await coupons.findOne({ couponId: couponCode });
-
+                    if (!checkticket.isActive) return res.json({ message: "Coupon is not active", status: false });
+                    if (checkticket.left <= 0) return res.json({ message: "Coupon limit is over", status: false });
                     if (checkticket.minimumCart <= totalbill) {
                         totalbill -= checkticket.off;
 

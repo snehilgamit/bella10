@@ -7,6 +7,7 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
   const [isLogined,setisLogined]=useState(true);
   const path  = router.pathname;
+  
   const session = async () => {
     const getSession = localStorage.bella10_state;
 

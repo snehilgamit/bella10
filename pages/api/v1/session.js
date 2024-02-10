@@ -11,7 +11,7 @@ export default async function handler(req, res) {
         const findUser = await User.findOne({ email: verify.email });
         if (findUser) {
           const token = jwt.sign({ email: findUser.email }, process.env.SECRET);
-          return res.status(200).json({ message: "Authorised", status: true, email: findUser.email, token });
+          return res.status(200).json({ message: "Authorised", status: true, email: findUser.email, token, isAdmin: findUser.isAdmin });
         }
         return res.status(200).json({ message: "unAuthorised", status: false });
       }

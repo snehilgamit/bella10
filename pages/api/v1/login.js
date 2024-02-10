@@ -13,7 +13,7 @@ export default async function handler(req, res) {
                 }
                 if (findUser.email === email.toLowerCase() && findUser.password === password) {
                     const token = jwt.sign({ email: findUser.email }, process.env.SECRET);
-                    return res.status(200).json({ status: true, message: "Authorised", email, token });
+                    return res.status(200).json({ status: true, message: "Authorised", email, token ,isAdmin: findUser.isAdmin});
                 }
                 return res.status(200).json({ status: false, message: "Invalid email or password" });
             }

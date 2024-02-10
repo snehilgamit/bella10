@@ -17,7 +17,10 @@ const login = () => {
                 const req = await axios.post('/api/v1/login', { email, password });
                 if (req.data.status) {
                     localStorage.setItem('bella10_state', JSON.stringify({ email: req.data.email, token: req.data.token }));
-                    router.push('/account');
+                    if(req.data.isAdmin){
+                        router.push('/admin')
+                    }
+                    else router.push('/account')
                 }
                 else {
                     alert(req.data.message);

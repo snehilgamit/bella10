@@ -22,9 +22,8 @@ const index = () => {
           setisAdmin(req.data.isAdmin);
         }
         else {
-          setisLoading(false);
           localStorage.setItem('bella10_state', '{}');
-          router.push("/")
+          router.push("/login");
         }
       }
       catch (err) {
@@ -47,7 +46,7 @@ const index = () => {
         <>
           {!isAdmin ? <NotAdmin />
             :
-            <Contain/>
+            <Contain />
           }
         </>
       }

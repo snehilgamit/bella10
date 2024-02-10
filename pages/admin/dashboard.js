@@ -42,6 +42,7 @@ const account = () => {
                 }
                 else {
                     localStorage.setItem('bella10_state', '{}');
+                    router.push("/login");
                 }
             }
             catch (err) {

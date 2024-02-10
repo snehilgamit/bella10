@@ -1,26 +1,36 @@
+import bellaUser from "@/models/User";
 import connectDB from "@/util/mongoDB";
-import User from '@/models/User';
 import jwt from 'jsonwebtoken'
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        const { orderID ,email } = req.body;
+        const { orderID, email, token } = req.body;
         try {
+            if(!orderID) return res.json({message:"Enter order id please",status:false});
+            if(!email) return res.json({message:"Enter email id please",status:false});
             await connectDB();
-                const findUser = await User.findOne({ email });
-                if (findUser) {
-                    for(let i = 0; i<findUser.orders.length;i++){
-                        if (findUser.orders[i].orderID === orderID) {
-                            return res.status(200).json({
-                                status: true, orders: findUser.orders[i],
-                                totalOrders: findUser.totalOrders,
-                                Ordercanceled: findUser.Ordercanceled,
-                                email: findUser.email, bellaPoints: findUser.bellaPoints,
-                            })
-                        }
+
+            const verify = jwt.verify(token, process.env.SECRET);
+            if (!verify) return res.json({ message: "unAuthorised", status: false });
+
+            const find = await bellaUser.findOne({ email: verify.email }, { isAdmin: true });
+            if (!find) return res.json({ message: "You are not admin!", status: false });
+            if (!find.isAdmin) return res.json({ message: "You are not admin!", status: false });
+
+            const findUser  = await bellaUser.findOne({ email });
+            if (findUser) {
+                for (let i = 0; i < findUser.orders.length; i++) {
+                    if (findUser.orders[i].orderID === orderID) {
+                        return res.status(200).json({
+                            status: true, orders: findUser.orders[i],
+                            totalOrders: findUser.totalOrders,
+                            Ordercanceled: findUser.Ordercanceled,
+                            email: findUser.email, bellaPoints: findUser.bellaPoints,
+                        })
                     }
-                    return res.status(200).json({ message: "Can't find order", status: false });
                 }
-                    return res.status(200).json({ message: "Can't find user", status: false });
+                return res.status(200).json({ message: "Can't find order", status: false });
+            }
+            return res.status(200).json({ message: "Can't find user", status: false });
         }
         catch (e) {
             console.log(e);

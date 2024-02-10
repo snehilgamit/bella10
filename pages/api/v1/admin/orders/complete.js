@@ -3,9 +3,21 @@ import User from '@/models/User';
 import jwt from 'jsonwebtoken'
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        const { email, orderID } = req.body;
+        const { email, orderID, token } = req.body;
+        console.log(token)
         try {
             await connectDB();
+            if(!orderID) return res.json({message:"Enter order id please",status:false});
+            if(!email) return res.json({message:"Enter email id please",status:false});
+            await connectDB();
+
+            const verify = jwt.verify(token, process.env.SECRET);
+            if (!verify) return res.json({ message: "unAuthorised", status: false });
+
+            const find = await bellaUser.findOne({ email: verify.email }, { isAdmin: true });
+            if (!find) return res.json({ message: "You are not admin!", status: false });
+            if (!find.isAdmin) return res.json({ message: "You are not admin!", status: false });
+
             const findUser = await User.findOne({ email });
             if (findUser) {
                 let el = findUser.orders

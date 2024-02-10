@@ -8,6 +8,9 @@ export default async function handler(req, res) {
     const verify = jwt.verify(token, process.env.SECRET);
     if (!verify) return res.json({ message: "unAuthorised", status: false });
     await connectDB();
+    const find = await bellaUser.findOne({email:verify.email},{isAdmin:true});
+    if(!find) return res.json({ message: "You are not admin!", status: false });
+    if(!find.isAdmin) return res.json({ message: "You are not admin!", status: false });
     let user = await bellaUser.find();
     let totalOrder = 0;
     let completeOrder = 0;

@@ -5,6 +5,7 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
         const { orderID, email, token } = req.body;
         try {
+            if(!token) return res.json({message:"Something want wrong!",status:false});
             if(!orderID) return res.json({message:"Enter order id please",status:false});
             if(!email) return res.json({message:"Enter email id please",status:false});
             await connectDB();

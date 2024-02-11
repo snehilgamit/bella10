@@ -1,12 +1,23 @@
 import connectDB from "@/util/mongoDB";
-import User from '@/models/User';
+import bellaUser from '@/models/User';
 import jwt from 'jsonwebtoken'
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        const { email, orderID } = req.body;
+        const { email, orderID,token } = req.body;
         try {
             await connectDB();
-            const findUser = await User.findOne({ email });
+            if(!token) return res.json({message:"Something want wrong!",status:false});
+            if(!orderID) return res.json({message:"Enter order id please",status:false});
+            if(!email) return res.json({message:"Enter email id please",status:false});
+
+            const verify = jwt.verify(token, process.env.SECRET);
+            if (!verify) return res.json({ message: "unAuthorised", status: false });
+
+            const find = await bellaUser.findOne({ email: verify.email }, { isAdmin: true });
+            if (!find) return res.json({ message: "You are not admin!", status: false });
+            if (!find.isAdmin) return res.json({ message: "You are not admin!", status: false });
+
+            const findUser = await bellaUser.findOne({ email });
             if (findUser) {
                 let el = findUser.orders
                 for (let i = 0; i < el.length; i++) {
@@ -21,8 +32,8 @@ export default async function handler(req, res) {
                         findUser.orders[i].isComplete = true;
                         findUser.bellaPoints = findUser.bellaPoints + findUser.orders[i].usedBellaPoints;
                         findUser.Ordercanceled = findUser.Ordercanceled + 1;
-                        await User.updateOne({ email }, findUser);
-                        await User.updateOne(
+                        await bellaUser.updateOne({ email }, findUser);
+                        await bellaUser.updateOne(
                             { email: findUser.email },
                             {
                                 $push: {

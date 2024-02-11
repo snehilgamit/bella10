@@ -24,7 +24,7 @@ const order = () => {
     const cancelFunc = async () => {
         const req = await axios.post('/api/v1/admin/orders/cancel', { email: router.query.email, orderID: slug, token });
         if (req.data.status) {
-            getOrder();
+            getOrder(token);
             alert("Order cancelled !")
         }
         else {
@@ -34,7 +34,7 @@ const order = () => {
     const completeFunc = async () => {
         const req = await axios.post('/api/v1/admin/orders/complete', { email: router.query.email, orderID: slug, token });
         if (req.data.status) {
-            getOrder();
+            getOrder(token);
             alert(req.data.message);
         }
         else {

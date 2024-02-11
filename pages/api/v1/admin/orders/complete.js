@@ -1,15 +1,14 @@
 import connectDB from "@/util/mongoDB";
-import User from '@/models/User';
+import bellaUser from '@/models/User';
 import jwt from 'jsonwebtoken'
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         const { email, orderID, token } = req.body;
-        console.log(token)
         try {
             await connectDB();
+            if(!token) return res.json({message:"Something want wrong!",status:false});
             if(!orderID) return res.json({message:"Enter order id please",status:false});
             if(!email) return res.json({message:"Enter email id please",status:false});
-            await connectDB();
 
             const verify = jwt.verify(token, process.env.SECRET);
             if (!verify) return res.json({ message: "unAuthorised", status: false });
@@ -18,7 +17,7 @@ export default async function handler(req, res) {
             if (!find) return res.json({ message: "You are not admin!", status: false });
             if (!find.isAdmin) return res.json({ message: "You are not admin!", status: false });
 
-            const findUser = await User.findOne({ email });
+            const findUser = await bellaUser.findOne({ email });
             if (findUser) {
                 let el = findUser.orders
                 for (let i = 0; i < el.length; i++) {
@@ -31,7 +30,7 @@ export default async function handler(req, res) {
                         }
                         findUser.orders[i].isComplete = true;
                         findUser.orders[i].isConfirmed = true;
-                        await User.updateOne({ email }, findUser);
+                        await bellaUser.updateOne({ email }, findUser);
                         return res.status(200).json({ message: "Order completed. thank you!", status: true });
                     }
                 }

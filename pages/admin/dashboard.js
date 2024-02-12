@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
-import Style from '@/styles/account.module.css'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -36,7 +34,7 @@ const account = () => {
                     if (req.data.isAdmin) {
                         getDashboard(req.data.token);
                     }
-                    else{
+                    else {
                         router.push("/")
                     }
                 }

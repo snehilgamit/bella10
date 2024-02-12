@@ -9,6 +9,7 @@ const coupons = () => {
 }
 
 export default coupons
+
 // import React, { useEffect, useState } from 'react'
 // import BackBtn from '@/components/backBtn'
 // import axios from 'axios'

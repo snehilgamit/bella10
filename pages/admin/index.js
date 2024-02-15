@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import NotAdmin from '@/components/notAdmin';
 import Loading from '@/components/loading';
-import Contain from '@/components/admin/dashboard.admin';
+import Contain from '@/components/admin/home.admin';
 const index = () => {
   const router = useRouter();
   const [isLoading, setisLoading] = useState(true)

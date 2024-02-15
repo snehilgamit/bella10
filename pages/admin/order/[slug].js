@@ -20,6 +20,9 @@ const order = () => {
             setData(getData.data);
             setisLoading(false);
         }
+        else{
+            router.push('/admin/dashboard');
+        }
     }
     const cancelFunc = async () => {
         const req = await axios.post('/api/v1/admin/orders/cancel', { email: router.query.email, orderID: slug, token });

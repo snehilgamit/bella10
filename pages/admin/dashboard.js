@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
 import Loading from '@/components/loading'
 import BackBtn from '@/components/backBtn'
 import NotAdmin from '@/components/notAdmin'
 import Dashboard from '@/components/admin/dashboard.admin'
+
+
 const account = () => {
     const router = useRouter();
     const [isLoading, setisLoading] = useState(false);

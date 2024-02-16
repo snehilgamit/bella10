@@ -35,6 +35,11 @@ export default async function handler(req, res) {
                         }
                         findUser.orders[i].isComplete = true;
                         findUser.orders[i].isConfirmed = true;
+                        await bellaUser.updateOne({myReferralcode:findUser.referralcode},{$inc:{bellaPoints:300},$push: {
+                            bellaTransaction: {
+                                status: true,orderID:email.split("@")[0],time: new Date(), type: "Referral", usedBellaPoints: 300,
+                            }
+                        }})
                         await bellaUser.updateOne({ email }, findUser);
                         return res.status(200).json({ message: "Order completed. thank you!", status: true });
                     }

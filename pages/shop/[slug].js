@@ -72,7 +72,6 @@ const Slug = () => {
       {isFetching ?
         <Loading /> :
         <>
-          <BackBtn />
           <div className='bg-slate-100 min-h-screen w-full'>
             <div className='flex pt-5 ml-60 max-sm:ml-6 text-sm text-gray-600'>
               <span className='cursor-pointer hover:text-orange-500 font-medium' onClick={() => { routing("") }}>Home </span>

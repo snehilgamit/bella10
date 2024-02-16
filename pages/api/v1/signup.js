@@ -1,17 +1,7 @@
 import connectDB from "@/util/mongoDB";
 import User from '@/models/User';
 import jwt from 'jsonwebtoken';
-
-const newRef = () => {
-    const str = "1234567890abcdefghijklmnopqrstuvwxyz"
-    let i = 0;
-    let referralCode = "";
-    while(i<8){
-        referralCode+=str[Math.floor(Math.random()*(str.length-1))];
-        i++;
-    }
-    return referralCode;
-};
+import newRef from "@/utils/referralCode";
 
 export default async function main(req, res) {
     if (req.method === 'POST') {

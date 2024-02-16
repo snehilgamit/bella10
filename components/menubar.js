@@ -4,7 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Style from '..//styles/menubar.module.css'
 import axios from 'axios'
-const menubar = ({ cartNum ,isLogined}) => {
+import Button from './button.main'
+const menubar = ({ cartNum, isLogined }) => {
     const router = useRouter();
     const path = router.pathname;
     const [cartNo, setCartNo] = useState();
@@ -173,18 +174,12 @@ const menubar = ({ cartNum ,isLogined}) => {
                     </Link>
                     {isLogined ?
                         <div className={`flex justify-center items-center ${Style.loginArea}`}>
-                            <Link href={'/signup'} className={`${Style.menuitmes_sidebar}`}>
-                                Signup
-                            </Link>
-                            <Link href={'/login'} className={`${Style.menuitmes_sidebar}`}>
-                                Login
-                            </Link>
+                            <Button link={'/signup'} text={'Sign up'} />
+                            <Button link={'/login'} text={'Login'} />
                         </div>
                         :
                         <div className={`flex justify-center items-center ${Style.loginArea}`}>
-                            <Link href={'/account'} className={`${Style.menuitmes_sidebar}`}>
-                                Account
-                            </Link>
+                             <Button link={'/account'} text={'Account'} />
                         </div>
                     }
                 </div>

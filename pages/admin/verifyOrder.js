@@ -71,17 +71,6 @@ const verifyOrder = () => {
     router.push({ pathname: `order/${orderID}`, query: { email } })
   }
 
-  const SearchComponent = ({ data }) => (
-    <form onSubmit={search} className='flex flex-col mt-5 gap-2 w-full items-center'>
-      <input className='border border-black p-2 w-[400px] max-sm:w-[250px] rounded-xl' placeholder='Enter email' type="email" name="email" value={data.email} onChange={fillDetails} id="email" />
-      <input className='border border-black p-2 w-[400px] max-sm:w-[250px] rounded-xl' type="text" name="orderID" placeholder='Enter orderID' value={data.orderID} onChange={fillDetails} id="orderID" />
-      {searching ?
-        <button type="button" className='px-10 py-1.5 rounded-xl text-lg mt-6 bg-black text-white'>Searching...</button>
-        :
-        <button type="submit" className='px-10 py-1.5 rounded-xl text-lg mt-6 bg-black text-white '>Search</button>
-      }
-    </form>
-  )
 
   useEffect(() => {
     session();
@@ -95,8 +84,16 @@ const verifyOrder = () => {
           <div className='flex my-5 h-full items-center flex-col w-full'>
             <div className='text-3xl font-semibold'>Verify order</div>
 
-            <SearchComponent data={details} />
-            
+            <form onSubmit={search} className='flex flex-col mt-5 gap-2 w-full items-center'>
+              <input className='border border-black p-2 w-[400px] max-sm:w-[250px] rounded-xl' placeholder='Enter email' type="email" name="email" value={details.email} onChange={fillDetails} id="email" />
+              <input className='border border-black p-2 w-[400px] max-sm:w-[250px] rounded-xl' type="text" name="orderID" placeholder='Enter orderID' value={details.orderID} onChange={fillDetails} id="orderID" />
+              {searching ?
+                <button type="button" className='px-10 py-1.5 rounded-xl text-lg mt-6 bg-black text-white'>Searching...</button>
+                :
+                <button type="submit" className='px-10 py-1.5 rounded-xl text-lg mt-6 bg-black text-white'>Search</button>
+              }
+            </form>
+
             {data &&
               <div onClick={() => routing(data.orderID)} className='cursor-pointer w-[65%] max-md:w-full my-4 mx-auto border rounded-md bg-white'>
                 <div className='w-full h-16 px-5 bg-gray-200 max-lg:hidden text-gray-600 border-b border-gray-700 flex items-center justify-around'>

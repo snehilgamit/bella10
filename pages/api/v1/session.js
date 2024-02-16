@@ -4,6 +4,7 @@ import connectDB from '@/util/mongoDB'
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { token } = req.body;
+    if(!token) return res.status(200).json({status:false});
     try {
       await connectDB();
       const verify = jwt.verify(token, process.env.SECRET);
@@ -16,7 +17,7 @@ export default async function handler(req, res) {
         return res.status(200).json({ message: "unAuthorised", status: false });
       }
     }
-    catch {
+    catch (e){
       return res.status(500).json({ message: "Something want wrong!", status: false });
     }
     return res.status(200).json({ message: "unAuthorised", status: false });

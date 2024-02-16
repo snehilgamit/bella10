@@ -8,7 +8,8 @@ const login = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
 
-    const login = async () => {
+    const login = async (e) => {
+        e.preventDefault()
         if (password == "" || email == "") {
             alert("Something missing");
         }
@@ -17,7 +18,7 @@ const login = () => {
                 const req = await axios.post('/api/v1/login', { email, password });
                 if (req.data.status) {
                     localStorage.setItem('bella10_state', JSON.stringify({ email: req.data.email, token: req.data.token }));
-                    if(req.data.isAdmin){
+                    if (req.data.isAdmin) {
                         router.push('/admin')
                     }
                     else router.push('/account')
@@ -28,7 +29,7 @@ const login = () => {
                 }
             }
             catch (e) {
-                
+
             }
         }
     }
@@ -62,15 +63,25 @@ const login = () => {
                     </div>
                     <div className="w-[50%] max-sm:w-full h-full flex flex-col justify-start items-center p-7 relative text-center">
                         <span className="text-4xl font-medium ml-1 mb-4 max-sm:mb-4 max-sm:text-2xl leading-8">Login</span>
-                        <form onSubmit={(e) => { e.preventDefault() }} className='mb-10 max-sm:mb-0'>
+                        <form onSubmit={login} className='mb-10 max-sm:mb-0'>
 
-                            <input className='h-10 my-2 text-sm   bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder='Enter email' type="text" name="email" id="email" />
+                            <input className='h-10 my-2 text-sm   bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' value={email} onChange={(e) => { setEmail(e.target.value) }}
+                                placeholder='Enter email'
+                                autoComplete="off"
+                                required={true}
+                                type="email"
+                                title={"email"} />
 
-                            <input className='h-10 my-2 text-sm bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' value={password} onChange={(e) => { setPassword(e.target.value) }} placeholder='Enter password' type="password" name="password" id="password" />
+                            <input className='h-10 my-2 text-sm bg-gray-300 placeholder:text-gray-500  py-1 w-full px-2 rounded-md' value={password} onChange={(e) => { setPassword(e.target.value) }}
+                                placeholder='Enter password'
+                                required={true}
+                                autoCorrect="off"
+                                type="password"
+                                title={"password"} />
 
-                            <div className='mt-3 text-2xl bg-black text-white cursor-pointer min-w-[100px] mb-10 text-center py-1 rounded-lg max-sm:mb-4 hover:opacity-60 font-bold' onClick={login}>
+                            <button type='submit' className='mt-3 text-2xl bg-black text-white cursor-pointer min-w-[100px] mb-10 text-center py-1 rounded-lg max-sm:mb-4 max-sm:text-xl px-4 hover:opacity-60 font-semibold'>
                                 LOGIN
-                            </div>
+                            </button>
                         </form>
                     </div>
                 </div>

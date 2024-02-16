@@ -68,12 +68,12 @@ const account = () => {
                         <div className='bg-black text-white py-1 rounded-3xl px-4 cursor-pointer' onClick={() => { router.push('/transaction') }}>Transaction</div>
                         <div className='bg-black text-white py-1 rounded-3xl px-4 cursor-pointer' onClick={logout}>Logout</div>
                     </div>
-                    <div className='bellapoint items-center w-full my-7 flex justify-center'>
+                    <div className='bellapoint items-center w-full my-5 flex justify-center'>
                         <div className='w-full flex justify-center text-white gap-5 max-sm:gap-1 flex-wrap'>
                             <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Bella Points :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.bellaPoints || 0}</span></div>
                             <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Order's :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.totalOrders}</span></div>
                             <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Cancelled order's :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.Ordercanceled}</span></div>
-                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Referral's order's :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails?.referralsOrder}</span></div>
+                            <div className='font-semibold bg-black flex justify-center items-center h-56 w-[20rem] rounded-md max-sm:h-10 max-sm:w-full max-sm:text-xl max-sm:justify-start max-sm:px-2'>Referral's order's :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails?.referralsOrders}</span></div>
                         </div>
                     </div>
                     <div>Orders</div>

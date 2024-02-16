@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Loading from '@/components/loading'
+import BackBtn from '@/components/backBtn'
 const account = () => {
     const router = useRouter();
     const [isLogined, setisLogined] = useState(true);
@@ -57,6 +58,7 @@ const account = () => {
     }, []);
     return (
         <>
+            <BackBtn />
             {isLogined ? <Loading /> : <div className='min-h-screen px-10 py-5 w-full mx-auto flex justify-center'>
                 <div className='w-full text-3xl font-semibold relative'>
                     <h1>
@@ -85,7 +87,7 @@ const account = () => {
 
                                 <div className='text-xs font-semibold'><h1>Coupon used:</h1> <h2 className='text-black'>{el.couponCode ? el.couponCode : 'None'}</h2></div>
 
-                                <div className='text-xs font-semibold'><h1>Status:</h1> <h2 className='text-orange-500'>{el.isConfirmed ? <span>Delivered</span>  : <span>{el.isCancelled? "Cancelled":"Pending" }</span>}</h2></div>
+                                <div className='text-xs font-semibold'><h1>Status:</h1> <h2 className='text-orange-500'>{el.isConfirmed ? <span>Delivered</span> : <span>{el.isCancelled ? "Cancelled" : "Pending"}</span>}</h2></div>
                             </div>
                             <div className='border px-2'>
                                 <div className='bg-white mx-4 flex'>

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Menubar from '@/components/menubar'
 import axios from 'axios'
 import Loading from '@/components/loading'
+import BackBtn from '@/components/backBtn'
 const Slug = () => {
   const [isFetching, setIsFetching] = useState(true);
   const router = useRouter();
@@ -51,11 +52,11 @@ const Slug = () => {
   };
 
   const addtoCartFunc = () => {
-    addtocart(product) 
+    addtocart(product)
   };
 
-  const routing = (path) =>{
-    path ="/"+path
+  const routing = (path) => {
+    path = "/" + path
     router.push(path)
   };
   useEffect(() => {
@@ -71,16 +72,17 @@ const Slug = () => {
       {isFetching ?
         <Loading /> :
         <>
+          <BackBtn />
           <div className='bg-slate-100 min-h-screen w-full'>
             <div className='flex pt-5 ml-60 max-sm:ml-6 text-sm text-gray-600'>
-            <span className='cursor-pointer hover:text-orange-500 font-medium' onClick={()=>{routing("")}}>Home </span>
-            {query.map((el,index)=>(
-              <div className='font-medium text-center px-0.5'>{index==query.length-1?<span className='hover:text-orange-500 cursor-pointer' onClick={()=>{routing("shop/"+slug)}}>{slug}</span>:
-              <>
-              <span className='hover:text-orange-500 cursor-pointer' onClick={()=>{routing(el)}}>{el}</span><span className='text-sm text-slate-400'>{" >"}</span>
-              </>
-              }</div>
-            ))}
+              <span className='cursor-pointer hover:text-orange-500 font-medium' onClick={() => { routing("") }}>Home </span>
+              {query.map((el, index) => (
+                <div className='font-medium text-center px-0.5'>{index == query.length - 1 ? <span className='hover:text-orange-500 cursor-pointer' onClick={() => { routing("shop/" + slug) }}>{slug}</span> :
+                  <>
+                    <span className='hover:text-orange-500 cursor-pointer' onClick={() => { routing(el) }}>{el}</span><span className='text-sm text-slate-400'>{" >"}</span>
+                  </>
+                }</div>
+              ))}
             </div>
             <div className='flex justify-center max-sm:flex-col w-full h-full p-5'>
               <div className='Image border max-sm:ml-0 bg-white flex justify-center items-center'>
@@ -130,15 +132,15 @@ const Slug = () => {
                 </div>
                 {product.stock === 0 ? <div className={`flex justify-center items-center ${Style.outofStock}`}>
                   <a className='opacity-60'>Out of stock</a>
-                </div> 
-                :
-                <div className={`flex justify-center items-center ${Style.loginArea}`}>
-                 <a onClick={purchaseFunc}>Buy</a>
-                  {addtoCart ? <a onClick={addtoCartFunc}>Add to cart</a>
-                  :
-                  <a>Adding...</a>
-                  }
                 </div>
+                  :
+                  <div className={`flex justify-center items-center ${Style.loginArea}`}>
+                    <a onClick={purchaseFunc}>Buy</a>
+                    {addtoCart ? <a onClick={addtoCartFunc}>Add to cart</a>
+                      :
+                      <a>Adding...</a>
+                    }
+                  </div>
                 }
               </div>
             </div>

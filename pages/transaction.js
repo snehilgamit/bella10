@@ -3,6 +3,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import Loading from '@/components/loading'
 import router from 'next/router'
+import BackBtn from '@/components/backBtn'
 const transaction = () => {
 
   const [isLogined, setIsLogined] = useState(false);
@@ -47,6 +48,7 @@ const transaction = () => {
   }, [isLogined])
   return (
     <>
+    <BackBtn/>
       {isLogined ? <div className='flex justify-center flex-col'>
         <div className='my-5 text-3xl font-semibold underline text-center'>Transactions</div>
         <div className='flex justify-center items-center flex-col mb-20'>

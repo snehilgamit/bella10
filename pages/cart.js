@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import purchase from '@/utils/purchase'
 import axios from 'axios'
+import BackBtn from '@/components/backBtn'
 const cart = () => {
     const router = useRouter();
 
@@ -121,10 +122,10 @@ const cart = () => {
         if (user) {
             if (bellainputRef.current.checked) {
                 var common = {
-                    BellacoinsUsed: cartsM.isCouponApplied? 
-                     cartValue.current.price_after_discount - cartsM.couponValue 
-                    :
-                    (cartValue.current.price_after_discount <= user.bellaPoints ? cartValue.current.price_after_discount : user.bellaPoints),
+                    BellacoinsUsed: cartsM.isCouponApplied ?
+                        cartValue.current.price_after_discount - cartsM.couponValue
+                        :
+                        (cartValue.current.price_after_discount <= user.bellaPoints ? cartValue.current.price_after_discount : user.bellaPoints),
                     isBellacoinsUsed: true
                 }
                 setCartsM(prev => {
@@ -236,6 +237,7 @@ const cart = () => {
 
     return (
         <>
+            <BackBtn />
             <div className='w-full flex justify-center max-sm:flex-col max-sm:items-center pt-5 mb-20'>
                 <div className='w-[85%] border p-5'>
                     <div className='text-2xl flex items-center mb-2'>Cart <span className='ml-1'>({carts.length || 0} items)</span></div>

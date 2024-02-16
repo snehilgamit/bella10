@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Loading from '@/components/loading'
+import BackBtn from '@/components/backBtn'
 const referral = () => {
     const router = useRouter();
     const [isLogined, setisLogined] = useState(true);
@@ -52,6 +53,7 @@ const referral = () => {
     }, []);
     return (
         <>
+        <BackBtn/>
             {isLogined ? <Loading /> : <div className='min-h-screen px-10 py-5 w-full mx-auto flex justify-center'>
                 <div className='w-full text-3xl font-semibold relative'>
                     <h1>

@@ -67,6 +67,9 @@ const verifyOrder = () => {
       router.push("/login")
     }
   }
+  const routing = (orderID) => {
+    router.push({ pathname: `order/${orderID}`, query: { email } })
+  }
 
   const SearchComponent = ({ data }) => (
     <form onSubmit={search} className='flex flex-col mt-5 gap-2 w-full items-center'>
@@ -83,7 +86,7 @@ const verifyOrder = () => {
   useEffect(() => {
     session();
   }, [])
-  
+
   return (
     <>{isLoading ? <Loading /> :
       <>{!isAdmin ? <NotAdmin /> :
@@ -91,9 +94,11 @@ const verifyOrder = () => {
           <BackBtn />
           <div className='flex my-5 h-full items-center flex-col w-full'>
             <div className='text-3xl font-semibold'>Verify order</div>
+
             <SearchComponent data={details} />
+            
             {data &&
-              <div onClick={() => { router.push({ pathname: `order/${data.orderID}`, query: { email } }) }} className='cursor-pointer w-[65%] max-md:w-full my-4 mx-auto border rounded-md bg-white'>
+              <div onClick={() => routing(data.orderID)} className='cursor-pointer w-[65%] max-md:w-full my-4 mx-auto border rounded-md bg-white'>
                 <div className='w-full h-16 px-5 bg-gray-200 max-lg:hidden text-gray-600 border-b border-gray-700 flex items-center justify-around'>
                   <div className='text-xs font-semibold'><h1>ORDER PLACED:</h1> <h2>{data.time.split("T")[0].split("-").reverse().join("-")}</h2></div>
                   <div className='text-xs font-semibold'><h1>Total:</h1> <h2 className='text-black'>₹{data.totalbill}</h2></div>

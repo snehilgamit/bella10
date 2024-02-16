@@ -10,9 +10,8 @@ const Home = () => {
 
   const fetchData = async () => {
     const getProducts = await axios.post('/api/v1/product/getProducts', { category: 'cricket' });
-    console.log(localStorage)
-    setProduct(getProducts.data.results)
-    setIsFetching(false)
+    setProduct(getProducts.data.results);
+    setIsFetching(false);
   }
   useEffect(() => {
     fetchData();

@@ -3,12 +3,12 @@ import bellaUser from '@/models/User';
 import jwt from 'jsonwebtoken'
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        const { email, orderID,token } = req.body;
+        const { email, orderID, token } = req.body;
         try {
             await connectDB();
-            if(!token) return res.json({message:"Something want wrong!",status:false});
-            if(!orderID) return res.json({message:"Enter order id please",status:false});
-            if(!email) return res.json({message:"Enter email id please",status:false});
+            if (!token) return res.json({ message: "Something want wrong!", status: false });
+            if (!orderID) return res.json({ message: "Enter order id please", status: false });
+            if (!email) return res.json({ message: "Enter email id please", status: false });
 
             const verify = jwt.verify(token, process.env.SECRET);
             if (!verify) return res.json({ message: "unAuthorised", status: false });
@@ -18,7 +18,12 @@ export default async function handler(req, res) {
             if (!find.isAdmin) return res.json({ message: "You are not admin!", status: false });
 
             const findUser = await bellaUser.findOne({ email });
-            if (findUser) {
+            if (findUser && !findUser.isBanned) {
+                if (findUser.bellaPoints < 0) {
+                    findUser.isBanned = true
+                    await bellaUser.updateOne({email},findUser);
+                    return res.status(200).json({ message: "Account has negative balance!", status: false });
+                }
                 let el = findUser.orders
                 for (let i = 0; i < el.length; i++) {
                     if (el[i].orderID === orderID) {

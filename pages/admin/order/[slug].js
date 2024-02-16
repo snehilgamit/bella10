@@ -3,9 +3,10 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import Link from 'next/link'
 import Image from 'next/image'
-import Loading from '@/components/loading';
-import BackBtn from '@/components/backBtn';
-import NotAdmin from '@/components/notAdmin';
+import Loading from '@/components/loading'
+import BackBtn from '@/components/backBtn'
+import NotAdmin from '@/components/notAdmin'
+
 const order = () => {
     const [isAdmin, setisAdmin] = useState(false);
     const [isLoading, setisLoading] = useState(true)
@@ -14,24 +15,22 @@ const order = () => {
     const { slug } = router.query;
     const [data, setData] = useState(null);
 
+
     const getOrder = async (getToken) => {
         const getData = await axios.post('/api/v1/admin/orders/getOrder', { email: router.query.email, orderID: slug, token: getToken });
         if (getData.data.status) {
             setData(getData.data);
             setisLoading(false);
         }
-        else{
-            router.push('/admin/dashboard');
-        }
     }
     const cancelFunc = async () => {
         const req = await axios.post('/api/v1/admin/orders/cancel', { email: router.query.email, orderID: slug, token });
         if (req.data.status) {
             getOrder(token);
-            alert("Order cancelled !")
+            alert("Order cancelled !");
         }
         else {
-            alert(req.data.message)
+            alert(req.data.message);
         }
     }
     const completeFunc = async () => {

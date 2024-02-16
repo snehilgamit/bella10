@@ -90,6 +90,7 @@ const cart = () => {
             }
         }
         else {
+            setCouponCode("")
             alert(getProducts.data.message);
         }
     }

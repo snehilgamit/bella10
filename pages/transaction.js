@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Link from 'next/link'
 import Loading from '@/components/loading'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import BackBtn from '@/components/backBtn'
 const transaction = () => {
-
+  const router = useRouter()
   const [isLogined, setIsLogined] = useState(false);
   const [token, setToken] = useState('');
   const [transactions, setTransacion] = useState([]);
@@ -46,28 +46,34 @@ const transaction = () => {
       getUser();
     }
   }, [isLogined])
+
+  const routering = (type, orderID) => {
+    type !== 'order' ? router.push(`/transaction`) : router.push(`/order/${orderID}`)
+  }
   return (
     <>
-    <BackBtn/>
+      <BackBtn />
       {isLogined ? <div className='flex justify-center flex-col'>
         <div className='my-5 text-3xl font-semibold underline text-center'>Transactions</div>
-        <div className='flex justify-center items-center flex-col mb-20'>
-          <div className='flex justify-around w-[70%] max-md:w-[95%] max-sm:text-sm text-center gap-2'>
-            <div className='p-2 px-4'>No</div>
-            <div className='p-2 max-w-[20%]'>Order ID</div>
-            <div className='p-2'>BellaPoint</div>
-            <div className='p-2'>Time</div>
-          </div>
-          {transactions.map((el, index) => (
-            <Link href={el.type !== 'order'? `/transaction` :`/order/${el.orderID}`} key={index} className='flex justify-around w-[70%] max-md:w-[95%] bg-black text-white rounded-xl py-1 my-1 max-sm:text-sm text-cente'>
-              <div className='p-2 px-4'>{index + 1}</div>
-              <div className='p-2 truncate'>{el.orderID}</div>
-              <div className='p-2 text-orange-500'>{el.type === 'order'?'-'+el.usedBellaPoints:'+'+el.usedBellaPoints}</div>
-              <div className='p-2'>{new Date(el.time).toLocaleDateString()}</div>
-            </Link>
-          ))}
-        </div>
-      </div> : <Loading/>}
+        <table >
+          <tbody className='w-full mb-20'>
+            <tr className='flex justify-around w-[70%] max-md:w-[95%] max-sm:text-sm text-center'>
+              <th>No</th>
+              <th>Order ID</th>
+              <th>BellaPoint</th>
+              <th>Time</th>
+            </tr>
+            {transactions.map((el, index) => (
+              <tr onClick={() => { routering(el.type, el.orderID) }} key={index} className='flex justify-around w-[70%] max-md:w-[95%] bg-black text-white rounded-xl py-1 my-1 max-sm:text-sm text-center cursor-pointer'>
+                <td className="py-2">{index + 1}</td>
+                <td className="py-2 truncate">{el.orderID}</td>
+                <td className="py-2 text-orange-500">{el.type === 'order' ? '-' + el.usedBellaPoints : '+' + el.usedBellaPoints}</td>
+                <td className="py-2">{new Date(el.time).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div> : <Loading />}
     </>
   )
 }

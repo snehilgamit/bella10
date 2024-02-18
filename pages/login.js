@@ -10,6 +10,7 @@ const login = () => {
 
     const login = async (e) => {
         e.preventDefault()
+        console.log(email)
         if (password == "" || email == "") {
             alert("Something missing");
         }

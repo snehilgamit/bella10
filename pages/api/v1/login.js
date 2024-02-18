@@ -4,16 +4,17 @@ import jwt from 'jsonwebtoken'
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         await connectDB();
-        const { email, password } = req.body;
+        let { email, password } = req.body;
+        email = email.toLowerCase();
         if (email != '' || password != '') {
             const findUser = await User.findOne({ email });
             if (findUser) {
-                if (findUser.email === email.toLowerCase() && findUser.password === password) {
-                    if(findUser.isBanned){
+                if (findUser.email === email && findUser.password === password) {
+                    if (findUser.isBanned) {
                         return res.status(200).json({ status: false, message: "Account is banned" });
                     }
                     const token = jwt.sign({ email: findUser.email }, process.env.SECRET);
-                    return res.status(200).json({ status: true, message: "Authorised", email, token ,isAdmin: findUser.isAdmin});
+                    return res.status(200).json({ status: true, message: "Authorised", email, token, isAdmin: findUser.isAdmin });
                 }
                 return res.status(200).json({ status: false, message: "Invalid email or password" });
             }

@@ -97,7 +97,7 @@ const Slug = () => {
                 <div className='w-full details flex justify-start flex-col'>
                   <div className='text-xl w-full overflow-hidden text-start my-5 text-pretty'>{product.name}</div>
                   <div className='flex items-center font-bold text-xl'><span className='text-3xl mr-2.5 text-orange-500'>{product.percentage}% off</span></div>
-                  {product.stock === 0 ?
+                  {product.stock <= 0 ?
                     <div className="w-full flex-none text-sm font-medium text-slate-700 mb-2 ml-0.5">
                       Out of stock
                     </div>

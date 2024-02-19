@@ -15,8 +15,14 @@ const getOrder = () => {
         orderId += str[Math.floor(Math.random() * (str.length - 1))];
         i++;
     }
-    return orderId
+    return orderId;
 }
+// Function for stock update
+const stockUpdate = async (productIds) =>{
+    for(let k = 0;k<productIds.length;k++){
+        await products.updateOne({product_id:productIds[k]},{$inc:{stock:-1}});
+    }
+} 
 
 // Increase totalOrders count by +1
 const setorderCount = async (email) => {
@@ -126,6 +132,7 @@ export default async function handler(req, res) {
                                 // Increase totalOrders count by +1
                                 await setorderCount(findUser.email);
 
+                                await stockUpdate(productIDs);
                                 return res.json({ status: true, amount: totalbill, orderID });
                             }
 
@@ -173,6 +180,7 @@ export default async function handler(req, res) {
                             // Increase totalOrders count by +1
                             await setorderCount(findUser.email);
 
+                            await stockUpdate(productIDs);
                             return res.json({ status: true, amount: totalbill, orderID });
                         }
 
@@ -190,6 +198,7 @@ export default async function handler(req, res) {
                         // Increase totalOrders count by +1
                         await setorderCount(findUser.email);
 
+                        await stockUpdate(productIDs);
                         return res.json({ status: true, amount: totalbill, orderID });
                     }
                     return res.json({ status: false, message: "Coupon problem!" });
@@ -240,7 +249,7 @@ export default async function handler(req, res) {
                         // Increase totalOrders count by +1
                         await setorderCount(findUser.email);
 
-
+                        await stockUpdate(productIDs);
                         return res.json({ status: true, amount: totalbill, orderID });
                     }
                     // Decreasing user bella points
@@ -287,7 +296,7 @@ export default async function handler(req, res) {
                     // Increase totalOrders count by +1
                     await setorderCount(findUser.email);
 
-
+                    await stockUpdate(productIDs);
                     return res.json({ status: true, amount: totalbill, orderID });
                 }
                 if (couponCode && couponCode != "") {
@@ -315,6 +324,7 @@ export default async function handler(req, res) {
                         // Increase totalOrders count by +1
                         await setorderCount(findUser.email);
 
+                        await stockUpdate(productIDs);
                         return res.json({ status: true, amount: totalbill, orderID });
                     }
 
@@ -335,6 +345,7 @@ export default async function handler(req, res) {
                 // Increase totalOrders count by +1
                 await setorderCount(findUser.email);
 
+                await stockUpdate(productIDs);
                 return res.json({ status: true, amount: totalbill, orderID });
             }
 

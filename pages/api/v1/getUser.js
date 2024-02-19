@@ -17,8 +17,7 @@ export default async function handler(req, res) {
                         totalOrders: findUser.totalOrders,
                         Ordercanceled: findUser.Ordercanceled,
                         email: findUser.email, bellaPoints: findUser.bellaPoints,
-                        referralsOrders:findUser.referralsOrders
-
+                        referralsOrders: findUser.referralsOrders
                     })
                 }
                 return res.status(200).json({ message: "unAuthorised", status: false });

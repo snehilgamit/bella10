@@ -9,8 +9,8 @@ import jwt from 'jsonwebtoken'
 // Function for generating order id 
 const getOrder = () => {
     const str = "1234567890abcdefghijklmnopqrstuvwxyz"
-    let i = 0;
     let orderId = "";
+    let i = 0;
     while (i < 12) {
         orderId += str[Math.floor(Math.random() * (str.length - 1))];
         i++;

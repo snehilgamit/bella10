@@ -1,7 +1,14 @@
 import connectDB from "@/util/mongoDB";
 import User from '@/models/User';
 import jwt from 'jsonwebtoken'
+import products from "@/models/products";
+
 export default async function handler(req, res) {
+    const stockUpdate = async (productIds) =>{
+        for(let k = 0;k<productIds.length;k++){
+            await products.updateOne({product_id:productIds[k].productIDs},{$inc:{stock:1}});
+        }
+    }
     if (req.method === 'POST') {
         const { token, orderID } = req.body;
         try {
@@ -19,6 +26,7 @@ export default async function handler(req, res) {
                             if(el[i].isComplete){
                                 return res.status(200).json({ message: "Can't cancel order! Order already delivered", status: false });
                             }
+                            await stockUpdate(findUser.orders[i].orderCart); 
                             findUser.orders[i].isCancelled = true;
                             findUser.orders[i].isComplete = true;
                             findUser.bellaPoints = findUser.bellaPoints + findUser.orders[i].usedBellaPoints;

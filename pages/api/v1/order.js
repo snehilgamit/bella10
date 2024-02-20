@@ -61,7 +61,7 @@ export default async function handler(req, res) {
                         return res.json({ message: "Something went wrong", status: false });
                     }
                     orderCart.push(
-                        { productIDs: findPRprice.product_id, name: findPRprice.name }
+                        { productIDs: findPRprice.product_id, name: findPRprice.name,price:findPRprice.price_after_discount}
                     )
                     totalbill += findPRprice.price_after_discount;
                 }

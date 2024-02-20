@@ -256,8 +256,8 @@ const cart = () => {
                                         priority='eagar'
                                     />
                                     <div className='w-full flex justify-start items-start flex-col'>
-                                        <div className='text-sm overflow-hidden h-10 text-start'>{el.name}</div>
-                                        <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage}% off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
+                                        <div className='text-sm overflow-hidden h-5 text-start'>{el.name}</div>
+                                        <div className='flex items-center font-bold text-base mb-6'><span className='text-base mr-2.5 text-black'>{el.percentage}% off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
                                     </div>
                                 </Link>
                                 <div className='absolute right-3 top-3 text-sm bg-black text-white px-2.5 py-1 z-[2] hover:opacity-60 rounded-md cursor-pointer' onClick={() => { removeItem(index) }}>

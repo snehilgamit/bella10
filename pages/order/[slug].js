@@ -82,8 +82,9 @@ const order = () => {
                                                 height={100}
                                                 priority='eagar'
                                             />
-                                            <div className='w-full flex pt-4 max-md:my-2 max-md:mt-0 justify-start items-start flex-col text-orange-500 z-10'>
-                                                <div className='text-sm overflow-hidden h-10 text-start '>{el.name}</div>
+                                            <div className='w-full flex pt-4 max-md:my-2 max-md:mt-0 justify-start items-start flex-col z-10'>
+                                                <div className='text-orange-500 text-sm overflow-hidden mt-4 text-start '>{el.name}</div>
+                                                <div className='text-sm text-black'>{el.price}₹</div>
                                             </div>
                                         </Link>
                                     </div>

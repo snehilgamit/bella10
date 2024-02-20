@@ -95,19 +95,19 @@ const Slug = () => {
               </div>
               <div className='order_details flex flex-col justify-start max-sm:justify-center w-[50%] ml-20 max-sm:ml-0 max-sm:w-full'>
                 <div className='w-full details flex justify-start flex-col'>
-                  <div className='text-xl w-full overflow-hidden text-start my-5 text-pretty'>{product.name}</div>
+                  <div className='text-xl w-full overflow-hidden text-start my-4 text-pretty'>{product.name}</div>
                   <div className='flex items-center font-bold text-xl'><span className='text-3xl mr-2.5 text-orange-500'>{product.percentage}% off</span></div>
                   {product.stock <= 0 ?
-                    <div className="w-full flex-none text-sm font-medium text-slate-700 mb-2 ml-0.5">
+                    <div className="w-full flex-none text-sm font-medium text-slate-700 mb-2">
                       Out of stock
                     </div>
                     :
-                    <div className="w-full flex-none text-sm font-medium text-slate-700 mb-2  ml-0.5">
-                      In stock
+                    <div className="w-full flex-none text-sm font-medium text-slate-700 mb-2">
+                      In stock [{product.stock}]
                     </div>}
                   <div>
                     <div className='text-blue-600'>Special price</div>
-                    <div className='font-bold text-3xl mt-1'>₹{product.price_after_discount} <span className=' font-normal text-base line-through text-slate-400'>₹{product.price}</span></div>
+                    <div className='font-bold text-3xl'>₹{product.price_after_discount} <span className=' font-normal text-base line-through text-slate-400'>₹{product.price}</span></div>
                   </div>
                   <div className='mt-2 font-medium'>
                     <div className='text-lg'>Offers :</div>
@@ -129,7 +129,7 @@ const Slug = () => {
                     </div>
                   </div>
                 </div>
-                {product.stock === 0 ? <div className={`flex justify-center items-center ${Style.outofStock}`}>
+                {product.stock <= 0 ? <div className={`flex justify-center items-center ${Style.outofStock}`}>
                   <a className='opacity-60'>Out of stock</a>
                 </div>
                   :

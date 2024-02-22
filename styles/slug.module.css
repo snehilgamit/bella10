@@ -3,8 +3,10 @@
     gap: 20px;
 }
 .loginArea a{
-    background-color: black;
-    color: white;
+    background-color: transparent;
+    font-weight: 700;
+    color: black;
+    border: 2px solid black;
     width: 100%;
     justify-content: center;
     align-items: center;
@@ -22,8 +24,10 @@
     gap: 20px;
 }
 .outofStock a{
-    background-color: black;
-    color: white;
+    background-color: transparent;
+    color: black;
+    font-weight: 700;
+    border:2px solid black;
     width: 50%;
     justify-content: center;
     align-items: center;

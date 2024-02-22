@@ -295,29 +295,29 @@ const cart = () => {
                         {cartsM.isBellacoinsUsed &&
                             <div className='flex justify-between m-1'>
                                 <span>Bella10 coins</span>
-                                <span className='text-orange-500'>-₹{cartsM.BellacoinsUsed}</span>
+                                <span className='text-red-500 brightness-105'>-₹{cartsM.BellacoinsUsed}</span>
                             </div>}
                         <div className='flex justify-between m-1 border-b-2 pb-6 border-dashed'>
                             <span>Discount</span>
-                            <span className='text-orange-500'>-₹{cartsM.price - cartsM.price_after_discount || 0}({cartsM.percentage ? cartsM.percentage.toFixed(2) : 0}%)</span>
+                            <span className='text-red-500 brightness-105'>-₹{cartsM.price - cartsM.price_after_discount || 0}({cartsM.percentage ? cartsM.percentage.toFixed(2) : 0}%)</span>
                         </div>
                         {isLogined && user.bellaPoints > 0 && carts.length != 0 ? <div className='flex justify-between mt-2 m-1 border-b-2 pb-2 border-dashed' style={isLogined ? {} : { opacity: 0.6 }}>
                             <div>
                                 Use
-                                <span className='text-orange-500 font-bold'> {user.bellaPoints} </span>
+                                <span className='text-red-500 brightness-105 font-bold'> {user.bellaPoints} </span>
                                 bella10 coins
                             </div>
-                            <input className='text-orange-500 mt-[2px] w-[15px] h-[15px]' type='checkbox' ref={bellainputRef} onChange={useBella}></input>
+                            <input className='text-red-500 brightness-105 mt-[2px] w-[15px] h-[15px]' type='checkbox' ref={bellainputRef} onChange={useBella}></input>
                         </div> :
                             <div className='flex justify-between opacity-60 mt-2 m-1 border-b-2 pb-2 border-dashed'>
-                                <div>Use <span className='text-orange-500 font-bold'> {user.bellaPoints || 0} </span> bella10 coins</div>
-                                <input className='text-orange-500 mt-[2px] w-[15px] h-[15px]' disabled type='checkbox'></input>
+                                <div>Use <span className='text-red-500 brightness-105 font-bold'> {user.bellaPoints || 0} </span> bella10 coins</div>
+                                <input className='text-red-500 brightness-105 mt-[2px] w-[15px] h-[15px]' disabled type='checkbox'></input>
                             </div>
                         }
                         {cartsM.isCouponApplied &&
                             <div className=' flex justify-between m-1 border-b-2 pb-4 mt-4 border-dashed'>
                                 <span>Coupon discount</span>
-                                <span className='text-orange-500'>-₹{cartsM.couponValue}</span>
+                                <span className='text-red-500 brightness-105'>-₹{cartsM.couponValue}</span>
                             </div>}
                         <div className='flex justify-between m-1 mt-2 text-2xl'>
                             <span>Grand total</span>

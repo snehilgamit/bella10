@@ -92,7 +92,7 @@ const order = () => {
                                                 priority='eagar'
                                             />
                                             <div className='w-full flex pt-4 max-md:my-2 max-md:mt-0 justify-start items-start flex-col z-10'>
-                                                <div className='text-orange-500 text-sm overflow-hidden mt-4 text-start '>{el.name}</div>
+                                                <div className='text-red-500 brightness-105 text-sm overflow-hidden mt-4 text-start '>{el.name}</div>
                                                 <div className='text-sm text-black'>{el.price}₹</div>
                                             </div>
                                         </Link>
@@ -110,25 +110,25 @@ const order = () => {
                                 </div>
                                 <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
                                     <span>Bella10 coins</span>
-                                    <span className='text-orange-500'>-₹{data.orders.usedBellaPoints || 0}</span>
+                                    <span className='text-red-500 brightness-105'>-₹{data.orders.usedBellaPoints || 0}</span>
                                 </div>
                                 <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
                                     <span>Date</span>
-                                    <span className='text-orange-500'>{new Date(data.orders.time).toLocaleDateString()}</span>
+                                    <span className='text-red-500 brightness-105'>{new Date(data.orders.time).toLocaleDateString()}</span>
                                 </div>
                                 <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
                                     <span>Time</span>
-                                    <span className='text-orange-500'>{new Date(data.orders.time).toLocaleTimeString('en-IN').toUpperCase()}</span>
+                                    <span className='text-red-500 brightness-105'>{new Date(data.orders.time).toLocaleTimeString('en-IN').toUpperCase()}</span>
                                 </div>
                                 {data.orders.couponCode &&
                                     <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
                                         <span>Coupon used</span>
-                                        <span className='text-orange-500'>{data.orders.couponCode}</span>
+                                        <span className='text-red-500 brightness-105'>{data.orders.couponCode}</span>
                                     </div>
                                 }
                                 <div className='flex justify-between m-1 border-b-2 pb-2 border-dashed'>
                                     <span>Mobile No.</span>
-                                    <span className='text-orange-500'>+91 {data.orders.mobileNo.slice(0, 5)} {data.orders.mobileNo.slice(5)}</span>
+                                    <span className='text-red-500 brightness-105'>+91 {data.orders.mobileNo.slice(0, 5)} {data.orders.mobileNo.slice(5)}</span>
                                 </div>
                                 <div className='flex justify-between m-1 mt-2 text-2xl'>
                                     <span>Grand total</span>
@@ -162,7 +162,7 @@ const order = () => {
                                                     },
                                                 }}
                                             />
-                                            <div className='text-center mt-4'>Share this qr code or <span className='text-orange-500 font-bold'>{slug} </span>in shop</div>
+                                            <div className='text-center mt-4'>Share this qr code or <span className='text-red-500 brightness-105 font-bold'>{slug} </span>in shop</div>
                                         </div>
                                         :
                                         <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { router.push('/login') }}>Login</div>

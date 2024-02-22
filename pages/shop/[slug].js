@@ -83,11 +83,11 @@ const Slug = () => {
         <>
           <div className='bg-slate-100 min-h-screen w-full'>
             <div className='flex pt-5 ml-60 max-sm:ml-6 text-sm text-gray-600'>
-              <span className='cursor-pointer hover:text-orange-500 font-medium' onClick={() => { routing("") }}>Home </span>
+              <span className='cursor-pointer hover:text-red-500 brightness-105 font-medium' onClick={() => { routing("") }}>Home </span>
               {query.map((el, index) => (
-                <div className='font-medium text-center px-0.5'>{index == query.length - 1 ? <span className='hover:text-orange-500 cursor-pointer' onClick={() => { routing("shop/" + slug) }}>{slug}</span> :
+                <div className='font-medium text-center px-0.5'>{index == query.length - 1 ? <span className='hover:text-red-500 brightness-105 cursor-pointer' onClick={() => { routing("shop/" + slug) }}>{slug}</span> :
                   <>
-                    <span className='hover:text-orange-500 cursor-pointer' onClick={() => { routing(el) }}>{el}</span><span className='text-sm text-slate-400'>{" >"}</span>
+                    <span className='hover:text-red-500 brightness-105 cursor-pointer' onClick={() => { routing(el) }}>{el}</span><span className='text-sm text-slate-400'>{" >"}</span>
                   </>
                 }</div>
               ))}
@@ -105,7 +105,7 @@ const Slug = () => {
               <div className='order_details flex flex-col justify-start max-sm:justify-center w-[50%] ml-20 max-sm:ml-0 max-sm:w-full'>
                 <div className='w-full details flex justify-start flex-col'>
                   <div className='text-xl w-full overflow-hidden text-start my-4 text-pretty'>{product.name}</div>
-                  <div className='flex items-center font-bold text-xl'><span className='text-3xl mr-2.5 text-orange-500'>{product.percentage}% off</span></div>
+                  <div className='flex items-center font-bold text-xl'><span className='text-3xl mr-2.5 text-red-500 brightness-105'>{product.percentage}% off</span></div>
                   {product.stock <= 0 ?
                     <div className="w-full flex-none text-sm font-medium text-slate-700 mb-2">
                       Out of stock
@@ -121,7 +121,7 @@ const Slug = () => {
                   <div className='mt-2 font-medium'>
                     <div className='text-lg'>Offers :</div>
                     {product.offer.map((el, index) => (
-                      <div key={index} className='ml-3 text-sm text-orange-500'>
+                      <div key={index} className='ml-3 text-sm text-red-500 brightness-105'>
                         * {el}
                       </div>
                     ))}

@@ -77,7 +77,7 @@ const signup = () => {
             </Head>
             <div className='w-full flex justify-center min-h-[60vh] mt-[10rem] max-sm:mt-12 max-sm:px-3'>
                 <div className='overflow-hidden w-[700px] min-h-[50vh] max-sm:flex-col border-2 rounded-3xl flex justify-center items-start'>
-                    <div className="w-[50%] max-sm:w-full h-full bg-orange-500 flex flex-col justify-center items-start p-7">
+                    <div className="w-[50%] max-sm:w-full h-full bg-red-500 brightness-105 flex flex-col justify-center items-start p-7">
                         <span className='text-4xl font-bold ml-1 max-sm:text-3xl leading-9'>Championships are won at practice</span>
                         <span className='text-start text-white text-sm mt-2 ml-1'>Have an account?</span>
                         <Link href={'/login'} className='mt-3 text-2xl bg-white w-[50%] min-w-[100px] mb-8 text-center py-1 rounded-lg cursor-pointer hover:bg-gray-200 font-semibold'>
@@ -95,7 +95,7 @@ const signup = () => {
 
                             <input className='h-10 my-2 text-sm   bg-gray-300 placeholder:text-gray-500 py-1 w-full px-2 rounded-md' value={referralcode} onChange={(e) => { setreferralcode(e.target.value) }} placeholder='Enter referral code' type="text" name="referral code" id="referral code" required={true} />
 
-                            <button type='submit' className='mt-3 text-2xl bg-black text-white cursor-pointer min-w-[100px] mb-10 text-center py-1 rounded-lg max-sm:mb-4 max-sm:text-xl px-4 hover:opacity-60 font-semibold'>
+                            <button type='submit' className='mt-3 text-2xl bg-white text-black border-2 border-black cursor-pointer min-w-[100px] mb-10 text-center py-1 rounded-lg max-sm:mb-4 max-sm:text-xl px-4 font-semibold hover:bg-black hover:text-white'>
                                 {signupTxt}
                             </button>
                         </div>

@@ -76,7 +76,7 @@ const transaction = () => {
               <tr onClick={() => { routering(el.type, el.orderID) }} key={index} className='flex justify-around w-[70%] max-md:w-[95%] bg-black text-white rounded-xl py-1 my-1 max-sm:text-sm text-center cursor-pointer'>
                 <td className="py-2">{index + 1}</td>
                 <td className="py-2 truncate">{el.orderID}</td>
-                <td className="py-2 text-orange-500">{el.type === 'order' ? '-' + el.usedBellaPoints : '+' + el.usedBellaPoints}</td>
+                <td className="py-2 text-red-500 brightness-105">{el.type === 'order' ? '-' + el.usedBellaPoints : '+' + el.usedBellaPoints}</td>
                 <td className="py-2">{new Date(el.time).toLocaleDateString()}</td>
               </tr>
             ))}

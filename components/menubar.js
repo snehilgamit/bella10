@@ -67,7 +67,9 @@ const menubar = ({ cartNum, isLogined }) => {
         <div className='w-full py-4 shadow-md bg-white z-[999] relative'>
             <div className='w-full flex justify-between text-[16px] font-semibold items-center'>
                 <Link href={'/'} className={`ml-12 max-sm:ml-6 cursor-pointer text-lg ${Style.bellaLogo}`}>
-                    <span className='text-red-500 brightness-105 pr-0.5'>Bella</span><span className='text-xl'>10</span>
+                    <div className="">
+                        <span className='text-red-500 brightness-105 pr-0.5'>Bella</span><span className='text-xl'>10</span>
+                    </div>
                     {/* <Image
                         alt='logo'
                         src={'/logo.png'}
@@ -107,7 +109,7 @@ const menubar = ({ cartNum, isLogined }) => {
                 <div className='mr-8 flex justify-center items-center gap-5'>
                     <Link href={'/cart'} className="cursor-pointer relative">
                         <svg xmlns="http://www.w3.org/2000/svg" height="22" width="22" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" /></svg>
-                        <div className='absolute -top-5 -right-4 text-orange-500'>{cartNum == 0 ? "" || cartNum == [] : cartNum || cartNo}</div>
+                        <div className='absolute -top-5 -right-4 text-red-500 brightness-105'>{cartNum == 0 ? "" || cartNum == [] : cartNum || cartNo}</div>
                     </Link>
                     <div className={`${Style.sidebar_icon} cursor-pointer`} onClick={() => { showMenu('show') }}>
                         <div className={`${Style.line}`}></div>
@@ -119,16 +121,17 @@ const menubar = ({ cartNum, isLogined }) => {
             <div className={`${Style.side_menu}`} id='side_menu'>
                 <div className={`font-semibold`}>
                     <div className='flex justify-between items-center py-4 bg-white shadow-md'>
-                        <Link href={'/'} className='ml-12 cursor-pointer text-lg'>
-                            Bella10
+                        <Link href={'/'} className={`ml-12 max-sm:ml-6 cursor-pointer text-lg ${Style.bellaLogo}`}>
+                            <div className="">
+                                <span className='text-red-500 brightness-105 pr-0.5'>Bella</span><span className='text-xl'>10</span>
+                            </div>
                             {/* <Image
-                                alt='logo'
-                                className='ml-12 cursor-pointer'
-                                src={'/logo.jpg'}
-                                height={50}
-                                width={50}
-                                loading='eager'
-                            /> */}
+                        alt='logo'
+                        src={'/logo.png'}
+                        height={60}
+                        width={60}
+                        loading='eager'
+                    /> */}
                         </Link>
                         <div className='cursor-pointer mr-5 w-8 h-8 flex justify-center items-center' onClick={() => { showMenu('hide') }}>
                             <div className={`${Style['closeLine-x']}`}></div>
@@ -179,7 +182,7 @@ const menubar = ({ cartNum, isLogined }) => {
                         </div>
                         :
                         <div className={`flex justify-center items-center ${Style.loginArea}`}>
-                             <Button link={'/account'} text={'Account'} />
+                            <Button link={'/account'} text={'Account'} />
                         </div>
                     }
                 </div>

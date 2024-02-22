@@ -74,10 +74,10 @@ const account = () => {
                         <div className='bg-black text-white py-1 rounded-3xl px-4 cursor-pointer' onClick={() => { router.push('/transaction') }}>Transaction</div>
                         <div className='bg-black text-white py-1 rounded-3xl px-4 cursor-pointer' onClick={logout}>Logout</div>
                     </div>
-                    <div className='flex w-full max-lg:flex-col my-10'>
-                        <div className='w-[25%] max-xl:w-[90%]'>
+                    <div className='flex w-full max-lg:flex-col my-2'>
+                        <div className='w-[25%] max-xl:w-[60%] max-sm:w-full'>
                             <div className="">Account</div>
-                            <div className="text-xl font-semibold mt-4 text-center w-[86%]">
+                            <div className="text-xl font-semibold mt-2 text-center w-[86%] max-sm:w-full">
                                 <div className='flex justify-center items-center h-12 max-xl:text-base my-1 border-2 border-black'>Bella Points :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.bellaPoints || 0}</span></div>
                                 <div className='flex justify-center items-center h-12 max-xl:text-base my-1 border-2 border-black max-md:w-[80]'>Order's :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.totalOrders}</span></div>
                                 <div className='flex justify-center items-center h-12 max-xl:text-base  my-1 border-2 border-black'>Cancelled order's :<span className='text-orange-500 ml-1 font-semibold'>{accountDetails.Ordercanceled}</span></div>

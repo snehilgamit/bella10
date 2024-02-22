@@ -5,6 +5,7 @@ import Image from 'next/image'
 import axios from 'axios'
 import connectDB from '@/util/mongoDB'
 import products from '@/models/products'
+import Head from 'next/head'
 const shop = ({ products }) => {
   const router = useRouter();
   const { categories } = router.query;
@@ -12,6 +13,14 @@ const shop = ({ products }) => {
   const categoryBool = category.includes(categories);
   return (
     <>
+      <Head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Browse Bella10's wide range of sports products - Online and Offline Sport Shop" />
+        <title>Shop | Bella10 Sport Shop</title>
+        <link rel="icon" href="/favicon.ico" />
+        {/* Add any additional CSS or JavaScript links here */}
+      </Head>
       {categoryBool ?
         <div>
           <div className='flex items-center text-center justify-start max-sm:justify-center flex-wrap w-[80%] gap-5 max-sm:w-[95%] mb-10 mx-auto mt-10 h-full'>

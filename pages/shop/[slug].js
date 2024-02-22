@@ -7,6 +7,7 @@ import Menubar from '@/components/menubar'
 import axios from 'axios'
 import Loading from '@/components/loading'
 import BackBtn from '@/components/backBtn'
+import Head from 'next/head'
 const Slug = () => {
   const [isFetching, setIsFetching] = useState(true);
   const router = useRouter();
@@ -68,6 +69,14 @@ const Slug = () => {
   }, [slug])
   return (
     <>
+      <Head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Browse Bella10's wide range of sports products - Online and Offline Sport Shop" />
+        <title>{slug} | Bella10 Sport Shop</title>
+        <link rel="icon" href="/favicon.ico" />
+        {/* Add any additional CSS or JavaScript links here */}
+      </Head>
       <Menubar cartNum={cartNum} />
       {isFetching ?
         <Loading /> :

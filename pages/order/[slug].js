@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Loading from '@/components/loading';
 import Style from '@/styles/slug.module.css'
 import BackBtn from '@/components/backBtn';
+import Head from 'next/head'
 const order = () => {
     const { Canvas } = useQRCode();
     const router = useRouter();
@@ -63,6 +64,14 @@ const order = () => {
     }, [slug])
     return (
         <>
+        <Head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={`View order ${slug} at Bella10 - Online and Offline Sport Shop`} />
+        <title>{`${slug} | Bella10 Sport Shop`}</title>
+        <link rel="icon" href="/favicon.ico" />
+        {/* Add any additional CSS or JavaScript links here */}
+      </Head>
         <BackBtn/>
             {data == null ? <Loading /> :
                 <>

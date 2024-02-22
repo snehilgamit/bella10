@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Loading from '@/components/loading'
 import BackBtn from '@/components/backBtn'
+import Head from 'next/head'
 const referral = () => {
     const router = useRouter();
     const [isLogined, setisLogined] = useState(true);
@@ -15,7 +16,7 @@ const referral = () => {
         totalReferralOrders: 0,
         totalReferrals: 0,
         email: "",
-        referrals:[]
+        referrals: []
     });
     const getUser = async () => {
         const getSession = localStorage.getItem('bella10_state');
@@ -53,7 +54,15 @@ const referral = () => {
     }, []);
     return (
         <>
-        <BackBtn/>
+            <Head>
+                <meta charSet="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <meta name="description" content="Explore Bella10's referral program and earn rewards - Online and Offline Sport Shop" />
+                <title>Referral Program | Bella10 Sport Shop</title>
+                <link rel="icon" href="/favicon.ico" />
+                {/* Add any additional CSS or JavaScript links here */}
+            </Head>
+            <BackBtn />
             {isLogined ? <Loading /> : <div className='min-h-screen px-10 py-5 w-full mx-auto flex justify-center'>
                 <div className='w-full text-3xl font-semibold relative'>
                     <h1>
@@ -73,9 +82,9 @@ const referral = () => {
                     <div className='w-full bg-slate-100 text-xl rounded p-2 flex gap-2 justify-center items-center flex-col'>
                         <div>Share link with your friends and family: <span className='text-orange-500'>https://bella10-delta.vercel.app/signup?referral={accountDetails.referralCode}</span></div>
                         <div>Referral code: <span className='text-orange-500'>{accountDetails.referralCode}</span></div>
-                        </div>
+                    </div>
                     <div className='mt-5'>Referrals</div>
-                    {accountDetails.referrals.length>0?null:<div className='text-sm ml-2 mt-2 text-gray-600'>No referral's</div>}
+                    {accountDetails.referrals.length > 0 ? null : <div className='text-sm ml-2 mt-2 text-gray-600'>No referral's</div>}
                     {accountDetails.referrals.map((el, index) => (
                         <div key={index} className='text-sm flex justify-around min-w-[60%] w-[30%] max-md:w-[100%] bg-black text-white rounded-xl py-1 my-2 max-sm:text-sm text-center'>
                             <div className='p-2 px-4'>{index + 1}</div>

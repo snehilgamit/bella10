@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 const signup = () => {
     const router = useRouter();
     const [password, setPassword] = useState('')
@@ -66,6 +67,14 @@ const signup = () => {
     }, [])
     return (
         <>
+            <Head>
+                <meta charSet="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <meta name="description" content="Sign up for an account at Bella10 - Online and Offline Sport Shop" />
+                <title>Sign Up | Bella10 Sport Shop</title>
+                <link rel="icon" href="/favicon.ico" />
+                {/* Add any additional CSS or JavaScript links here */}
+            </Head>
             <div className='w-full flex justify-center min-h-[60vh] mt-[10rem] max-sm:mt-12 max-sm:px-3'>
                 <div className='overflow-hidden w-[700px] min-h-[50vh] max-sm:flex-col border-2 rounded-3xl flex justify-center items-start'>
                     <div className="w-[50%] max-sm:w-full h-full bg-orange-500 flex flex-col justify-center items-start p-7">

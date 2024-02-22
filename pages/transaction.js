@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Loading from '@/components/loading'
 import { useRouter } from 'next/router'
 import BackBtn from '@/components/backBtn'
+import Head from 'next/head'
 const transaction = () => {
   const router = useRouter()
   const [isLogined, setIsLogined] = useState(false);
@@ -52,11 +53,19 @@ const transaction = () => {
   }
   return (
     <>
+      <Head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="View your transaction history at Bella10 - Online and Offline Sport Shop" />
+        <title>Transaction History | Bella10 Sport Shop</title>
+        <link rel="icon" href="/favicon.ico" />
+        {/* Add any additional CSS or JavaScript links here */}
+      </Head>
       <BackBtn />
       {isLogined ? <div className='flex justify-center flex-col'>
         <div className='my-5 text-3xl font-semibold underline text-center'>Transactions</div>
-        <table >
-          <tbody className='w-full mb-20'>
+        <table>
+          <tbody className='w-full mb-20 flex justify-center flex-col items-center'>
             <tr className='flex justify-around w-[70%] max-md:w-[95%] max-sm:text-sm text-center'>
               <th>No</th>
               <th>Order ID</th>

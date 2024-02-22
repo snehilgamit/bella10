@@ -1,9 +1,18 @@
 import BackBtn from '@/components/backBtn'
 import React from 'react'
 const offerArr = ["Buy 2 get 5% extra off", "Buy 5 get 1 bat free"]
+import Head from 'next/head'
 const offers = () => {
   return (
     <>
+    <Head>
+      <meta charSet="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="description" content="Discover the latest offers and discounts at Bella10 - Online and Offline Sport Shop" />
+      <title>Offers | Bella10 Sport Shop</title>
+      <link rel="icon" href="/favicon.ico" />
+      {/* Add any additional CSS or JavaScript links here */}
+    </Head>
       <BackBtn />
       <div className='flex m-5 min-h-[80vh] flex-col gap-2'>
         {offerArr.map((el, index) => (

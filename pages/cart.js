@@ -5,6 +5,7 @@ import Image from 'next/image'
 import purchase from '@/utils/purchase'
 import axios from 'axios'
 import BackBtn from '@/components/backBtn'
+import Head from 'next/head'
 const cart = () => {
     const router = useRouter();
 
@@ -238,6 +239,14 @@ const cart = () => {
 
     return (
         <>
+            <Head>
+                <meta charSet="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <meta name="description" content="Your shopping cart on Bella10 - Online and Offline Sport Shop" />
+                <title>Cart | Bella10 Sport Shop</title>
+                <link rel="icon" href="/favicon.ico" />
+                {/* Add any additional CSS or JavaScript links here */}
+            </Head>
             <BackBtn />
             <div className='w-full flex justify-center max-sm:flex-col max-sm:items-center pt-5 mb-20'>
                 <div className='w-[85%] border p-5'>

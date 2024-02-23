@@ -14,10 +14,10 @@ const contactus = () => {
       {/* Add any additional CSS or JavaScript links here */}
     </Head>
     <BackBtn/>
-    <div className='flex justify-center items-center w-full min-h-[60vh] flex-col gap-2 text-center'>
-      <div className='px-10 py-2 w-[50%] max-md:w-[90%] rounded-lg text-lg text-red-500 brightness-105  bg-black'><span className='text-white'>Phone No:</span> +91{details.mobileNo.no}</div>
-      <div className='px-10 py-2 w-[50%] max-md:w-[90%] rounded-lg text-lg text-red-500 brightness-105  bg-black'><span className='text-white'>Phone No(2):</span> +91{details.mobileNo2.no}</div>
-      <div className='px-10 py-2 w-[50%] max-md:w-[90%] rounded-lg text-lg text-red-500 brightness-105  bg-black'><span className='text-white'>Email:</span> {details.email}</div>
+    <div className='flex justify-center items-center w-full mt-5 flex-col gap-2 text-center text-lg text-red-500'>
+      <div className='px-10 py-2 w-[50%] max-md:w-[90%] rounded-lg bg-white brightness-105  border-black border-2'><span className='text-black'>Phone No:</span> +91{details.mobileNo.no}</div>
+      <div className='px-10 py-2 w-[50%] max-md:w-[90%] rounded-lg bg-white brightness-105  border-black border-2'><span className='text-black'>Phone No(2):</span> +91{details.mobileNo2.no}</div>
+      <div className='px-10 py-2 w-[50%] max-md:w-[90%] rounded-lg bg-white brightness-105  border-black border-2'><span className='text-black'>Email:</span> {details.email}</div>
     </div>
     </>
   )

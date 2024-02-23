@@ -4,6 +4,7 @@ export default async function handler(req, res) {
     await connectDB();
     if (req.method === 'POST') {
         const { category } = req.body;
+        if(category==='' || !category) return res.json({messgae:"Category is missing!",status:false});
         if (category === 'all') {
             const result = await products.find();
             const resResult = [];

@@ -3,6 +3,7 @@ import connectDB from "@/util/mongoDB";
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         const { product_id } = req.body;
+        if(product_id==='' || !product_id) return res.json({messgae:"Product id is missing!",status:false});
         await connectDB();
         const result = await products.findOne({ product_id });
         return res.status(200).json({

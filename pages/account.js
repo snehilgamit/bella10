@@ -47,12 +47,6 @@ const account = () => {
         localStorage.removeItem('bella10_state');
         router.push('/login')
     }
-    const getUserSession = async () => {
-        const user = JSON.parse(localStorage.getItem('bella10_state'));
-        if (user) {
-            const getRes = await axios.post('/api/v1/getUser', { token: user.token });
-        }
-    }
     useEffect(() => {
         session();
         getUser();
@@ -101,7 +95,7 @@ const account = () => {
                                     <div className='border'>
                                         <div className='bg-white mx-4 flex'>
                                             <Image
-                                                className='p-4 max-md:p-2 mr-4 max-h-[250px]'
+                                                className='p-4 max-md:p-2 mr-4 h-[210px] w-[170px]'
                                                 width={120}
                                                 height={100}
                                                 alt={el.orderCart[0].name}

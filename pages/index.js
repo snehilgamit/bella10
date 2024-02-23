@@ -72,7 +72,7 @@ const Home = () => {
                   priority='eagar'
                 />
                 <div className='w-full h-full flex justify-start items-start flex-col'>
-                  <div className='text-sm overflow-hidden h-10 text-start'>{el.name}</div>
+                  <div className='text-sm overflow-hidden h-10 text-start brightness-105'>{el.name}</div>
                   <div className='flex items-center font-bold text-base mb-5'><span className='text-base mr-2.5 text-black'>{el.percentage}% off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
                 </div>
               </Link>

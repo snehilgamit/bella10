@@ -255,7 +255,7 @@ const cart = () => {
                         {carts.length == 0 ? <div className='ml-5 mt-5'>Empty cart</div> : ""}
                         {carts.map((el, index) => (
                             <div key={index} className='relative'>
-                                <Link href={`/shop/${el.product_id}`} className='w-full batList flex justify-center border max-sm:flex-col items-center transition-all duration-100 z-[1]'>
+                                <Link href={`/shop/${el.product_id}`} className='w-full batListTxt flex justify-center border max-sm:flex-col items-center transition-all duration-100 z-[1]'>
                                     <Image
                                         className='m-3 max-sm:my-6 mx-6'
                                         src={el.image_uri}
@@ -265,7 +265,7 @@ const cart = () => {
                                         priority='eagar'
                                     />
                                     <div className='w-full flex justify-start items-start flex-col'>
-                                        <div className='text-sm overflow-hidden h-5 text-start'>{el.name}</div>
+                                        <div className='text-sm overflow-hidden h-5 text-start text-red-500 brightness-105'>{el.name}</div>
                                         <div className='flex items-center font-bold text-base mb-6'><span className='text-base mr-2.5 text-black'>{el.percentage}% off</span>₹{el.price_after_discount} <span className='ml-1 font-normal text-xs line-through text-slate-400'>₹{el.price}</span></div>
                                     </div>
                                 </Link>
@@ -324,7 +324,7 @@ const cart = () => {
                             <span className=''>₹{cartsM.total}</span>
                         </div>
 
-                        <div className='text-sm text-gray-400 m-1  border-b-2 pb-6 border-dashed'>Inclusive of all taxes</div>
+                        <div className='text-sm text-gray-400 m-1 border-b-2 pb-6 border-dashed'>Inclusive of all taxes</div>
                     </div>
                     {isLogined &&
                         <div className='flex justify-center m-4 relative'>
@@ -335,11 +335,11 @@ const cart = () => {
                     }
                     <div className='w-full border-2 mt-4 p-9 font-medium flex justify-center items-center'>
                         {carts.length == 0 ?
-                            <div className='cursor-pointer px-10 py-4 bg-black text-white'>Empty cart</div> : <>
+                            <div className='cursor-pointer px-10 py-4 border-2 border-black bg-white text-black'>Empty cart</div> : <>
                                 {isLogined ?
-                                    <div ref={purchaseBtn} className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { purchaseIt() }}>{loading}</div>
+                                    <div ref={purchaseBtn} className='cursor-pointer px-10 py-4 bg-white border-2 border-black hover:opacity-60 text-black' onClick={() => { purchaseIt() }}>{loading}</div>
                                     :
-                                    <div className='cursor-pointer px-10 py-4 bg-black hover:opacity-60 text-white' onClick={() => { router.push('/login') }}>Login</div>
+                                    <div className='cursor-pointer px-10 py-4 border-2 border-black hover:opacity-60 text-black bg-white' onClick={() => { router.push('/login') }}>Login</div>
                                 }</>
                         }
                     </div>

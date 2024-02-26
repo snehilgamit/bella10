@@ -81,7 +81,7 @@ const account = () => {
                         <div className='w-[70%] max-sm:w-full '>
                             <div className="">Orders</div>
                             {accountDetails.orders.map((el, index) => (
-                                <div onClick={() => { router.push(`/order/${el.orderID}`) }} key={index} className='cursor-pointer max-md:w-full my-4 mx-auto border rounded-md bg-white hover:scale-[1.005]'>
+                                <div onClick={() => { router.push(`/order/${el.orderID}`) }} key={index} className='cursor-pointer max-md:w-full my-4 mx-auto border rounded-md bg-white hover:scale-[1.005] transition-all duration-700'>
                                     <div className='w-full h-16 px-5 bg-gray-200 max-lg:hidden text-gray-600 border-b border-gray-700 flex items-center justify-around'>
                                         <div className='text-xs font-semibold'><h1>ORDER PLACED:</h1> <h2>{el.time.split("T")[0].split("-").reverse().join("-")}</h2></div>
                                         <div className='text-xs font-semibold'><h1>Total:</h1> <h2 className='text-black'>₹{el.totalbill}</h2></div>
@@ -95,7 +95,7 @@ const account = () => {
                                     <div className='border'>
                                         <div className='bg-white mx-4 flex'>
                                             <Image
-                                                className='p-4 max-md:p-2 mr-4 h-[210px] w-[170px]'
+                                                className='p-4 max-md:p-2 mr-4 h-[210px] w-[140px]'
                                                 width={120}
                                                 height={100}
                                                 alt={el.orderCart[0].name}

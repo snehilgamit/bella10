@@ -73,7 +73,7 @@ const Slug = () => {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="Browse Bella10's wide range of sports products - Online and Offline Sport Shop" />
-        <title>{slug} | Bella10 Sport Shop</title>
+        <title>{`${slug} | Bella10 Sport Shop`}</title>
         <link rel="icon" href="/favicon.ico" />
         {/* Add any additional CSS or JavaScript links here */}
       </Head>
@@ -85,11 +85,13 @@ const Slug = () => {
             <div className='flex pt-5 ml-60 max-sm:ml-6 text-sm text-gray-600'>
               <span className='cursor-pointer hover:text-red-500 brightness-105 font-medium' onClick={() => { routing("") }}>Home </span>
               {query.map((el, index) => (
-                <div className='font-medium text-center px-0.5'>{index == query.length - 1 ? <span className='hover:text-red-500 brightness-105 cursor-pointer' onClick={() => { routing("shop/" + slug) }}>{slug}</span> :
+                <div key={index} className='font-medium text-center px-0.5'>{index == query.length - 1 ?
+                  <span className='hover:text-red-500 brightness-105 cursor-pointer' onClick={() => { routing("shop/" + slug) }}>{slug}</span> :
                   <>
                     <span className='hover:text-red-500 brightness-105 cursor-pointer' onClick={() => { routing(el) }}>{el}</span><span className='text-sm text-slate-400'>{" >"}</span>
                   </>
-                }</div>
+                }
+                </div>
               ))}
             </div>
             <div className='flex justify-center max-sm:flex-col w-full h-full p-5'>
@@ -116,7 +118,7 @@ const Slug = () => {
                     </div>}
                   <div>
                     <div className='text-blue-600'>Special price</div>
-                    <div className='font-bold text-3xl'>₹{product.price_after_discount} <span className=' font-normal text-base line-through text-slate-400'>₹{product.price}</span></div>
+                    <div className='font-bold text-3xl'>₹{product.price_after_discount} <span className='font-normal text-base line-through text-slate-400'>₹{product.price}</span></div>
                   </div>
                   <div className='mt-2 font-medium'>
                     <div className='text-lg'>Offers :</div>

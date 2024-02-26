@@ -18,11 +18,11 @@ const getOrder = () => {
     return orderId;
 }
 // Function for stock update
-const stockUpdate = async (productIds) =>{
-    for(let k = 0;k<productIds.length;k++){
-        await products.updateOne({product_id:productIds[k]},{$inc:{stock:-1}});
+const stockUpdate = async (productIds) => {
+    for (let k = 0; k < productIds.length; k++) {
+        await products.updateOne({ product_id: productIds[k], "stock": { $gt: 0 } }, { $inc: { stock: -1 } });
     }
-} 
+}
 
 // Increase totalOrders count by +1
 const setorderCount = async (email) => {
@@ -30,6 +30,12 @@ const setorderCount = async (email) => {
     return 0;
 }
 
+const updateCoupon = async (code) => {
+    await coupons.updateOne({ couponId: code }, { $inc: { left: -1 } });
+}
+const incressCouponStock = async (code) => {
+    await coupons.updateOne({ couponId: code }, { $inc: { left: 1 } });
+}
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -37,6 +43,9 @@ export default async function handler(req, res) {
     }
 
     const { couponCode, productIDs, bellacoinsUse, token, mobileNo } = req.body;
+    if (bellacoinsUse !== true && bellacoinsUse != false) {
+        return res.json({ message: "Error in bellacoins use", status: false });
+    }
     if (!mobileNo) {
         return res.json({ message: "Mobile number not entered", status: false });
     }
@@ -61,7 +70,7 @@ export default async function handler(req, res) {
                         return res.json({ message: "Something went wrong", status: false });
                     }
                     orderCart.push(
-                        { productIDs: findPRprice.product_id, name: findPRprice.name,price:findPRprice.price_after_discount}
+                        { productIDs: findPRprice.product_id, name: findPRprice.name, price: findPRprice.price_after_discount }
                     )
                     totalbill += findPRprice.price_after_discount;
                 }
@@ -71,37 +80,54 @@ export default async function handler(req, res) {
                 // Generating order ID
                 const orderID = getOrder();
 
+
+
+
+
                 // If the coupon code and bellacoins used
                 if (couponCode && couponCode != "" && bellacoinsUse) {
 
-                    const checkticket = await coupons.findOne({ couponId: couponCode })
+                    const checkticket = await coupons.findOne({ couponId: couponCode, 'left': { $gt: 0 } });
+                    if (!checkticket) {
+                        return res.json({ message: "Coupon limit is over", status: false })
+                    }
                     if (!checkticket.isActive) return res.json({ message: "Coupon is not active", status: false });
                     if (checkticket.left <= 0) return res.json({ message: "Coupon limit is over", status: false });
                     checkticket.left = checkticket.left - 1;
-                    await coupons.updateOne({ couponId: couponCode }, checkticket);
+
+                    // update coupon (left - 1);
+                    await updateCoupon(couponCode);
+
                     // If the minimumcart value is smaller than total bill (it is for setting the minimum order value)
                     if (checkticket.minimumCart <= totalbill) {
                         totalbill -= checkticket.off;
+
+
+
 
                         // If bella points used
                         if (bellacoinsUse) {
 
                             // If the user total bill is smaller than user bella points(coins)
-                            const { bellaPoints } = await User.findOne({ email: verify.email });
-                            if (bellaPoints !== findUser.bellaPoints) {
-                                return res.json({ message: "Something went wrong", status: false });
-                            }
-                            if (bellaPoints < 0) {
-                                return res.json({ message: "Something went wrong", status: false });
-                            }
-                            if (bellaPoints >= totalbill) {
+                            const use = await User.findOne({ email: verify.email, "bellaPoints": { $gte: totalbill+checkticket.off } });
+                            // If the total bellaPoints are greater than totalbill
 
+                            /*
+                            bellapoints = 200
+                            totalbill = 1000
+                            200<1000 = true
+                            */
+
+                            if (use) {
                                 // Decreasing user bella points
-                                await User.updateOne(
-                                    { 'email': findUser.email }, {
+                                const updatingPoints = await User.updateOne(
+                                    { 'email': findUser.email, 'bellaPoints': { $gte: totalbill } }, {
                                     $inc: { bellaPoints: -totalbill }
                                 })
-
+                                if (!updatingPoints.modifiedCount) {
+                                    await incressCouponStock(couponCode)
+                                    return res.json({ message: "Error occured in order", status: false })
+                                }
                                 // Pushing bella transaction
                                 await User.updateOne(
                                     { email: findUser.email },
@@ -114,45 +140,45 @@ export default async function handler(req, res) {
                                     }
                                 )
 
-                                // Total bill is 0 beacuase all amount paid by bella point(coins)
-                                totalbill = 0;
-
+                                
                                 // Storing order
                                 await User.updateOne(
                                     { email: findUser.email },
                                     {
                                         $push: {
                                             orders: {
-                                                couponCode, orderCart, bellacoinsUse, totalbill, orderID, usedBellaPoints: totalbill, isConfirmed: false, isComplete: false, isCancelled: false, time: new Date(), totalProductSum, mobileNo
+                                                couponCode, orderCart, bellacoinsUse, totalbill:0, orderID, usedBellaPoints: totalbill, isConfirmed: false, isComplete: false, isCancelled: false, time: new Date(), totalProductSum, mobileNo
                                             }
                                         }
                                     }
-                                )
-
+                                    )
+                                    
+                                // Total bill is 0 beacuase all amount paid by bella point(coins)
+                                totalbill = 0;
                                 // Increase totalOrders count by +1
                                 await setorderCount(findUser.email);
-
+                                
                                 await stockUpdate(productIDs);
                                 return res.json({ status: true, amount: totalbill, orderID });
                             }
 
                             // Decreasing user bella points
-                            const getUser = await User.findOne({ email: verify.email });
-                            if (getUser.bellaPoints !== findUser.bellaPoints) {
-                                return res.json({ message: "Something went wrong", status: false })
-                            }
-                            if (getUser.bellaPoints < 0) {
+                            const getUser = await User.findOne({ email: verify.email, "bellaPoints": { $gt: 0 } });
+                            if (!getUser) {
                                 return res.json({ message: "Something went wrong", status: false });
                             }
-
-                            await User.updateOne(
-                                { 'email': findUser.email },
+                            
+                            var updating = await User.updateOne(
+                                { 'email': findUser.email, "bellaPoints": { $gte:getUser.bellaPoints } },
                                 {
                                     $inc: {
                                         bellaPoints: -getUser.bellaPoints
                                     }
                                 }
                             )
+                            if(!updating.matchedCount){
+                                return res.json({ message: "Error occured in order", status: false })
+                            }
 
                             totalbill = totalbill - getUser.bellaPoints;
 
@@ -167,7 +193,7 @@ export default async function handler(req, res) {
                                     }
                                 }
                             )
-
+                            console.log(getUser.bellaPoints);
                             // Storing order
                             await User.updateOne({ email: findUser.email }, {
                                 $push: {
@@ -203,6 +229,11 @@ export default async function handler(req, res) {
                     }
                     return res.json({ status: false, message: "Coupon problem!" });
                 }
+
+
+                
+
+                // only if bellacoinUsed
                 if (bellacoinsUse) {
                     const getUser = await User.findOne({ email: verify.email });
                     if (getUser.bellaPoints !== findUser.bellaPoints) {
@@ -299,8 +330,17 @@ export default async function handler(req, res) {
                     await stockUpdate(productIDs);
                     return res.json({ status: true, amount: totalbill, orderID });
                 }
+
+
+
+
+
+                // run if when coupon code used
                 if (couponCode && couponCode != "") {
-                    const checkticket = await coupons.findOne({ couponId: couponCode });
+                    const checkticket = await coupons.findOne({ couponId: couponCode, 'left': { $gt: 0 } });
+                    if (!checkticket) {
+                        return res.json({ message: "Coupon limit is over", status: false })
+                    }
                     if (!checkticket.isActive) return res.json({ message: "Coupon is not active", status: false });
                     if (checkticket.left <= 0) return res.json({ message: "Coupon limit is over", status: false });
                     checkticket.left = checkticket.left - 1;

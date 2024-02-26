@@ -82,7 +82,7 @@ const order = () => {
                                 {data.orders.orderCart.length == 0 ? <div className='ml-5 mt-5'>Invalid order id</div> : ""}
                                 {data.orders.orderCart.map((el, index) => (
                                     <div key={index} className='relative'>
-                                        <Link href={`/shop/${el.productIDs}`} className='w-full batList flex justify-center border transition-all duration-100 z-[1]'>
+                                        <Link href={`/shop/${el.productIDs}`} className='w-full batListTxt flex justify-center border transition-all duration-100 z-[1]'>
                                             <Image
                                                 className='m-3'
                                                 src={`/${el.productIDs}.jpg`}

@@ -337,9 +337,9 @@ const cart = () => {
                         {carts.length == 0 ?
                             <div className='cursor-pointer px-10 py-4 border-2 border-black bg-white text-black'>Empty cart</div> : <>
                                 {isLogined ?
-                                    <div ref={purchaseBtn} className='cursor-pointer px-10 py-4 bg-white border-2 border-black hover:opacity-60 text-black' onClick={() => { purchaseIt() }}>{loading}</div>
+                                    <div ref={purchaseBtn} className='cursor-pointer px-10 py-4 bg-white border-2 font-semibold border-black hover:opacity-60 text-black' onClick={() => { purchaseIt() }}>{loading}</div>
                                     :
-                                    <div className='cursor-pointer px-10 py-4 border-2 border-black hover:opacity-60 text-black bg-white' onClick={() => { router.push('/login') }}>Login</div>
+                                    <div className='cursor-pointer px-10 py-4 border-2 font-semibold border-black hover:opacity-60 text-black bg-white' onClick={() => { router.push('/login') }}>Login</div>
                                 }</>
                         }
                     </div>

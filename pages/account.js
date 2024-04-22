@@ -45,7 +45,7 @@ const account = () => {
     }
     const logout = () => {
         localStorage.removeItem('bella10_state');
-        router.push('/login')
+        router.push('/login');
     }
     useEffect(() => {
         session();
@@ -129,4 +129,4 @@ const account = () => {
     )
 }
 
-export default account
+export default account;

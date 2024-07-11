@@ -101,7 +101,7 @@ const account = () => {
                                                 alt={el.orderCart[0].name}
                                                 src={`/${el.orderCart[0].productIDs}.jpg`} />
 
-                                            <div className='text-red-500 brightness-105 hover:text-black text-xs mt-4 max-lg:hidden'>{el.orderCart[0].name} <span className='text-sm ml-4 max-md:ml-0 mt-1 text-black'>+ {el.orderCart.length - 1} more</span> </div>
+                                            <div className='text-red-500 brightness-105 hover:text-black text-xs mt-4 max-lg:hidden'>{el.orderCart[0].name} { el.orderCart.length>1 && <span className='text-sm ml-4 max-md:ml-0 mt-1 text-black'>+ {el.orderCart.length - 1} more</span>} </div>
 
                                             <div className='w-full hidden max-lg:block'>
                                                 <div className='text-red-500 brightness-105 hover:text-black text-xs mt-4'>{el.orderCart[0].name} <span className='text-sm ml-4 max-md:ml-0 mt-1 text-black'>+ {el.orderCart.length - 1} more</span> </div>

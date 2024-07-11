@@ -199,6 +199,10 @@ const cart = () => {
     const purchaseIt = async () => {
         purchaseBtn.current.disabled = true;
         setLoading("Loading...");
+        if(mobileNo.length<10){
+            alert("Enter valid mobile number.");
+            return true;
+        }
         if (mobileNo != null) {
             const getPurchased = await purchase(carts, couponCode, cartsM.isBellacoinsUsed, token, mobileNo);
             if (getPurchased.status) {

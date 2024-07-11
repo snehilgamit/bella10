@@ -6,7 +6,7 @@ import BackBtn from '@/components/backBtn'
 import NotAdmin from '@/components/notAdmin'
 import Loading from '@/components/loading'
 import { useEffect } from 'react'
-const verifyOrder = () => {
+const VerifyOrder = () => {
   const [isLoading, setisLoading] = useState(true);
   const [isAdmin, setisAdmin] = useState(false);
   const [token, setToken] = useState(null);
@@ -68,7 +68,7 @@ const verifyOrder = () => {
     }
   }
   const routing = (orderID) => {
-    router.push({ pathname: `order/${orderID}`, query: { email } })
+    router.push({ pathname: `admin/order/${orderID}`, query: { email } })
   }
 
 
@@ -80,7 +80,6 @@ const verifyOrder = () => {
     <>{isLoading ? <Loading /> :
       <>{!isAdmin ? <NotAdmin /> :
         <>
-          <BackBtn />
           <div className='flex my-5 h-full items-center flex-col w-full'>
             <div className='text-3xl font-semibold'>Verify order</div>
 
@@ -143,4 +142,4 @@ const verifyOrder = () => {
   )
 }
 
-export default verifyOrder
+export default VerifyOrder

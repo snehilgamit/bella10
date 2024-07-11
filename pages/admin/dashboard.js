@@ -7,7 +7,7 @@ import NotAdmin from '@/components/notAdmin'
 import Dashboard from '@/components/admin/dashboard.admin'
 
 
-const account = () => {
+const Account = () => {
     const router = useRouter();
     const [isLoading, setisLoading] = useState(false);
     const [isAdmin, setisAdmin] = useState(false);
@@ -17,6 +17,7 @@ const account = () => {
         totalOrder: 0,
         completeOrder: 0,
         Ordercanceled: 0,
+        totalSales:0
     });
     const getDashboard = async (token) => {
         const getData = await axios.post('/api/v1/admin/dashboard', { token });
@@ -63,7 +64,7 @@ const account = () => {
             {!isLoading ? <Loading />
                 :
                 <>
-                    {!isAdmin ? <NotAdmin /> : <><BackBtn />
+                    {!isAdmin ? <NotAdmin /> : <>
                         <Dashboard data={accountDetails} />
                     </>}
                 </>}
@@ -71,4 +72,4 @@ const account = () => {
     )
 }
 
-export default account
+export default Account

@@ -1,11 +1,11 @@
 import React from 'react'
 import BackBtn from '@/components/backBtn'
-const products = () => {
+const Products = () => {
   return (
-    <><BackBtn/>
+    <>
     Under construction
     </>
   )
 }
 
-export default products
+export default Products

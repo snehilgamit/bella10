@@ -8,9 +8,9 @@ export default async function handler(req, res) {
     const verify = jwt.verify(token, process.env.SECRET);
     if (!verify) return res.json({ message: "unAuthorised", status: false });
     await connectDB();
-    const find = await bellaUser.findOne({email:verify.email},{isAdmin:true});
-    if(!find) return res.json({ message: "You are not admin!", status: false });
-    if(!find.isAdmin) return res.json({ message: "You are not admin!", status: false });
+    const find = await bellaUser.findOne({ email: verify.email }, { isAdmin: true });
+    if (!find) return res.json({ message: "You are not admin!", status: false });
+    if (!find.isAdmin) return res.json({ message: "You are not admin!", status: false });
     let user = await bellaUser.find();
     let totalOrder = 0;
     let completeOrder = 0;
@@ -25,11 +25,14 @@ export default async function handler(req, res) {
         if (e.isCancelled) cancelledOrder++;
       })
       totalOrder += el.orders.length;
-    })
-
-    return res.json({ users, totalOrder, completeOrder, cancelledOrder, orders: orders.reverse() ,status:true})
+    });
+    const AllOrders = await bellaUser.find({}, 'orders');
+    let totalSales = 0;
+    AllOrders.forEach(el => el.orders.forEach(e => totalSales += e.totalProductSum));
+    return res.json({ users, totalOrder, completeOrder, cancelledOrder, orders: orders.reverse(), totalSales, status: true })
   }
-  catch {
+  catch (e) {
+    console.log(e);
     return res.json({ message: "Something want wrong", status: false });
   }
 }

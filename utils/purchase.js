@@ -4,7 +4,13 @@ const purchase = async (carts,couponCode,bellacoinsUse,token,mobileNo) => {
     carts.forEach(el=>{
         productIDs.push(el.product_id)
     });
-    const order = await axios.post('/api/v1/order',{couponCode:couponCode.toLowerCase(),productIDs,bellacoinsUse,token,mobileNo});
+    const order = await axios.post('/api/v1/order',{
+        couponCode:couponCode.toLowerCase(),
+        productIDs,
+        bellacoinsUse,
+        token,
+        mobileNo
+    });
     return order.data
 }
 

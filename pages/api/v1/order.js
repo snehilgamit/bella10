@@ -1,7 +1,7 @@
 import coupons from "@/models/coupons";
 import products from "@/models/products";
 import User from '@/models/User';
-import connectDB from "@/util/mongoDB";
+import connectDB from "@/database/mongoDB";
 import jwt from 'jsonwebtoken'
 
 // TO-DO: ReWrite entire code

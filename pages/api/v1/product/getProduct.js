@@ -1,5 +1,5 @@
 import products from "@/models/products";
-import connectDB from "@/util/mongoDB";
+import connectDB from "@/database/mongoDB";
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         const { product_id } = req.body;

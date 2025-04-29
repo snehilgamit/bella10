@@ -3,7 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import axios from 'axios'
-import connectDB from '@/util/mongoDB'
+import connectDB from '@/database/mongoDB'
 import products from '@/models/products'
 import Head from 'next/head'
 const shop = ({ products }) => {

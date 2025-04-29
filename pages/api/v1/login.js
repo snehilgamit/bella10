@@ -1,4 +1,4 @@
-import connectDB from "@/util/mongoDB"
+import connectDB from "@/database/mongoDB"
 import User from '@/models/User'
 import jwt from 'jsonwebtoken'
 export default async function handler(req, res) {

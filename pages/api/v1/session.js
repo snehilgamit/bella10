@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import User from '@/models/User'
-import connectDB from '@/util/mongoDB'
+import connectDB from '@/database/mongoDB'
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { token } = req.body;

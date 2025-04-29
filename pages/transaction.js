@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import Link from 'next/link'
 import Loading from '@/components/loading'
 import { useRouter } from 'next/router'
 import BackBtn from '@/components/backBtn'

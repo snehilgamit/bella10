@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 const signup = () => {
-    const router = useRouter();
+    const router = useRouter()
     const [password, setPassword] = useState('')
     const [repassword, setrePassword] = useState('')
     const [referralcode, setreferralcode] = useState('')

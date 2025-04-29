@@ -1,5 +1,5 @@
 import products from "@/models/products";
-import connectDB from "@/util/mongoDB";
+import connectDB from "@/database/mongoDB";
 export default async function handler(req, res) {
     await connectDB();
     if (req.method === 'POST') {

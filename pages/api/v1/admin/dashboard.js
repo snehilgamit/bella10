@@ -1,12 +1,12 @@
 import bellaUser from "@/models/User";
-import connectDB from "@/util/mongoDB";
+import connectDB from "@/database/mongoDB";
 import jwt from 'jsonwebtoken';
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(200).json({ message: "Invalid method", status: false });
   const { token } = req.body;
   try {
     const verify = jwt.verify(token, process.env.SECRET);
-    if (!verify) return res.json({ message: "unAuthorised", status: false });
+    if (!verify) return res.json({ message: "Un-authorised", status: false });
     await connectDB();
     const find = await bellaUser.findOne({ email: verify.email }, { isAdmin: true });
     if (!find) return res.json({ message: "You are not admin!", status: false });

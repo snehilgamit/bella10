@@ -1,5 +1,5 @@
 import bellaUser from "@/models/User";
-import connectDB from "@/util/mongoDB";
+import connectDB from "@/database/mongoDB";
 import jwt from 'jsonwebtoken'
 export default async function handler(req, res) {
     if (req.method === 'POST') {
